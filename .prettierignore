@@ -1,0 +1,13 @@
+**/*.md
+**/*.svg
+**/*.ejs
+
+node_modules
+/.cache
+/.history
+.eslintignore
+.gitignore
+.git
+LICENSE
+build
+dist
