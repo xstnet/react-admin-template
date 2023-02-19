@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { lazy, useState } from 'react';
+import { Routes, Route, NavLink } from 'react-router-dom';
 import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
@@ -10,6 +11,10 @@ import { Layout, Menu, MenuProps, theme } from 'antd';
 import { MenuList } from '@/configs/menu';
 
 import './index.less';
+import { spawn } from 'child_process';
+
+const DashboardPage = lazy(() => import('@page/Dashboard'));
+const LoginPage = lazy(() => import('@page/Login'));
 
 const { Header, Sider, Content } = Layout;
 
@@ -31,9 +36,14 @@ const DefaultLayout: React.FC = () => {
           style={{
             background: colorBgContainer
           }}>
-          {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
-            onClick: () => setCollapsed(!collapsed)
-          })}
+          <>
+            {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
+              onClick: () => setCollapsed(!collapsed)
+            })}
+
+            <NavLink to="/login">login </NavLink>
+            <NavLink to="/dashboard">-&gt;dashboard</NavLink>
+          </>
         </Header>
         <Content
           className="content"
@@ -41,6 +51,11 @@ const DefaultLayout: React.FC = () => {
             background: colorBgContainer
           }}>
           Content
+          <Routes>
+            <Route path="/dashboard" element={<DashboardPage />} />
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="*" element={<span>error</span>} />
+          </Routes>
         </Content>
       </Layout>
     </Layout>
