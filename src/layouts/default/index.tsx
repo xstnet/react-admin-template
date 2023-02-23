@@ -12,6 +12,7 @@ import { MenuList } from '@/configs/menu';
 
 import './index.less';
 import { spawn } from 'child_process';
+import LeftSider from './components/LeftSider/Index';
 
 const DashboardPage = lazy(() => import('@page/Dashboard'));
 const LoginPage = lazy(() => import('@page/Login'));
@@ -27,8 +28,7 @@ const DefaultLayout: React.FC = () => {
   return (
     <Layout className="default-layout">
       <Sider trigger={null} className="left-sider" collapsible collapsed={collapsed}>
-        <div className="logo" />
-        <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']} items={MenuList} />
+        <LeftSider />
       </Sider>
       <Layout>
         <Header
