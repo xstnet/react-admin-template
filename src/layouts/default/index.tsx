@@ -1,5 +1,5 @@
 import React, { lazy, useState } from 'react';
-import { Routes, Route, NavLink } from 'react-router-dom';
+import { Routes, Route, NavLink, Router, BrowserRouter } from 'react-router-dom';
 import {
   MenuFoldOutlined,
   MenuUnfoldOutlined,
@@ -13,6 +13,7 @@ import { MenuList } from '@/configs/menu';
 import './index.less';
 import { spawn } from 'child_process';
 import LeftSider from './components/LeftSider/Index';
+import DefaultRoutes from '@/routes';
 
 const DashboardPage = lazy(() => import('@page/Dashboard'));
 const LoginPage = lazy(() => import('@page/Login'));
@@ -50,12 +51,8 @@ const DefaultLayout: React.FC = () => {
           style={{
             background: colorBgContainer
           }}>
-          Content
-          <Routes>
-            <Route path="/dashboard" element={<DashboardPage />} />
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="*" element={<span>error</span>} />
-          </Routes>
+          Content |
+          <DefaultRoutes />
         </Content>
       </Layout>
     </Layout>

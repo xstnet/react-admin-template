@@ -1,39 +1,71 @@
-import { Badge, Menu, MenuProps } from 'antd';
+import { Badge, Menu } from 'antd';
+import { nanoid } from 'nanoid';
 import React from 'react';
 
-import { MenuList as RawMenuList, ExtendMenuItemType } from '@/configs/menu';
-type MenuItemType = Required<MenuProps>['items'][number];
+import type { MenuProps } from 'antd';
+import { isDividerMenu, isGroupMenu, isLeafMenu, isSubMenu } from '@/utils/is';
+import { MenuList as RawMenuList } from '@/configs/menu';
+import { useNavigate } from 'react-router-dom';
+type AntdMenuItem = Required<MenuProps>['items'][number];
 
+// 自定义菜单组件, 增加菜单 badge/路由支持
 const MenuList: React.FC = () => {
-  const makeMenuItems = (menuList: ExtendMenuItemType[]): MenuItemType[] => {
-    const menuItems: MenuItemType[] = [];
-    menuList.map((item) => {
-      const tmpItem: MenuItemType = {
-        ...item,
-        key: item.path,
-        onClick: (info) => {
-          console.log('3');
-          // @ts-ignore
-          item?.onClick && item?.onClick(info);
-        }
-      };
-      if (item.children) {
-        // @ts-ignore
-        tmpItem.children = makeMenuItems(item.children);
+  const navigate = useNavigate();
+
+  const handleClick: MenuProps['onClick'] = (info) => {
+    if (info.key === location.pathname) {
+      return;
+    }
+    console.log('menu', info);
+
+    navigate(info.key);
+  };
+  const makeMenuBadge = (menu: Menu.LeafMenuItemType | Menu.SubMenuType) => {
+    if (menu.badge) {
+      if (menu.badge === 'dot') {
+        return (
+          <Badge className="menu-item-badge" dot>
+            {menu.label}
+          </Badge>
+        );
+      }
+      return (
+        <Badge className="menu-item-badge" offset={[15, 0]} count={menu.badge}>
+          {menu.label}
+        </Badge>
+      );
+    }
+    return menu.label;
+  };
+
+  const makeMenuItems = (menuList: Menu.MenuItemType[]): AntdMenuItem[] => {
+    const menuItems: AntdMenuItem[] = [];
+    menuList.map((rawMenu) => {
+      let newMenu: AntdMenuItem | undefined;
+      if (isGroupMenu(rawMenu) || isDividerMenu(rawMenu)) {
+        newMenu = {
+          ...rawMenu,
+          key: nanoid()
+        };
+      } else if (isSubMenu(rawMenu) || isLeafMenu(rawMenu)) {
+        newMenu = {
+          ...rawMenu,
+          key: rawMenu.path,
+          label: makeMenuBadge(rawMenu),
+          // 编译器在这里就会推断 menu 是属于 MenuItemGroupType 或 SubMenuType
+          children: isSubMenu(rawMenu) ? makeMenuItems(rawMenu.children!) : undefined
+          // onClick: async (menuInfo) => {
+          //   // onClick 返回了 false, 阻止页面跳转
+          //   if (rawMenu?.onClick) {
+          //     const res = rawMenu.onClick(menuInfo);
+          //   }
+          // }
+        };
       }
 
-      if (item.badge) {
-        if (item.badge === 'dot') {
-          tmpItem.label = <Badge dot>{item.label}</Badge>;
-        } else {
-          tmpItem.label = (
-            <Badge offset={[10, 0]} count={item.badge}>
-              {item.label}
-            </Badge>
-          );
-        }
+      if (newMenu !== undefined) {
+        menuItems.push(newMenu);
       }
-      menuItems.push(tmpItem);
     });
 
     return menuItems;
@@ -41,7 +73,15 @@ const MenuList: React.FC = () => {
 
   const menuItems = makeMenuItems(RawMenuList);
 
-  return <Menu theme="dark" mode="inline" defaultSelectedKeys={['/dashboard']} items={menuItems} />;
+  return (
+    <Menu
+      onClick={handleClick}
+      theme="dark"
+      mode="inline"
+      defaultSelectedKeys={['/user']}
+      items={menuItems}
+    />
+  );
 };
 
 export default MenuList;

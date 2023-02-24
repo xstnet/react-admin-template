@@ -1,40 +1,38 @@
-import type { MenuProps } from 'antd';
-
-export type MenuItemType = Partial<Required<MenuProps>['items'][number]>;
-
-export type ExtendMenuItemType = {
-  path: string;
-  label: string;
-  components?: string;
-  badge?: 'dot' | number;
-  children?: ExtendMenuItemType[];
-} & MenuItemType;
-
-const MenuList: ExtendMenuItemType[] = [
+const MenuList: Menu.MenuItemType[] = [
   {
     label: '控制台',
     icon: null,
     path: '/dashboard',
-    components: '@page/Dashboard',
-    badge: 'dot',
-    onClick: (info) => {
-      console.log(444, info);
-    }
+
+    children: [
+      {
+        label: '控制台2',
+        icon: null,
+        path: '/dashboard3',
+        badge: 'dot'
+      },
+
+      {
+        label: '控制台4',
+        icon: null,
+        path: '/dashboard4'
+        // badge: 'dot',
+      }
+    ]
   },
+
   {
     label: '用户列表',
     icon: null,
     path: '/user',
-    components: '@page/Login',
     badge: 99
-  },
-  {
-    label: '用户列表2',
-    icon: null,
-    path: '/user2',
-    components: '@page/Login',
-    badge: undefined
   }
+  // {
+  //   label: '用户列表2',
+  //   icon: null,
+  //   path: '/user2',
+  //   badge: undefined
+  // }
   // {
   //   key: 'article',
   //   label: '文章管理',
@@ -75,5 +73,4 @@ const MenuList: ExtendMenuItemType[] = [
   //   ]
   // }
 ];
-
 export { MenuList };
