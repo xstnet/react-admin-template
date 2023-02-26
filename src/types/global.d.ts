@@ -5,6 +5,11 @@ declare global {
     abc: any; //加入对象
   }
 
+  interface ItemSharedProps {
+    style?: React.CSSProperties;
+    className?: string;
+  }
+
   type IdType = string | number;
 }
 

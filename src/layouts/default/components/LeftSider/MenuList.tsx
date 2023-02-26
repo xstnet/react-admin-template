@@ -6,6 +6,7 @@ import type { MenuProps } from 'antd';
 import { isDividerMenu, isGroupMenu, isLeafMenu, isSubMenu } from '@/utils/is';
 import { MenuList as RawMenuList } from '@/configs/menu';
 import { useNavigate } from 'react-router-dom';
+import Iconfont from '@/components/Iconfont';
 type AntdMenuItem = Required<MenuProps>['items'][number];
 
 // 自定义菜单组件, 增加菜单 badge/路由支持
@@ -48,8 +49,14 @@ const MenuList: React.FC = () => {
           key: nanoid()
         };
       } else if (isSubMenu(rawMenu) || isLeafMenu(rawMenu)) {
+        console.log(typeof rawMenu.icon, rawMenu.path);
+        let { icon } = rawMenu;
+        if (typeof icon === 'string' && icon.includes('icon-')) {
+          icon = <Iconfont icon={icon} />;
+        }
         newMenu = {
           ...rawMenu,
+          icon,
           key: rawMenu.path,
           label: makeMenuBadge(rawMenu),
           // 编译器在这里就会推断 menu 是属于 MenuItemGroupType 或 SubMenuType
@@ -72,7 +79,6 @@ const MenuList: React.FC = () => {
   };
 
   const menuItems = makeMenuItems(RawMenuList);
-
   return (
     <Menu
       onClick={handleClick}
