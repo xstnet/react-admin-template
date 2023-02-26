@@ -1,56 +1,33 @@
-import React, { lazy, useState } from 'react';
-import { Routes, Route, NavLink, Router, BrowserRouter } from 'react-router-dom';
-import {
-  MenuFoldOutlined,
-  MenuUnfoldOutlined,
-  UploadOutlined,
-  UserOutlined,
-  VideoCameraOutlined
-} from '@ant-design/icons';
-import { Layout, Menu, MenuProps, theme } from 'antd';
-import { MenuList } from '@/configs/menu';
+import React, { useContext, useEffect, useState } from 'react';
+import { Layout, theme } from 'antd';
 
 import './index.less';
-import { spawn } from 'child_process';
 import LeftSider from './components/LeftSider/Index';
 import DefaultRoutes from '@/routes';
+import { GlobalContext } from '@/contexts/Global';
+import Header from './components/Header';
 
-const DashboardPage = lazy(() => import('@page/Dashboard'));
-const LoginPage = lazy(() => import('@page/Login'));
-
-const { Header, Sider, Content } = Layout;
+const { Sider, Content } = Layout;
 
 const DefaultLayout: React.FC = () => {
   const [collapsed, setCollapsed] = useState(false);
-  const {
-    token: { colorBgContainer }
-  } = theme.useToken();
+  const { menuCollapsed } = useContext(GlobalContext);
+
+  useEffect(() => {
+    console.log('menuCollapsed', menuCollapsed);
+  }, [menuCollapsed]);
 
   return (
     <Layout className="default-layout">
-      <Sider trigger={null} className="left-sider" collapsible collapsed={collapsed}>
+      <Sider trigger={null} className="left-sider" collapsible collapsed={menuCollapsed}>
         <LeftSider />
       </Sider>
       <Layout>
-        <Header
-          className="header"
-          style={{
+        <Header />
+        {/* style={{
             background: colorBgContainer
-          }}>
-          <>
-            {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
-              onClick: () => setCollapsed(!collapsed)
-            })}
-
-            <NavLink to="/login">login </NavLink>
-            <NavLink to="/dashboard">-&gt;dashboard</NavLink>
-          </>
-        </Header>
-        <Content
-          className="content"
-          style={{
-            background: colorBgContainer
-          }}>
+          }} */}
+        <Content className="content">
           Content |
           <DefaultRoutes />
         </Content>
