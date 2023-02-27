@@ -1,27 +1,33 @@
-import React, { useContext, useEffect, useState } from 'react';
 import { Layout, theme } from 'antd';
 
-import './index.less';
 import LeftSider from './components/LeftSider/Index';
 import DefaultRoutes from '@/routes';
-import { GlobalContext } from '@/contexts/Global';
 import Header from './components/Header';
+import './index.less';
+import { useEffect } from 'react';
+import Cache from '@/utils/cache';
+import { useNavigate } from 'react-router-dom';
 
-const { Sider, Content } = Layout;
+const { Content } = Layout;
 
 const DefaultLayout: React.FC = () => {
-  const [collapsed, setCollapsed] = useState(false);
-  const { menuCollapsed } = useContext(GlobalContext);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    console.log('menuCollapsed', menuCollapsed);
-  }, [menuCollapsed]);
+    const token = Cache.getString('token');
+    console.log('token', token);
+
+    if (!token) {
+      navigate('/login');
+    }
+  }, []);
+
+  // todo: get user detail
+  // todo: return loading
 
   return (
     <Layout className="default-layout">
-      <Sider trigger={null} className="left-sider" collapsible collapsed={menuCollapsed}>
-        <LeftSider />
-      </Sider>
+      <LeftSider />
       <Layout>
         <Header />
         {/* style={{

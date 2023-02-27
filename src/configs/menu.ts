@@ -4,13 +4,13 @@ const MenuList: Menu.MenuItemType[] = [
   {
     label: '控制台',
     icon: 'icon-dashboard',
-    path: '/dashboard',
+    path: '/dashboard2',
 
     children: [
       {
         label: '控制台2',
         icon: 'icon-dashboard',
-        path: '/dashboard3',
+        path: '/dashboard',
         badge: 'dot'
       },
       {
@@ -20,7 +20,6 @@ const MenuList: Menu.MenuItemType[] = [
       }
     ]
   },
-
   {
     label: '用户列表',
     icon: 'icon-article',
@@ -37,51 +36,62 @@ const MenuList: Menu.MenuItemType[] = [
     label: '退出',
     icon: 'icon-logout',
     path: '/logout'
+  },
+  {
+    path: 'article',
+    label: '文章管理',
+    icon: 'icon-article',
+    children: [
+      {
+        path: 'article/list',
+        label: '文章列表',
+        icon: null
+      },
+      {
+        path: 'article/category',
+        label: '分类列表',
+        icon: null
+      }
+    ]
+  },
+  {
+    path: 'permission',
+    label: '权限管理',
+    icon: 'icon-permissions',
+    children: [
+      {
+        path: 'permission/role',
+        label: '角色列表',
+        icon: 'icon-list'
+      },
+      {
+        path: 'permission/node',
+        label: '权限列表',
+        icon: 'icon-permissions'
+      },
+      {
+        path: 'permission/user',
+        label: '用户列表',
+        icon: 'icon-user-permissions'
+      }
+    ]
+  },
+  {
+    path: 'iframe',
+    label: '外部页面',
+    icon: 'icon-href',
+    children: [
+      {
+        path: 'https://ant.design/components/overview-cn',
+        label: 'antd文档(外链)',
+        icon: 'icon-document'
+      },
+      {
+        path: 'iframe/https://ant.design/components/overview-cn',
+        label: 'antd文档(内嵌)',
+        icon: 'icon-document'
+      }
+    ]
   }
-  // {
-  //   label: '用户列表2',
-  //   icon: null,
-  //   path: '/user2',
-  //   badge: undefined
-  // }
-  // {
-  //   key: 'article',
-  //   label: '文章管理',
-  //   icon: null,
-  //   children: [
-  //     {
-  //       key: 'article/list',
-  //       label: '文章列表',
-  //       icon: null,
-  //     },
-  //     {
-  //       key: 'article/category',
-  //       label: '分类列表',
-  //       icon: null
-  //     }
-  //   ]
-  // },
-  // {
-  //   key: 'permission',
-  //   label: '权限管理',
-  //   icon: null,
-  //   children: [
-  //     {
-  //       key: 'permission/role',
-  //       label: '角色列表',
-  //       icon: null
-  //     },
-  //     {
-  //       key: 'permission/node',
-  //       label: '权限列表',
-  //       icon: null
-  //     },
-  //     {
-  //       key: 'permission/user',
-  //       label: '用户列表',
-  //       icon: null
-  //     }
-  //   ]
-  // }
 ];
 export { MenuList };

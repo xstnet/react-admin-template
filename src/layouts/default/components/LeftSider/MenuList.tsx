@@ -14,10 +14,10 @@ const MenuList: React.FC = () => {
   const navigate = useNavigate();
 
   const handleClick: MenuProps['onClick'] = (info) => {
-    if (info.key === location.pathname) {
+    if (info.key === location.pathname || !info.key) {
       return;
     }
-    console.log('menu', info);
+    console.log('clicked menu', info);
 
     navigate(info.key);
   };
@@ -25,7 +25,7 @@ const MenuList: React.FC = () => {
     if (menu.badge) {
       if (menu.badge === 'dot') {
         return (
-          <Badge className="menu-item-badge" dot>
+          <Badge className="menu-item-badge" offset={[6, 0]} dot>
             {menu.label}
           </Badge>
         );
@@ -49,10 +49,9 @@ const MenuList: React.FC = () => {
           key: nanoid()
         };
       } else if (isSubMenu(rawMenu) || isLeafMenu(rawMenu)) {
-        console.log(typeof rawMenu.icon, rawMenu.path);
         let { icon } = rawMenu;
         if (typeof icon === 'string' && icon.includes('icon-')) {
-          icon = <Iconfont icon={icon} />;
+          icon = <Iconfont type={icon} />;
         }
         newMenu = {
           ...rawMenu,
@@ -61,12 +60,6 @@ const MenuList: React.FC = () => {
           label: makeMenuBadge(rawMenu),
           // 编译器在这里就会推断 menu 是属于 MenuItemGroupType 或 SubMenuType
           children: isSubMenu(rawMenu) ? makeMenuItems(rawMenu.children!) : undefined
-          // onClick: async (menuInfo) => {
-          //   // onClick 返回了 false, 阻止页面跳转
-          //   if (rawMenu?.onClick) {
-          //     const res = rawMenu.onClick(menuInfo);
-          //   }
-          // }
         };
       }
 

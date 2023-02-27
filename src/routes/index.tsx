@@ -24,7 +24,7 @@ export default function DefaultRoutes() {
     },
     {
       path: '*',
-      element: <span>error ----------</span>
+      element: <span>页面不存在~</span>
     }
   ]);
   return routes;

@@ -11,6 +11,10 @@ declare global {
   }
 
   type IdType = string | number;
+
+  type TokenUserInfoType = {
+    uid: number;
+  };
 }
 
 // 必须要导出,不然无效
