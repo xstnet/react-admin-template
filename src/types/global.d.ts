@@ -10,6 +10,8 @@ declare global {
     className?: string;
   }
 
+  type KV = Record<string, any>;
+
   type IdType = string | number;
 
   type TokenUserInfoType = {

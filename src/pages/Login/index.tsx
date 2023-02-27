@@ -4,6 +4,7 @@ import { useForm } from 'antd/es/form/Form';
 import Cache from '@/utils/cache';
 import { useNavigate } from 'react-router-dom';
 import { parseToken } from '@/utils/jwt';
+import { postLogin } from '@/api';
 
 interface IFormState {
   username: string;
@@ -12,7 +13,7 @@ interface IFormState {
 }
 
 const onFinish = (values: IFormState) => {
-  console.log('Success:', values);
+  postLogin(values);
 };
 
 const LoginPage: React.FC = () => {

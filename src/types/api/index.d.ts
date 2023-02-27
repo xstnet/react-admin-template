@@ -1,4 +1,9 @@
 namespace Api {
+  type ResponseData<T> = {
+    code: number;
+    message: string;
+    data: T;
+  };
   type Idtype = string | number;
 
   type KV = Record<string, any>;
