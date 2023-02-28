@@ -1,13 +1,19 @@
 import { useEffect, useState } from 'react';
 import useUpdateEffect from './useUpdateEffect';
 
-type IType = (value?: boolean) => [boolean, (value: boolean) => void];
+type IType = (value?: boolean) => [boolean | undefined, (value: boolean) => void];
 
-const useFullScreen: IType = (value = false) => {
-  const [fullScreen, setFullScreen] = useState(value);
+// React.StrictMode 会调用两次, 所以依然会有一个报错
+// 解决方法: fullScreen值修改为 boolean|undefined, = undefined 时永不处理
+// todo: 使用 interface 扩充 documentElement属性, 移除 ts-ignore, 下同
+const useFullScreen: IType = () => {
+  const [fullScreen, setFullScreen] = useState<boolean>();
   const el = document.documentElement;
 
   const enterFullScreen = () => {
+    if (fullScreen !== false) {
+      return;
+    }
     // W3C
     if (el.requestFullscreen) {
       el.requestFullscreen();
@@ -27,6 +33,9 @@ const useFullScreen: IType = (value = false) => {
   };
 
   const exitFullScreen = () => {
+    if (fullScreen !== true) {
+      return;
+    }
     if (document.exitFullscreen) {
       document.exitFullscreen();
       // @ts-ignore

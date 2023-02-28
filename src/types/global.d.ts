@@ -5,16 +5,22 @@ declare global {
     abc: any; //加入对象
   }
 
-  interface ItemSharedProps {
-    style?: React.CSSProperties;
-    className?: string;
-  }
+  type S = string;
+  type N = number;
+  type B = boolean;
+  type KV = Record<S, any>;
+  type IdType = S | N;
 
-  type KV = Record<string, any>;
+  type TokenMeta<D> = {
+    iat: number;
+    exp: number;
+    aud: string;
+    iss: string;
+    sub: string;
+    data: D;
+  };
 
-  type IdType = string | number;
-
-  type TokenUserInfoType = {
+  type TokenData = {
     uid: number;
   };
 }

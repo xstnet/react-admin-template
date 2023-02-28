@@ -2,9 +2,10 @@ import React, { useEffect } from 'react';
 import { Button, Checkbox, Form, Input } from 'antd';
 import { useForm } from 'antd/es/form/Form';
 import Cache from '@/utils/cache';
-import { useNavigate } from 'react-router-dom';
 import { parseToken } from '@/utils/jwt';
 import { postLogin } from '@/api';
+import Config from '@/configs';
+import { toDashboardPage } from '@/utils/util';
 
 interface IFormState {
   username: string;
@@ -12,39 +13,45 @@ interface IFormState {
   remember: boolean;
 }
 
-const onFinish = (values: IFormState) => {
-  postLogin(values);
+const onFinish = async (values: IFormState) => {
+  let data = await postLogin(values);
 };
 
 const LoginPage: React.FC = () => {
-  const navigate = useNavigate();
-
   useEffect(() => {
-    const token = Cache.getString('token');
+    const token = Cache.getString(Config.tokenKey);
     if (token) {
-      const tokenData = parseToken<TokenUserInfoType>(token);
+      const tokenData = parseToken<TokenData>(token);
       // token 存在 && 含有uid && 未过期
       if (
         tokenData !== undefined &&
         tokenData?.data?.uid > 0 &&
         tokenData.exp > new Date().getTime() / 1000
       ) {
-        navigate('/dashboard');
+        // 跳转到控制台页, 再通过接口继续判断token的有效性
+        toDashboardPage();
       }
     }
   }, []);
+
   // example: 使用useForm
   // const [form] = useForm<IFormState>();
   // form.validateFields().then(value => {
   //   value.password // xxxx
   // })
+
+  const initialValues: Partial<IFormState> = {
+    remember: true,
+    username: 'admin',
+    password: '123456'
+  };
   return (
     <Form<IFormState>
-      name="basic"
+      name="loginForm"
       labelCol={{ span: 8 }}
       wrapperCol={{ span: 16 }}
       style={{ maxWidth: 600 }}
-      initialValues={{ remember: true }}
+      initialValues={initialValues}
       onFinish={onFinish}
       autoComplete="off">
       <Form.Item

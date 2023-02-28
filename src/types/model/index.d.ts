@@ -3,8 +3,10 @@ namespace Model {
     id: number;
     username: string;
     nickname: string;
-    password?: string;
     avatar: string;
-    create_time: string;
+    create_time?: string;
+    password?: string;
+    email?: string;
+    mobile?: string;
   };
 }

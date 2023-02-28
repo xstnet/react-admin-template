@@ -1,15 +1,6 @@
 import { decode } from 'js-base64';
 
-export type TokenType<D> = {
-  iat: number;
-  exp: number;
-  aud: string;
-  iss: string;
-  sub: string;
-  data: D;
-};
-
-export function parseToken<D>(token: string): TokenType<D> | undefined {
+export function parseToken<D>(token: string): TokenMeta<D> | undefined {
   const split = token.split('.')[1];
   if (!split) {
     return undefined;

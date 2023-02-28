@@ -10,7 +10,7 @@ export interface IGlobalContext {
   setIsLogin: ISetFunc;
   userInfo?: {};
   setUserInfo?: ISetFunc<any>;
-  fullScreen: boolean;
+  fullScreen?: boolean;
   setFullScreen: ISetFunc;
 }
 
@@ -28,7 +28,7 @@ export const GlobalContext = createContext<IGlobalContext>(initValue);
 const GlobalProvider: React.FC<{ children: React.ReactNode }> = (props) => {
   const [isLogin, setIsLogin] = useState(false);
   const [menuCollapsed, setMenuCollapsed] = useState(false);
-  const [fullScreen, setFullScreen] = useFullScreen(false);
+  const [fullScreen, setFullScreen] = useFullScreen();
   const [userInfo, setUserInfo] = useState<{}>({});
   const contextValue: IGlobalContext = {
     isLogin,

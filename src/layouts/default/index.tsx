@@ -1,24 +1,22 @@
-import { Layout, theme } from 'antd';
-
+import { Layout } from 'antd';
 import LeftSider from './components/LeftSider/Index';
 import DefaultRoutes from '@/routes';
 import Header from './components/Header';
-import './index.less';
 import { useEffect } from 'react';
 import Cache from '@/utils/cache';
-import { useNavigate } from 'react-router-dom';
+import Config from '@/configs';
 
+import './index.less';
+import { toLoginPage } from '@/utils/util';
 const { Content } = Layout;
 
 const DefaultLayout: React.FC = () => {
-  const navigate = useNavigate();
-
   useEffect(() => {
-    const token = Cache.getString('token');
+    const token = Cache.getString(Config.tokenKey);
     console.log('token', token);
 
     if (!token) {
-      navigate('/login');
+      toLoginPage();
     }
   }, []);
 

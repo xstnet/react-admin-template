@@ -1,8 +1,8 @@
 namespace Api {
-  type ResponseData<T> = {
+  type ResponseData<T = Example> = {
     code: number;
     message: string;
-    data: T;
+    data: T extends Example ? T['response'] : T;
   };
   type Idtype = string | number;
 
@@ -20,5 +20,10 @@ namespace Api {
     response: {
       token: string;
     };
+  }
+
+  interface GetUserInfo extends Example {
+    params: any;
+    response: Model.User;
   }
 }
