@@ -1,5 +1,10 @@
+import Config from '@/configs';
+
 function set(k: string, v: any) {
   localStorage.setItem(k, typeof v === 'object' ? JSON.stringify(v) : v);
+}
+function setToken(v: any) {
+  localStorage.setItem(Config.tokenKey, typeof v === 'object' ? JSON.stringify(v) : v);
 }
 
 function getString(k: string): string | null {
@@ -39,18 +44,24 @@ function remove(k: string) {
   localStorage.removeItem(k);
 }
 
+function removeToken() {
+  localStorage.removeItem(Config.tokenKey);
+}
+
 function clear() {
   localStorage.clear();
 }
 
 const Cache = {
   set,
+  setToken,
   has,
   getString,
   getObject,
   getBoolean,
   getNumber,
   remove,
+  removeToken,
   clear
 };
 

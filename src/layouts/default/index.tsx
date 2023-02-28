@@ -1,28 +1,52 @@
-import { Layout } from 'antd';
+import { Layout, notification } from 'antd';
 import LeftSider from './components/LeftSider/Index';
 import DefaultRoutes from '@/routes';
 import Header from './components/Header';
-import { useEffect } from 'react';
-import Cache from '@/utils/cache';
-import Config from '@/configs';
+import { useContext, useEffect, useState } from 'react';
 
-import './index.less';
 import { toLoginPage } from '@/utils/util';
+import { getUserInfo } from '@/api';
+import './index.less';
+import { validateToken } from '@/utils/jwt';
+import PageLoading from '@/components/Loading/PageLoading';
+import { GlobalContext } from '@/contexts/Global';
+import { AxiosError } from 'axios';
 const { Content } = Layout;
 
 const DefaultLayout: React.FC = () => {
+  const [getUserInfoLoading, setGetUserInfoLoading] = useState(true);
+  const { setIsLogin, setUserInfo } = useContext(GlobalContext);
   useEffect(() => {
-    const token = Cache.getString(Config.tokenKey);
-    console.log('token', token);
-
-    if (!token) {
+    if (!validateToken()) {
+      // token 无效
       toLoginPage();
     }
+
+    // 第一个接口必须要保成功
+    getUserInfo()
+      .then((data) => {
+        setGetUserInfoLoading(false);
+        setIsLogin(true);
+        setUserInfo!(data);
+      })
+      .catch((e) => {
+        console.log('eeeeeeee', e);
+        if (e instanceof AxiosError) {
+          notification.error({
+            message: '网络错误',
+            description: '获取用户信息失败, 无法打开页面',
+            duration: null,
+            closeIcon: null
+          });
+        }
+      });
   }, []);
 
-  // todo: get user detail
-  // todo: return loading
+  console.log(234);
 
+  if (getUserInfoLoading) {
+    return <PageLoading title="页面加载中" loading={getUserInfoLoading} />;
+  }
   return (
     <Layout className="default-layout">
       <LeftSider />

@@ -1,10 +1,8 @@
 import React, { useEffect } from 'react';
 import { Button, Checkbox, Form, Input } from 'antd';
-import { useForm } from 'antd/es/form/Form';
 import Cache from '@/utils/cache';
-import { parseToken } from '@/utils/jwt';
+import { validateToken } from '@/utils/jwt';
 import { postLogin } from '@/api';
-import Config from '@/configs';
 import { toDashboardPage } from '@/utils/util';
 
 interface IFormState {
@@ -13,24 +11,20 @@ interface IFormState {
   remember: boolean;
 }
 
-const onFinish = async (values: IFormState) => {
-  let data = await postLogin(values);
+const onFinish = (values: IFormState) => {
+  postLogin(values)
+    .then((data) => {
+      Cache.setToken(data.token);
+      toDashboardPage();
+    })
+    .catch((e) => 1);
 };
 
 const LoginPage: React.FC = () => {
   useEffect(() => {
-    const token = Cache.getString(Config.tokenKey);
-    if (token) {
-      const tokenData = parseToken<TokenData>(token);
-      // token 存在 && 含有uid && 未过期
-      if (
-        tokenData !== undefined &&
-        tokenData?.data?.uid > 0 &&
-        tokenData.exp > new Date().getTime() / 1000
-      ) {
-        // 跳转到控制台页, 再通过接口继续判断token的有效性
-        toDashboardPage();
-      }
+    if (validateToken()) {
+      // 跳转到控制台页, 再通过接口继续判断token的有效性
+      toDashboardPage();
     }
   }, []);
 

@@ -32,7 +32,7 @@ axios.interceptors.response.use(
     const data = response.data as Api.ResponseData<any>;
     // 接口请求错误判断
     if (typeof data.code !== 'number') {
-      message.error('系统错误', 2000);
+      message.error('系统错误', 2);
       console.warn(
         'api调用失败, 未正常返回数据, url:',
         response.config.url,

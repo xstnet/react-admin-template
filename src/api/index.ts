@@ -29,14 +29,16 @@ export const postLogin: ApiHandle<Api.PostLogoin>['data'] = (params) => {
 };
 
 // 例-不使用函数表达式也可以, 也能自动推断出来
-export const getUserInfo = (params: Api.GetUserInfo['params']) => {
-  return getResponseData(Http.post<Api.ResponseData<Api.GetUserInfo>>('/user/info', params));
+export const getUserInfo = (params?: Api.GetUserInfo['params']) => {
+  console.log('getuserinfo');
+
+  return getResponseData(Http.get<Api.ResponseData<Api.GetUserInfo>>('/user/info', params));
 };
 
-export const postLogout = (params: any) => {
+export const postLogout = (params?: any) => {
   return getResponseData(Http.post<Api.ResponseData>('/user/logout', params));
 };
 
-export const postUserUpdate = (params: any) => {
+export const postUserUpdate = (params?: any) => {
   return getResponseData(Http.post<Api.ResponseData>('/user/update', params));
 };

@@ -9,16 +9,18 @@ import {
   LogoutOutlined,
   MenuFoldOutlined,
   MenuUnfoldOutlined,
-  SearchOutlined,
   UserOutlined
 } from '@ant-design/icons';
 
 import './index.less';
 import Iconfont from '@/components/Iconfont';
-import { Link } from 'react-router-dom';
+import Cache from '@/utils/cache';
+import { toLoginPage } from '@/utils/util';
+import { postLogout } from '@/api';
 
 const Header: React.FC = () => {
-  const { menuCollapsed, setMenuCollapsed, fullScreen, setFullScreen } = useContext(GlobalContext);
+  const { menuCollapsed, setMenuCollapsed, fullScreen, setFullScreen, userInfo } =
+    useContext(GlobalContext);
   useEffect(() => {
     console.log('menuCollapsed2', menuCollapsed);
   }, [menuCollapsed]);
@@ -57,7 +59,13 @@ const Header: React.FC = () => {
       {
         label: '退出',
         icon: <LogoutOutlined />,
-        key: 'logout'
+        key: 'logout',
+        onClick: () => {
+          postLogout().then(() => {
+            Cache.removeToken();
+            toLoginPage();
+          });
+        }
       }
     ];
 
@@ -93,9 +101,9 @@ const Header: React.FC = () => {
           <Dropdown menu={{ items }}>
             <Space className="pointer">
               <a style={{ color: '#333' }} onClick={(e) => e.preventDefault()}>
-                醉丶春风
+                {userInfo?.nickname}
               </a>
-              <Avatar src="https://www.xstnet.com/static/images/head.gif" />
+              <Avatar src={userInfo?.avatar} />
             </Space>
           </Dropdown>
         </Space>
