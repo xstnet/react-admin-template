@@ -30,8 +30,6 @@ export const postLogin: ApiHandle<Api.PostLogoin>['data'] = (params) => {
 
 // 例-不使用函数表达式也可以, 也能自动推断出来
 export const getUserInfo = (params?: Api.GetUserInfo['params']) => {
-  console.log('getuserinfo');
-
   return getResponseData(Http.get<Api.ResponseData<Api.GetUserInfo>>('/user/info', params));
 };
 

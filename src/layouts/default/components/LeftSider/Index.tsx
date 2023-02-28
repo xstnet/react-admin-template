@@ -1,14 +1,23 @@
 import React, { useContext } from 'react';
-import { Layout } from 'antd';
+import { Layout, theme } from 'antd';
 import MenuList from './MenuList';
 import { GlobalContext } from '@/contexts/Global';
 
 const LeftSider: React.FC = () => {
   const { menuCollapsed } = useContext(GlobalContext);
 
+  const {
+    token: { colorBgContainer }
+  } = theme.useToken();
+
   return (
-    <Layout.Sider trigger={null} className="left-sider" collapsible collapsed={menuCollapsed}>
-      <div className="logo" />
+    <Layout.Sider
+      style={{ background: colorBgContainer }}
+      trigger={null}
+      className="left-sider"
+      collapsible
+      collapsed={menuCollapsed}>
+      <div className="logo">React Admin Template</div>
       <MenuList />
     </Layout.Sider>
   );

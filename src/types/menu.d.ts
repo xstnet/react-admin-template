@@ -6,6 +6,7 @@ declare namespace Menu {
     label: string;
     badge?: 'dot' | number;
     children?: MenuItemType[];
+    key?: string;
   };
 
   // 菜单类型, 不含子菜单
@@ -18,7 +19,10 @@ declare namespace Menu {
   type SubMenuType = Omit<import('antd/es/menu/hooks/useItems').SubMenuType, 'key' | 'children'> &
     ExtendMenuType;
   // 分组菜单
-  type MenuItemGroupType = import('antd/es/menu/hooks/useItems').MenuItemGroupType;
+  type AntdMenuGroupType = import('antd/es/menu/hooks/useItems').MenuItemGroupType;
+  type MenuItemGroupType = Omit<AntdMenuGroupType, 'children'> & {
+    children?: ExtendMenuType['children'];
+  };
   // 分割线
   type MenuDividerType = import('antd/es/menu/hooks/useItems').MenuDividerType;
 

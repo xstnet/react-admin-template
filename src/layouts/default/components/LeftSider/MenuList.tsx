@@ -13,6 +13,9 @@ type AntdMenuItem = Required<MenuProps>['items'][number];
 const MenuList: React.FC = () => {
   const navigate = useNavigate();
 
+  let activeMenu = '/dashboard';
+  const pathname = location.pathname;
+
   const handleClick: MenuProps['onClick'] = (info) => {
     if (info.key === location.pathname || !info.key) {
       return;
@@ -43,11 +46,14 @@ const MenuList: React.FC = () => {
     const menuItems: AntdMenuItem[] = [];
     menuList.map((rawMenu) => {
       let newMenu: AntdMenuItem | undefined;
-      if (isGroupMenu(rawMenu) || isDividerMenu(rawMenu)) {
-        newMenu = {
-          ...rawMenu,
-          key: nanoid()
-        };
+      if (isDividerMenu(rawMenu)) {
+        newMenu = { ...rawMenu };
+      } else if (isGroupMenu(rawMenu)) {
+        // rawMenu是一个联合类型, 赋值时必须明确是联合类型中的哪一个
+        newMenu = { ...(rawMenu as Menu.AntdMenuGroupType) };
+        if (rawMenu.children && rawMenu.children.length > 0) {
+          newMenu.children = makeMenuItems(rawMenu.children);
+        }
       } else if (isSubMenu(rawMenu) || isLeafMenu(rawMenu)) {
         let { icon } = rawMenu;
         if (typeof icon === 'string' && icon.includes('icon-')) {
@@ -61,9 +67,14 @@ const MenuList: React.FC = () => {
           // 编译器在这里就会推断 menu 是属于 MenuItemGroupType 或 SubMenuType
           children: isSubMenu(rawMenu) ? makeMenuItems(rawMenu.children!) : undefined
         };
+
+        if (rawMenu.path === pathname) {
+          activeMenu = rawMenu.path;
+        }
       }
 
-      if (newMenu !== undefined) {
+      if (newMenu) {
+        newMenu.key = newMenu.key || nanoid();
         menuItems.push(newMenu);
       }
     });
@@ -75,9 +86,8 @@ const MenuList: React.FC = () => {
   return (
     <Menu
       onClick={handleClick}
-      theme="dark"
       mode="inline"
-      defaultSelectedKeys={['/user']}
+      defaultSelectedKeys={[activeMenu]}
       items={menuItems}
     />
   );

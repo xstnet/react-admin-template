@@ -4,21 +4,7 @@ const MenuList: Menu.MenuItemType[] = [
   {
     label: '控制台',
     icon: 'icon-dashboard',
-    path: '/dashboard2',
-
-    children: [
-      {
-        label: '控制台2',
-        icon: 'icon-dashboard',
-        path: '/dashboard',
-        badge: 'dot'
-      },
-      {
-        label: '控制台4',
-        icon: 'icon-dashboard',
-        path: '/dashboard4'
-      }
-    ]
+    path: '/dashboard'
   },
   {
     label: '用户列表',
@@ -32,11 +18,21 @@ const MenuList: Menu.MenuItemType[] = [
     path: '/example',
     badge: 'dot'
   },
+
   {
-    label: '退出',
-    icon: 'icon-logout',
-    path: '/logout'
+    label: '示例页面',
+    key: 'group',
+    type: 'group',
+    children: [
+      {
+        label: '示例页面',
+        icon: 'icon-example',
+        path: '/example2',
+        badge: 'dot'
+      }
+    ]
   },
+
   {
     path: 'article',
     label: '文章管理',
@@ -45,12 +41,12 @@ const MenuList: Menu.MenuItemType[] = [
       {
         path: 'article/list',
         label: '文章列表',
-        icon: null
+        icon: 'icon-article'
       },
       {
         path: 'article/category',
         label: '分类列表',
-        icon: null
+        icon: 'icon-list'
       }
     ]
   },

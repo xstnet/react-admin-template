@@ -2,9 +2,11 @@
   display: flex;
   justify-content: space-between;
 
-  --height: 48px
-  height: var(--height);
-  line-height: 24px;
+  --height: 48px;
+  height: var(--height) !important;
+  line-height: var(--height) !important;
+
+  box-shadow: 5px 5px 8px rgba(0, 0, 0, 0.09);
   .action-icon {
     cursor: pointer;
     font-size: 16px;

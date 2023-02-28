@@ -1,4 +1,4 @@
-import { Layout, notification } from 'antd';
+import { Layout, notification, theme } from 'antd';
 import LeftSider from './components/LeftSider/Index';
 import DefaultRoutes from '@/routes';
 import Header from './components/Header';
@@ -16,6 +16,9 @@ const { Content } = Layout;
 const DefaultLayout: React.FC = () => {
   const [getUserInfoLoading, setGetUserInfoLoading] = useState(true);
   const { setIsLogin, setUserInfo } = useContext(GlobalContext);
+  const {
+    token: { colorBgContainer }
+  } = theme.useToken();
   useEffect(() => {
     if (!validateToken()) {
       // token 无效
@@ -48,13 +51,10 @@ const DefaultLayout: React.FC = () => {
     return <PageLoading title="页面加载中" loading={getUserInfoLoading} />;
   }
   return (
-    <Layout className="default-layout">
+    <Layout style={{ background: colorBgContainer }} className="default-layout">
       <LeftSider />
       <Layout>
         <Header />
-        {/* style={{
-            background: colorBgContainer
-          }} */}
         <Content className="content">
           Content |
           <DefaultRoutes />
