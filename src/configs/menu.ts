@@ -35,46 +35,46 @@ const MenuList: Menu.MenuItemType[] = [
   { type: 'divider' },
 
   {
-    path: 'article',
+    path: '/article',
     label: '文章管理',
     icon: 'icon-article',
     children: [
       {
-        path: 'article/list',
+        path: '/article/list',
         label: '文章列表',
         icon: 'icon-article'
       },
       {
-        path: 'article/category',
+        path: '/article/category',
         label: '分类列表',
         icon: 'icon-list'
       }
     ]
   },
   {
-    path: 'permission',
+    path: '/permission',
     label: '权限管理',
     icon: 'icon-permissions',
     children: [
       {
-        path: 'permission/role',
+        path: '/permission/role',
         label: '角色列表',
         icon: 'icon-list'
       },
       {
-        path: 'permission/node',
+        path: '/permission/node',
         label: '权限列表',
         icon: 'icon-permissions'
       },
       {
-        path: 'permission/user',
+        path: '/permission/user',
         label: '用户列表',
         icon: 'icon-user-permissions'
       }
     ]
   },
   {
-    path: 'iframe',
+    path: '/iframe',
     label: '外部页面',
     icon: 'icon-href',
     children: [
@@ -84,7 +84,7 @@ const MenuList: Menu.MenuItemType[] = [
         icon: 'icon-document'
       },
       {
-        path: 'iframe/https://ant.design/components/overview-cn',
+        path: '/iframe/https://ant.design/components/overview-cn',
         label: 'antd文档(内嵌)',
         icon: 'icon-document'
       }

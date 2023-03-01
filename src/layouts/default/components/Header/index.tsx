@@ -19,11 +19,16 @@ import { toLoginPage } from '@/utils/util';
 import { postLogout } from '@/api';
 
 const Header: React.FC = () => {
-  const { menuCollapsed, setMenuCollapsed, fullScreen, setFullScreen, userInfo } =
-    useContext(GlobalContext);
-  useEffect(() => {
-    console.log('menuCollapsed2', menuCollapsed);
-  }, [menuCollapsed]);
+  const {
+    menuCollapsed,
+    setMenuCollapsed,
+    fullScreen,
+    setFullScreen,
+    userInfo,
+    setUserInfo,
+    setIsLogin
+  } = useContext(GlobalContext);
+
   const {
     token: { colorBgContainer }
   } = theme.useToken();
@@ -48,6 +53,41 @@ const Header: React.FC = () => {
     );
   };
   const renderRightContent = () => {
+    const renderIcons = () => {
+      return (
+        <>
+          {/* 搜索按钮 */}
+          <Iconfont title="搜索" type="icon-search" className="action-icon" />
+          {/* 全屏按钮 */}
+          {fullScreen ? (
+            <FullscreenExitOutlined
+              title="退出全屏模式"
+              className="action-icon"
+              onClick={handleFullScreen}
+            />
+          ) : (
+            <FullscreenOutlined
+              title="进入全屏模式"
+              className="action-icon"
+              onClick={handleFullScreen}
+            />
+          )}
+
+          {/* Github */}
+          <a
+            target="_blank"
+            className="action-icon"
+            title="Go to Github"
+            href="https://github.com/xstnet/react-admin-template"
+            rel="norefer noopener">
+            <GithubOutlined />
+          </a>
+
+          <Iconfont title="主题-明亮" type="icon-theme-light" className="action-icon" />
+          <Iconfont title="设置" type="icon-setting" className="action-icon" />
+        </>
+      );
+    };
     const items: MenuProps['items'] = [
       {
         label: <a>个人中心</a>,
@@ -69,6 +109,8 @@ const Header: React.FC = () => {
         onClick: () => {
           postLogout().then(() => {
             Cache.removeToken();
+            setUserInfo(null);
+            setIsLogin(false);
             toLoginPage();
           });
         }
@@ -77,38 +119,12 @@ const Header: React.FC = () => {
 
     return (
       <div className="right">
-        <Space size="large">
-          {/* 搜索按钮 */}
-          <Iconfont title="搜索" type="icon-search" className="action-icon" />
-          {/* 全屏按钮 */}
-          {fullScreen ? (
-            <FullscreenExitOutlined
-              title="退出全屏模式"
-              className="action-icon"
-              onClick={handleFullScreen}
-            />
-          ) : (
-            <FullscreenOutlined
-              title="进入全屏模式"
-              className="action-icon"
-              onClick={handleFullScreen}
-            />
-          )}
+        <Space size="middle">
+          {renderIcons()}
 
-          {/* Github */}
-          <a
-            target="_blank"
-            style={{ color: 'inherit' }}
-            title="Go to Github"
-            href="https://github.com/xstnet/react-admin-template"
-            rel="norefer noopener">
-            <GithubOutlined />
-          </a>
           <Dropdown menu={{ items }}>
             <Space className="pointer">
-              <a style={{ color: '#333' }} onClick={(e) => e.preventDefault()}>
-                {userInfo?.nickname}
-              </a>
+              <span>{userInfo?.nickname}</span>
               <Avatar src={userInfo?.avatar} />
             </Space>
           </Dropdown>

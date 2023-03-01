@@ -1,7 +1,8 @@
-import { Breadcrumb, Layout, notification, theme } from 'antd';
+import { Layout, notification, theme } from 'antd';
 import LeftSider from './components/LeftSider/Index';
 import DefaultRoutes from '@/routes';
 import Header from './components/Header';
+import Breadcrumb from './components/Breadcrumb';
 import { useContext, useEffect, useState } from 'react';
 
 import { toLoginPage } from '@/utils/util';
@@ -33,7 +34,6 @@ const DefaultLayout: React.FC = () => {
         setUserInfo!(data);
       })
       .catch((e) => {
-        console.log('eeeeeeee', e);
         if (e instanceof AxiosError) {
           notification.error({
             message: '网络错误',
@@ -45,7 +45,7 @@ const DefaultLayout: React.FC = () => {
       });
   }, []);
 
-  console.log(234);
+  console.log('default layout render...');
 
   if (getUserInfoLoading) {
     return <PageLoading title="页面加载中" loading={getUserInfoLoading} />;
@@ -57,11 +57,7 @@ const DefaultLayout: React.FC = () => {
       <Layout>
         <LeftSider />
         <Layout className="content-layout">
-          <Breadcrumb style={{ margin: '16px 0' }}>
-            <Breadcrumb.Item>Home</Breadcrumb.Item>
-            <Breadcrumb.Item>List</Breadcrumb.Item>
-            <Breadcrumb.Item>App</Breadcrumb.Item>
-          </Breadcrumb>
+          <Breadcrumb />
           <Content className="content">
             Content |
             <DefaultRoutes />

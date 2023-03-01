@@ -1,4 +1,4 @@
-import Mock from 'mockjs';
+import Mock, { Random } from 'mockjs';
 import { encode as base64Encode } from 'js-base64';
 
 // 看起来像是 JWT 格式就行了
@@ -18,6 +18,9 @@ function createToken(data: { uid: number | any }) {
   const token = `${base64Encode(header)}.${base64Encode(payload)}.${secret}`;
   return token;
 }
+Mock.setup({
+  timeout: '000-5000' // 延迟时间为 1-5 秒
+});
 Mock.mock(/api\/login/, 'post', (options) => {
   const { body } = options;
   const { username, password } = JSON.parse(body);
@@ -41,7 +44,7 @@ Mock.mock(/api\/login/, 'post', (options) => {
     code: 0,
     message: '登录成功',
     data: {
-      token: createToken({ uid: 3 })
+      token: createToken({ uid: Random.natural(2, 10000) })
     }
   };
 });

@@ -6,6 +6,11 @@ type IType = (value?: boolean) => [boolean | undefined, (value: boolean) => void
 // React.StrictMode 会调用两次, 所以依然会有一个报错
 // 解决方法: fullScreen值修改为 boolean|undefined, = undefined 时永不处理
 // todo: 使用 interface 扩充 documentElement属性, 移除 ts-ignore, 下同
+
+/**
+ * 已弃用, 使用ahooks提供的 useFullscreen 方法
+ * @deprecated
+ */
 const useFullScreen: IType = () => {
   const [fullScreen, setFullScreen] = useState<boolean>();
   const el = document.documentElement;

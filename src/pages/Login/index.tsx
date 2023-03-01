@@ -4,6 +4,7 @@ import Cache from '@/utils/cache';
 import { validateToken } from '@/utils/jwt';
 import { postLogin } from '@/api';
 import { toDashboardPage } from '@/utils/util';
+import { useRequest } from 'ahooks';
 
 interface IFormState {
   username: string;
@@ -11,16 +12,26 @@ interface IFormState {
   remember: boolean;
 }
 
-const onFinish = (values: IFormState) => {
-  postLogin(values)
-    .then((data) => {
+const LoginPage: React.FC = () => {
+  const { loading: loginRuning, run: submit } = useRequest(postLogin, {
+    manual: true,
+    debounceWait: 300,
+    onSuccess: (data) => {
       Cache.setToken(data.token);
       toDashboardPage();
-    })
-    .catch((e) => 1);
-};
+    }
+  });
 
-const LoginPage: React.FC = () => {
+  const onFinish = (values: IFormState) => {
+    submit(values);
+    // postLogin(values)
+    //   .then((data) => {
+    //     Cache.setToken(data.token);
+    //     toDashboardPage();
+    //   })
+    //   .catch((e) => 1);
+  };
+
   useEffect(() => {
     if (validateToken()) {
       // 跳转到控制台页, 再通过接口继续判断token的有效性
@@ -64,7 +75,7 @@ const LoginPage: React.FC = () => {
       </Form.Item>
 
       <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-        <Button type="primary" htmlType="submit">
+        <Button loading={loginRuning} type="primary" htmlType="submit">
           登录
         </Button>
       </Form.Item>

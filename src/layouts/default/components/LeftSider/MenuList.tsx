@@ -1,17 +1,19 @@
 import { Badge, Menu } from 'antd';
 import { nanoid } from 'nanoid';
-import React from 'react';
+import React, { useContext } from 'react';
 
 import type { MenuProps } from 'antd';
 import { isDividerMenu, isGroupMenu, isLeafMenu, isSubMenu } from '@/utils/is';
-import { MenuList as RawMenuList } from '@/configs/menu';
 import { useNavigate } from 'react-router-dom';
 import Iconfont from '@/components/Iconfont';
+import { GlobalContext } from '@/contexts/Global';
 type AntdMenuItem = Required<MenuProps>['items'][number];
 
 // 自定义菜单组件, 增加菜单 badge/路由支持
 const MenuList: React.FC = () => {
   const navigate = useNavigate();
+
+  const { menuList: RawMenuList } = useContext(GlobalContext);
 
   let activeMenu = '/dashboard';
   const pathname = location.pathname;
