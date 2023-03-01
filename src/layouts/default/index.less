@@ -1,40 +1,15 @@
 .default-layout {
-  .header {
-    padding: 0 16px;
-  }
-
+  min-height: 100vh;
   .left-sider {
-    // 固定侧边栏
-    min-height: 100vh;
     overflow: 'auto';
     position: 'fixed';
     left: 0;
     top: 0;
     bottom: 0;
-
-    .logo {
-      box-shadow: rgba(0, 0, 0, 0.44) 0px 5px 8px 4px;
-      height: 48px;
-      line-height: 48px;
-      font-size: 16px;
-      color: #333;
-      padding-left: 16px;
-      // margin-bottom: 4px;
-      z-index: 234;
-      // background: rgba(255, 255, 255, 1);
-    }
   }
 
-  .content {
-    margin: 24px 16px;
-    padding: 24px;
-    min-height: 280;
-  }
-}
-
-.ant-layout-sider-collapsed {
-  .logo {
-    opacity: 0;
+  .content-layout {
+    padding: 0 16px 16px 16px;
   }
 }
 

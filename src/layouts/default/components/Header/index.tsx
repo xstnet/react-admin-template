@@ -34,10 +34,16 @@ const Header: React.FC = () => {
 
   const renderLeftContent = () => {
     return (
-      <div>
-        {React.createElement(menuCollapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
-          onClick: () => setMenuCollapsed(!menuCollapsed)
-        })}
+      <div className="left">
+        <div className="logo">
+          <Iconfont type="icon-react" className="logo-img" />
+          <span className="logo-text">React Admin Template</span>
+        </div>
+        <div>
+          {React.createElement(menuCollapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
+            onClick: () => setMenuCollapsed(!menuCollapsed)
+          })}
+        </div>
       </div>
     );
   };

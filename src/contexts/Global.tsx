@@ -30,6 +30,7 @@ const GlobalProvider: React.FC<{ children: React.ReactNode }> = (props) => {
   const [menuCollapsed, setMenuCollapsed] = useState(false);
   const [fullScreen, setFullScreen] = useFullScreen();
   const [userInfo, setUserInfo] = useState<Api.GetUserInfo['response']>();
+  // q: 写一个获取1-100的随机函数
   const contextValue: IGlobalContext = {
     isLogin,
     setIsLogin,

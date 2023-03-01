@@ -1,4 +1,5 @@
 .header {
+  padding: 0 12px !important;
   display: flex;
   justify-content: space-between;
 
@@ -6,7 +7,26 @@
   height: var(--height) !important;
   line-height: var(--height) !important;
 
-  box-shadow: 5px 5px 8px rgba(0, 0, 0, 0.09);
+  box-shadow: 0 5px 6px rgba(0, 0, 0, 0.06);
+  position: relative;
+  z-index: 2;
+
+  .left {
+    display: flex;
+    gap: 12px;
+
+    .logo {
+      .logo-img {
+        color: #30c6fa;
+        font-size: 22px;
+        animation: rotate 20s linear infinite;
+      }
+      .logo-text {
+        font-size: 18px;
+        margin-left: 6px;
+      }
+    }
+  }
   .action-icon {
     cursor: pointer;
     font-size: 16px;

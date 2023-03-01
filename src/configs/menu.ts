@@ -32,6 +32,7 @@ const MenuList: Menu.MenuItemType[] = [
       }
     ]
   },
+  { type: 'divider' },
 
   {
     path: 'article',

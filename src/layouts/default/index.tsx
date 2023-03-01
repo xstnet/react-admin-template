@@ -1,4 +1,4 @@
-import { Layout, notification, theme } from 'antd';
+import { Breadcrumb, Layout, notification, theme } from 'antd';
 import LeftSider from './components/LeftSider/Index';
 import DefaultRoutes from '@/routes';
 import Header from './components/Header';
@@ -52,13 +52,21 @@ const DefaultLayout: React.FC = () => {
   }
   return (
     <Layout style={{ background: colorBgContainer }} className="default-layout">
-      <LeftSider />
+      <Header />
+
       <Layout>
-        <Header />
-        <Content className="content">
-          Content |
-          <DefaultRoutes />
-        </Content>
+        <LeftSider />
+        <Layout className="content-layout">
+          <Breadcrumb style={{ margin: '16px 0' }}>
+            <Breadcrumb.Item>Home</Breadcrumb.Item>
+            <Breadcrumb.Item>List</Breadcrumb.Item>
+            <Breadcrumb.Item>App</Breadcrumb.Item>
+          </Breadcrumb>
+          <Content className="content">
+            Content |
+            <DefaultRoutes />
+          </Content>
+        </Layout>
       </Layout>
     </Layout>
   );

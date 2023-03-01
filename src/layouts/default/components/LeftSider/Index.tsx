@@ -17,7 +17,6 @@ const LeftSider: React.FC = () => {
       className="left-sider"
       collapsible
       collapsed={menuCollapsed}>
-      <div className="logo">React Admin Template</div>
       <MenuList />
     </Layout.Sider>
   );
