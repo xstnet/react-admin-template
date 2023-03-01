@@ -2,6 +2,7 @@ import { Layout, notification, theme } from 'antd';
 import LeftSider from './components/LeftSider/Index';
 import DefaultRoutes from '@/routes';
 import Header from './components/Header';
+import Content from './components/Content';
 import Breadcrumb from './components/Breadcrumb';
 import { useContext, useEffect, useState } from 'react';
 
@@ -12,7 +13,6 @@ import { validateToken } from '@/utils/jwt';
 import PageLoading from '@/components/Loading/PageLoading';
 import { GlobalContext } from '@/contexts/Global';
 import { AxiosError } from 'axios';
-const { Content } = Layout;
 
 const DefaultLayout: React.FC = () => {
   const [getUserInfoLoading, setGetUserInfoLoading] = useState(true);
@@ -58,10 +58,7 @@ const DefaultLayout: React.FC = () => {
         <LeftSider />
         <Layout className="content-layout">
           <Breadcrumb />
-          <Content className="content">
-            Content |
-            <DefaultRoutes />
-          </Content>
+          <Content />
         </Layout>
       </Layout>
     </Layout>

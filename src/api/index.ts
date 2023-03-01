@@ -7,10 +7,12 @@ type ApiRawResponse<T extends Api.Example> = HttpResponse<Api.ResponseData<T>>;
 // 直接拿到 data 返回值, 屏蔽axios, header, code, message 等信息
 type ApiDataResponse<T extends Api.Example> = Promise<T['response']>;
 
+// export type PaginateData<T extends Api.Example> = Api.ResponseData<Api.PaginateResponse<T>>;
+
 // 使用不同的handle 返回不同的数据类型
 interface ApiHandle<T extends Api.Example> {
-  raw: (params: T['params']) => ApiRawResponse<T>;
-  data: (params: T['params']) => ApiDataResponse<T>;
+  raw: (params?: T['params']) => ApiRawResponse<T>;
+  data: (params?: T['params']) => ApiDataResponse<T>;
 }
 
 // 写这个只是为了getResponseData这个方法不换行, 仅此而已
@@ -39,4 +41,10 @@ export const postLogout = (params?: any) => {
 
 export const postUserUpdate = (params?: any) => {
   return getResponseData(Http.post<Api.ResponseData>('/user/update', params));
+};
+
+export const getExmpleUserList = (params?: Api.getExmpleUserList['params']) => {
+  return getResponseData(
+    Http.get<Api.ResponseData<Api.getExmpleUserList>>('/example/userList', params)
+  );
 };

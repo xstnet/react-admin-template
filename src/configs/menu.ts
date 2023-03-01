@@ -12,23 +12,21 @@ const MenuList: Menu.MenuItemType[] = [
     path: '/user',
     badge: 99
   },
-  {
-    label: '示例页面',
-    icon: 'icon-example',
-    path: '/example',
-    badge: 'dot'
-  },
 
   {
     label: '示例页面',
-    key: 'group',
     type: 'group',
     children: [
       {
         label: '示例页面',
         icon: 'icon-example',
-        path: '/example2',
+        path: '/example',
         badge: 'dot'
+      },
+      {
+        label: '列表页',
+        icon: 'icon-list',
+        path: '/example/userList'
       }
     ]
   },
@@ -86,6 +84,23 @@ const MenuList: Menu.MenuItemType[] = [
       {
         path: '/iframe/https://ant.design/components/overview-cn',
         label: 'antd文档(内嵌)',
+        icon: 'icon-document'
+      }
+    ]
+  },
+  {
+    path: '/document',
+    label: '文档',
+    icon: 'icon-document',
+    children: [
+      {
+        path: '/document/start',
+        label: '开始使用',
+        icon: 'icon-document'
+      },
+      {
+        path: '/document/package.json',
+        label: 'Package文件说明',
         icon: 'icon-document'
       }
     ]

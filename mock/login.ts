@@ -18,9 +18,9 @@ function createToken(data: { uid: number | any }) {
   const token = `${base64Encode(header)}.${base64Encode(payload)}.${secret}`;
   return token;
 }
-Mock.setup({
-  timeout: '000-5000' // 延迟时间为 1-5 秒
-});
+// Mock.setup({
+//   timeout: '000-5000' // 延迟时间为 1-5 秒
+// });
 Mock.mock(/api\/login/, 'post', (options) => {
   const { body } = options;
   const { username, password } = JSON.parse(body);
