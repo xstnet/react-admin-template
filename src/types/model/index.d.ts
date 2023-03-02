@@ -7,6 +7,7 @@ namespace Model {
     create_time?: string;
     password?: string;
     email?: string;
+    gender: number;
     mobile?: string;
   };
 }

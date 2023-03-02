@@ -1,6 +1,6 @@
 import { Badge, Menu } from 'antd';
 import { nanoid } from 'nanoid';
-import React, { useContext } from 'react';
+import React, { useContext, useMemo } from 'react';
 
 import type { MenuProps } from 'antd';
 import { isDividerMenu, isGroupMenu, isLeafMenu, isSubMenu } from '@/utils/is';
@@ -10,6 +10,7 @@ import { GlobalContext } from '@/contexts/Global';
 type AntdMenuItem = Required<MenuProps>['items'][number];
 
 // 自定义菜单组件, 增加菜单 badge/路由支持
+// 后期可以考虑把 Menu单独提取到一个 Provider中, 减少组件渲染
 const MenuList: React.FC = () => {
   const navigate = useNavigate();
 
@@ -84,7 +85,7 @@ const MenuList: React.FC = () => {
     return menuItems;
   };
 
-  const menuItems = makeMenuItems(RawMenuList);
+  const menuItems = useMemo(() => makeMenuItems(RawMenuList), [RawMenuList]);
   return (
     <Menu
       onClick={handleClick}
@@ -95,4 +96,4 @@ const MenuList: React.FC = () => {
   );
 };
 
-export default MenuList;
+export default React.memo(MenuList);

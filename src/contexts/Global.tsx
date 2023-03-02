@@ -1,6 +1,6 @@
 import { MenuList } from '@/configs/menu';
 import { useFullscreen } from 'ahooks';
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 type ISetFunc<T = boolean> = (value: T) => void;
@@ -31,8 +31,6 @@ export interface IGlobalContext {
   setFullScreen: ISetFunc;
 }
 
-const setFunc = (value: any) => {};
-
 // 目前暂不知为什么非要传一个初始值, 用的时候也要传一次, 看起来并没有意义
 // 原因: 给没有使用 Provider包裹的组件, 如果使用了useContext, 将会得到这个值
 // 懒得定义
@@ -42,26 +40,34 @@ const initValue: IGlobalContext = undefined as any;
 export const GlobalContext = createContext<IGlobalContext>(initValue);
 
 // Provider
-const GlobalProvider: React.FC<{ children: React.ReactNode }> = (props) => {
-  const [menuList, setMenuList] = useState<IGlobalContext['menuList']>(MenuList);
+// todo: 可以考虑拆分 provider, 分为 get 和 set
+const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const initMenuList = useMemo(() => MenuList, []);
+
+  const [menuList, setMenuList] = useState<IGlobalContext['menuList']>(initMenuList);
   const [isLogin, setIsLogin] = useState(false);
   const [menuCollapsed, setMenuCollapsed] = useState(false);
   const [fullScreen, { toggleFullscreen: setFullScreen }] = useFullscreen(document.body);
   const [userInfo, setUserInfo] = useState<IGlobalContext['userInfo']>(null);
-  const contextValue: IGlobalContext = {
-    menuList,
-    setMenuList,
-    isLogin,
-    setIsLogin,
-    menuCollapsed,
-    setMenuCollapsed,
-    userInfo,
-    setUserInfo,
-    fullScreen,
-    setFullScreen
-  };
-  useEffect(() => {}, [fullScreen]);
-  return <GlobalContext.Provider value={contextValue}>{props.children}</GlobalContext.Provider>;
+
+  // 参考 https://mp.weixin.qq.com/s/z9GaB_48LHtL-if4mP-nZQ
+  const contextValue: IGlobalContext = useMemo(
+    () => ({
+      menuList,
+      setMenuList,
+      isLogin,
+      setIsLogin,
+      menuCollapsed,
+      setMenuCollapsed,
+      userInfo,
+      setUserInfo,
+      fullScreen,
+      setFullScreen
+    }),
+    [menuList, isLogin, menuCollapsed, userInfo, fullScreen]
+  );
+
+  return <GlobalContext.Provider value={contextValue}>{children}</GlobalContext.Provider>;
 };
 
 export default GlobalProvider;

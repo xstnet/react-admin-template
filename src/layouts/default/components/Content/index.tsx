@@ -1,8 +1,9 @@
 import DefaultRoutes from '@/routes';
 import { Layout } from 'antd';
+import React from 'react';
 import './index.less';
 
-const Header: React.FC = () => {
+const Content: React.FC = () => {
   return (
     <Layout.Content className="content">
       <DefaultRoutes />
@@ -10,4 +11,4 @@ const Header: React.FC = () => {
   );
 };
 
-export default Header;
+export default React.memo(Content);

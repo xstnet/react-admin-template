@@ -1,8 +1,6 @@
 import Mock, { Random, toJSONSchema } from 'mockjs';
 // Mock.setup({ timeout: 3000 });
 Mock.mock(/api\/example\/userList/, 'get', (options) => {
-  console.log('optionsoptions', options);
-  console.log('🚀 ~ file: example.ts:5 ~ Mock.mock ~ options:', options);
   const queryParams = new URLSearchParams(options.url);
 
   let pageSize = Number(queryParams.has('pageSize') ? queryParams.get('pageSize') : 10);

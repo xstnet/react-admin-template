@@ -109,8 +109,8 @@ const Header: React.FC = () => {
         onClick: () => {
           postLogout().then(() => {
             Cache.removeToken();
-            setUserInfo(null);
             setIsLogin(false);
+            setUserInfo(null);
             toLoginPage();
           });
         }
@@ -146,4 +146,4 @@ const Header: React.FC = () => {
   );
 };
 
-export default Header;
+export default React.memo(Header);

@@ -21,8 +21,7 @@ function createToken(data: { uid: number | any }) {
 // Mock.setup({
 //   timeout: '000-5000' // 延迟时间为 1-5 秒
 // });
-Mock.mock(/api\/login/, 'post', (options) => {
-  const { body } = options;
+Mock.mock(/api\/login/, 'post', ({ body }) => {
   const { username, password } = JSON.parse(body);
   if (username === 'admin') {
     if (password !== '123456') {

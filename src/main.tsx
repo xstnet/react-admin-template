@@ -15,6 +15,16 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
         theme={{
           token: {
             colorPrimary: '#00b96b'
+          },
+          components: {
+            Button: {
+              borderRadius: 4,
+              borderRadiusSM: 2
+            },
+            Modal: {
+              borderRadius: 4,
+              borderRadiusOuter: 2
+            }
           }
         }}>
         <App />
