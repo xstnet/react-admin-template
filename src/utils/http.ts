@@ -15,7 +15,7 @@ axios.defaults.timeout = timeout;
 // 添加请求拦截器
 axios.interceptors.request.use(
   (config) => {
-    console.group(`${config.method}${config.url}`);
+    console.group(`${config.method}${config.url}${JSON.stringify(config.params)}`);
     config.headers.Authorization = `Bearer ${Cache.getString(Config.tokenKey)}`;
     return config;
   },

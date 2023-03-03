@@ -7,7 +7,7 @@ namespace Api {
 
   // 分页参数
   interface PaginateParams {
-    page?: number;
+    current?: number;
     pageSize?: number;
   }
 

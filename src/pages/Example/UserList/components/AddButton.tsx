@@ -6,7 +6,10 @@ import { create } from 'domain';
 import { useRef, useState } from 'react';
 import UserForm, { IRefUserForm } from './UserForm';
 
-const AddButton: React.FC = () => {
+interface IProps {
+  refreshList?: () => void;
+}
+const AddButton: React.FC<IProps> = ({ refreshList }) => {
   const [showAddModal, setShowAddModal] = useState(false);
   const { run: createUser, loading: createUserLoading } = useRequest(postCreateUser, {
     manual: true,
@@ -21,6 +24,7 @@ const AddButton: React.FC = () => {
         createUser(data);
         setShowAddModal(false);
         formRef.current?.form.resetFields();
+        refreshList?.();
       })
       .catch((e) => console.log(e));
   };

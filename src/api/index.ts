@@ -39,8 +39,10 @@ export const postLogout = (params?: any) => {
   return getResponseData(Http.post<Api.ResponseData>('/user/logout', params));
 };
 
-export const getUserList = (params?: Api.getUserList['params']) => {
-  return getResponseData(Http.get<Api.ResponseData<Api.getUserList>>('/user/list', params));
+export const getUserList = (params?: Api.getUserList['params'], formData?: KV) => {
+  return getResponseData(
+    Http.get<Api.ResponseData<Api.getUserList>>('/user/list', { ...params, ...formData })
+  );
 };
 
 export const postCreateUser = (params?: Api.postCreateUser['params']) => {

@@ -56,9 +56,10 @@ Mock.setup({
 
 Mock.mock(/api\/user\/list/, 'get', (options) => {
   const queryParams = new URLSearchParams(options.url);
+  console.log('🚀 ~ file: user.ts:59 ~ Mock.mock ~ options.url:', options.url);
 
   let pageSize = Number(queryParams.has('pageSize') ? queryParams.get('pageSize') : 10);
-
+  pageSize = 2;
   const data = {
     code: 0,
     message: 'ok',

@@ -41,7 +41,7 @@ export const GlobalContext = createContext<IGlobalContext>(initValue);
 
 // Provider
 // todo: 可以考虑拆分 provider, 分为 get 和 set
-const GlobalProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+const GlobalProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const initMenuList = useMemo(() => MenuList, []);
 
   const [menuList, setMenuList] = useState<IGlobalContext['menuList']>(initMenuList);
