@@ -1,8 +1,9 @@
 import Mock, { Random } from 'mockjs';
 
+Mock.setup({
+  timeout: 100
+});
 Mock.mock(/api\/user\/info/, 'get', (options) => {
-  console.log('optionsoptions', options);
-
   const data: Api.ResponseData<Api.GetUserInfo> = {
     code: 0,
     message: 'ok',
@@ -12,6 +13,7 @@ Mock.mock(/api\/user\/info/, 'get', (options) => {
       nickname: '醉丶春风',
       avatar: 'https://www.xstnet.com/static/images/head.gif',
       password: '',
+      gender: Random.natural(1, 2),
       email: 'shantongxu@qq.com',
       mobile: '133xxxx3333'
     }
@@ -56,10 +58,8 @@ Mock.setup({
 
 Mock.mock(/api\/user\/list/, 'get', (options) => {
   const queryParams = new URLSearchParams(options.url);
-  console.log('🚀 ~ file: user.ts:59 ~ Mock.mock ~ options.url:', options.url);
 
   let pageSize = Number(queryParams.has('pageSize') ? queryParams.get('pageSize') : 10);
-  pageSize = 2;
   const data = {
     code: 0,
     message: 'ok',

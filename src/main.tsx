@@ -8,7 +8,7 @@ import './global.less';
 import '../mock';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-  <React.StrictMode>
+  // <React.StrictMode>
     <BrowserRouter>
       <ConfigProvider
         locale={zhCN}
@@ -30,5 +30,5 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
         <App />
       </ConfigProvider>
     </BrowserRouter>
-  </React.StrictMode>
+  // </React.StrictMode>
 );

@@ -16,3 +16,5 @@ export function toDashboardPage(delay = 500) {
     window.location.href = '/dashboard';
   }, delay);
 }
+
+export function noop() {}

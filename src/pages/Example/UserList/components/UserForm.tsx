@@ -2,7 +2,7 @@ import { Input, Radio, Form, FormInstance } from 'antd';
 import { forwardRef, useImperativeHandle, useRef } from 'react';
 import type { InputRef } from 'antd';
 
-type IFormState = Model.User;
+type IFormState = Omit<Model.User, 'id'>;
 export type IRefUserForm = { form: FormInstance<IFormState>; input: InputRef | null };
 
 interface IProps {
@@ -27,7 +27,10 @@ const UserForm = forwardRef<IRefUserForm, IProps>(({ state }, ref) => {
         <Form.Item name="username" label="账号" rules={[{ required: true, message: '请输入账号' }]}>
           <Input ref={inputRef} />
         </Form.Item>
-        <Form.Item name="password" label="密码" rules={[{ required: true, message: '请输入密码' }]}>
+        <Form.Item
+          name="password"
+          label="密码"
+          rules={[{ required: !state, message: '请输入密码' }]}>
           <Input.Password />
         </Form.Item>
         <Form.Item name="nickname" label="昵称" rules={[{ required: true, message: '请输入昵称' }]}>
@@ -35,8 +38,8 @@ const UserForm = forwardRef<IRefUserForm, IProps>(({ state }, ref) => {
         </Form.Item>
         <Form.Item name="gender" label="性别">
           <Radio.Group>
-            <Radio value="1">男</Radio>
-            <Radio value="2">女</Radio>
+            <Radio value={1}>男</Radio>
+            <Radio value={2}>女</Radio>
           </Radio.Group>
         </Form.Item>
         <Form.Item name="mobile" label="手机号">

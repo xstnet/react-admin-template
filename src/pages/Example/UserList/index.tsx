@@ -1,80 +1,34 @@
-import React, { useEffect, useState } from 'react';
-import { Avatar, Button, Form, Space, Table, Tag, Typography } from 'antd';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { Avatar, Button, Form, Popconfirm, Space, Table, Tag, Typography } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
-import { getUserList } from '@/api';
+import { getUserList, postDeleteUser } from '@/api';
 import { GenderEnum } from '@/constants/enum';
 import { DeleteOutlined, EditOutlined, UndoOutlined } from '@ant-design/icons';
 import './index.less';
 import AddButton from './components/AddButton';
 import SearchForm from './components/SearchForm';
 import useAntdTableRequest from '@/hooks/useAntdTableRequest';
-
-const columns: ColumnsType<Api.getUserList['response']['list'][number]> = [
-  {
-    title: 'ID',
-    dataIndex: 'id'
-  },
-  {
-    title: '头像',
-    dataIndex: 'avatar',
-    render: (avatar) => <Avatar src={avatar} />
-  },
-  {
-    title: '账号',
-    dataIndex: 'username'
-  },
-
-  {
-    title: '昵称',
-    dataIndex: 'nickname'
-  },
-  {
-    title: '性别',
-    dataIndex: 'gender',
-    render: (gender) => {
-      return gender === GenderEnum.male ? <Tag color="blue">男</Tag> : <Tag color="error">女</Tag>;
-    }
-  },
-  {
-    title: '邮箱',
-    dataIndex: 'email'
-  },
-  {
-    title: '手机号',
-    dataIndex: 'mobile',
-    sorter: true
-  },
-  {
-    title: '注册时间',
-    dataIndex: 'create_time',
-    sorter: true
-  },
-  {
-    title: '操作',
-    key: 'operation',
-    fixed: 'right',
-    // width: 100,
-    render: () => {
-      return (
-        <Space>
-          <Button icon={<DeleteOutlined />} size="small" danger>
-            删除
-          </Button>
-          <Button icon={<EditOutlined />} size="small">
-            编辑
-          </Button>
-        </Space>
-      );
-    }
-  }
-];
+import { useRequest } from 'ahooks';
+import { noop } from '@/utils/util';
+import UpdateButton from './components/UpdateButton';
 
 const ExampleUserListPage: React.FC = () => {
   console.log('render ExampleUserListPage');
 
   const [searchForm] = Form.useForm();
-
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
+  // 每一行的loading, 如: 同时操作多行时, 并且延迟较高, 应该有多个loading效果
+  const loadingRows = useRef<Map<number, boolean>>();
+
+  useEffect(() => {
+    // 只需赋值一次就行
+    loadingRows.current = new Map();
+  }, []);
+
+  const { runAsync: deleteUser, loading: deleteUserLoading } = useRequest(postDeleteUser, {
+    manual: true,
+    debounceWait: 100
+  });
 
   const {
     refresh: handleRefresh,
@@ -89,6 +43,92 @@ const ExampleUserListPage: React.FC = () => {
     search.reset();
     search.submit();
   };
+
+  const handleDelete = (id: number | number[]) => {
+    if (typeof id === 'number') {
+      loadingRows?.current?.set(id, true);
+    }
+    deleteUser({ id })
+      .then(() => {
+        typeof id === 'object' && setSelectedRowKeys([]);
+        handleRefresh();
+      })
+      .finally(() => typeof id === 'number' && loadingRows?.current?.delete(id));
+  };
+
+  const columns: ColumnsType<Api.getUserList['response']['list'][number]> = useMemo(
+    () => [
+      {
+        title: 'ID',
+        dataIndex: 'id'
+      },
+      {
+        title: '头像',
+        dataIndex: 'avatar',
+        render: (avatar) => <Avatar src={avatar} />
+      },
+      {
+        title: '账号',
+        dataIndex: 'username'
+      },
+
+      {
+        title: '昵称',
+        dataIndex: 'nickname'
+      },
+      {
+        title: '性别',
+        dataIndex: 'gender',
+        render: (gender) => {
+          return gender === GenderEnum.male ? (
+            <Tag color="blue">男</Tag>
+          ) : (
+            <Tag color="error">女</Tag>
+          );
+        }
+      },
+      {
+        title: '邮箱',
+        dataIndex: 'email'
+      },
+      {
+        title: '手机号',
+        dataIndex: 'mobile',
+        sorter: true
+      },
+      {
+        title: '注册时间',
+        dataIndex: 'create_time',
+        sorter: true
+      },
+      {
+        title: '操作',
+        key: 'operation',
+        fixed: 'right',
+        // width: 100,
+        render: (_, record) => {
+          const { id } = record;
+
+          return (
+            <Space>
+              <Popconfirm title="确认要删除这条数据吗?" onConfirm={() => handleDelete(id)}>
+                <Button
+                  loading={loadingRows?.current?.has(id)}
+                  icon={<DeleteOutlined />}
+                  size="small"
+                  danger
+                >
+                  删除
+                </Button>
+              </Popconfirm>
+              <UpdateButton state={record} refreshList={handleRefresh} />
+            </Space>
+          );
+        }
+      }
+    ],
+    []
+  );
 
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
     console.log('selectedRowKeys changed: ', newSelectedRowKeys);
@@ -118,9 +158,19 @@ const ExampleUserListPage: React.FC = () => {
           </div>
           <div className="right">
             <Space size={'middle'}>
-              <Button type="primary" danger disabled={!hasSelected}>
-                批量删除
-              </Button>
+              <Popconfirm
+                title={`确定要删除这${selectedRowKeys.length}条数据吗?`}
+                onConfirm={() => handleDelete(selectedRowKeys as number[])}
+              >
+                <Button
+                  type="primary"
+                  danger
+                  disabled={!hasSelected}
+                  loading={deleteUserLoading && loadingRows.current?.size === 0}
+                >
+                  批量删除
+                </Button>
+              </Popconfirm>
               {<AddButton refreshList={handleRefreshAndReset} />}
               <Button
                 type="link"
@@ -131,7 +181,7 @@ const ExampleUserListPage: React.FC = () => {
             </Space>
           </div>
         </div>
-        <Table<> rowKey="id" rowSelection={rowSelection} columns={columns} {...tableProps} />
+        <Table rowKey="id" rowSelection={rowSelection} columns={columns} {...tableProps} />
       </div>
     </>
   );

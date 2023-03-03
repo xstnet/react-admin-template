@@ -2,7 +2,6 @@ import { postCreateUser } from '@/api';
 import { PlusOutlined } from '@ant-design/icons';
 import { useRequest } from 'ahooks';
 import { Button, Modal } from 'antd';
-import { create } from 'domain';
 import { useRef, useState } from 'react';
 import UserForm, { IRefUserForm } from './UserForm';
 
@@ -13,7 +12,12 @@ const AddButton: React.FC<IProps> = ({ refreshList }) => {
   const [showAddModal, setShowAddModal] = useState(false);
   const { run: createUser, loading: createUserLoading } = useRequest(postCreateUser, {
     manual: true,
-    debounceWait: 100
+    debounceWait: 100,
+    onSuccess: () => {
+      setShowAddModal(false);
+      formRef.current?.form.resetFields();
+      refreshList?.();
+    }
   });
   const formRef = useRef<IRefUserForm>(null);
 
@@ -22,9 +26,6 @@ const AddButton: React.FC<IProps> = ({ refreshList }) => {
       .validateFields()
       .then((data) => {
         createUser(data);
-        setShowAddModal(false);
-        formRef.current?.form.resetFields();
-        refreshList?.();
       })
       .catch((e) => console.log(e));
   };

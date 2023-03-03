@@ -60,7 +60,7 @@ namespace Api {
   }
 
   interface postDeleteUser extends Example {
-    params: Pick<Model.User, 'id'>;
+    params: { id: number | number[] };
     response: any;
   }
 }
