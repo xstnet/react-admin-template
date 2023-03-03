@@ -39,12 +39,22 @@ export const postLogout = (params?: any) => {
   return getResponseData(Http.post<Api.ResponseData>('/user/logout', params));
 };
 
-export const postUserUpdate = (params?: any) => {
-  return getResponseData(Http.post<Api.ResponseData>('/user/update', params));
+export const getUserList = (params?: Api.getUserList['params']) => {
+  return getResponseData(Http.get<Api.ResponseData<Api.getUserList>>('/user/list', params));
 };
 
-export const getExmpleUserList = (params?: Api.getExmpleUserList['params']) => {
+export const postCreateUser = (params?: Api.postCreateUser['params']) => {
+  return getResponseData(Http.post<Api.ResponseData<Api.postCreateUser>>('/user/create', params));
+};
+
+export const postUpdateUser = (params?: Api.postUpdateUser['params']) => {
   return getResponseData(
-    Http.get<Api.ResponseData<Api.getExmpleUserList>>('/example/userList', params)
+    // 为什么这里 Api.ResponseData 没传泛型?
+    // 因为不需要用到返回值, 无所谓
+    Http.post<Api.ResponseData>('/user/update', params)
   );
+};
+
+export const postDeleteUser = (params?: Api.postDeleteUser['params']) => {
+  return getResponseData(Http.post<Api.ResponseData>('/user/delete', params));
 };

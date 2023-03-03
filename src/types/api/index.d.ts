@@ -38,12 +38,29 @@ namespace Api {
   }
 
   // 例子-获取用户列表
-  interface getExmpleUserList extends Example {
+  interface getUserList extends Example {
     params: PaginateParams;
     response: PaginateResponse<
       Model.User & {
         gender: 1 | 2;
       }
     >;
+  }
+
+  interface postCreateUser extends Example {
+    params: Omit<Model.User, 'id'>;
+    response: {
+      id: number;
+    };
+  }
+
+  interface postUpdateUser extends Example {
+    params: Partial<Model.User> & Pick<Model.User, 'id'>;
+    response: any;
+  }
+
+  interface postDeleteUser extends Example {
+    params: Pick<Model.User, 'id'>;
+    response: any;
   }
 }

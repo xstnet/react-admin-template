@@ -1,4 +1,4 @@
-import Mock from 'mockjs';
+import Mock, { Random } from 'mockjs';
 
 Mock.mock(/api\/user\/info/, 'get', (options) => {
   console.log('optionsoptions', options);
@@ -53,3 +53,62 @@ Mock.setup({
  * 
  * 
  */
+
+Mock.mock(/api\/user\/list/, 'get', (options) => {
+  const queryParams = new URLSearchParams(options.url);
+
+  let pageSize = Number(queryParams.has('pageSize') ? queryParams.get('pageSize') : 10);
+
+  const data = {
+    code: 0,
+    message: 'ok',
+    data: {
+      total: 100,
+      [`list|${pageSize}`]: [
+        {
+          'id|+1': pageSize,
+          username: '@first@last',
+          nickname: '@cname',
+          avatar: () => Random.dataImage('200x200'),
+          email: '@email',
+          // 这个代码是 chatGPT写的
+          mobile: () => Mock.mock(/^1[3456789]\d{9}$/).replace(/^(\d{3})\d{4}(\d{4})$/, '$1****$2'),
+          'gender|1-2': 0,
+          create_time: '@date(yyyy-MM-dd HH:MM:ss)'
+        }
+      ]
+    }
+  };
+
+  return Mock.mock(data);
+});
+
+Mock.mock(/api\/user\/create/, 'post', (options) => {
+  const data = {
+    code: 0,
+    message: '创建成功',
+    data: {
+      id: Random.natural(100, 9999)
+    }
+  };
+
+  return data;
+});
+
+Mock.mock(/api\/user\/update/, 'post', (options) => {
+  const data = {
+    code: 0,
+    message: '更新成功'
+  };
+
+  return data;
+});
+
+Mock.mock(/api\/user\/delete/, 'post', (options) => {
+  const data = {
+    code: 0,
+    message: '删除成功'
+  };
+
+  return data;
+});

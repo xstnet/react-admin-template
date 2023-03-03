@@ -16,7 +16,7 @@ import {
 } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { DownOutlined, UpOutlined } from '@ant-design/icons';
-import { getExmpleUserList } from '@/api';
+import { getUserList } from '@/api';
 import { useRequest } from 'ahooks';
 import { GenderEnum } from '@/constants/enum';
 import { DeleteOutlined, EditOutlined, PlusOutlined, UndoOutlined } from '@ant-design/icons';
@@ -125,7 +125,7 @@ const AdvancedSearchForm = () => {
   );
 };
 
-type ColumnTYpe = Api.getExmpleUserList['response']['list'][number];
+type ColumnTYpe = Api.getUserList['response']['list'][number];
 
 const columns: ColumnsType<ColumnTYpe> = [
   {
@@ -190,7 +190,7 @@ const ExampleUserListPage: React.FC = () => {
 
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
 
-  const { loading, data: userListData } = useRequest(getExmpleUserList);
+  const { loading, data: userListData } = useRequest(getUserList);
 
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
     console.log('selectedRowKeys changed: ', newSelectedRowKeys);

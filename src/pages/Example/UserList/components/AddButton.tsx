@@ -1,11 +1,29 @@
+import { postCreateUser } from '@/api';
 import { PlusOutlined } from '@ant-design/icons';
+import { useRequest } from 'ahooks';
 import { Button, Modal } from 'antd';
+import { create } from 'domain';
 import { useRef, useState } from 'react';
 import UserForm, { IRefUserForm } from './UserForm';
 
 const AddButton: React.FC = () => {
   const [showAddModal, setShowAddModal] = useState(false);
+  const { run: createUser, loading: createUserLoading } = useRequest(postCreateUser, {
+    manual: true,
+    debounceWait: 100
+  });
   const formRef = useRef<IRefUserForm>(null);
+
+  const handleCreateUser = () => {
+    formRef.current?.form
+      .validateFields()
+      .then((data) => {
+        createUser(data);
+        setShowAddModal(false);
+        formRef.current?.form.resetFields();
+      })
+      .catch((e) => console.log(e));
+  };
   return (
     <div>
       <Button
@@ -24,12 +42,9 @@ const AddButton: React.FC = () => {
         title="添加用户"
         okText="添加"
         cancelText="取消"
+        confirmLoading={createUserLoading}
         onCancel={() => setShowAddModal(false)}
-        onOk={() => {
-          formRef.current?.form.validateFields().then((data) => {
-            console.log(data);
-          });
-        }}>
+        onOk={handleCreateUser}>
         <UserForm ref={formRef} />
       </Modal>
     </div>

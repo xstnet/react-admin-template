@@ -12,7 +12,6 @@ interface IProps {
 const UserForm = forwardRef<IRefUserForm, IProps>(({ state }, ref) => {
   const [form] = Form.useForm<IFormState>();
   const inputRef = useRef<InputRef>(null);
-  // 第一次搞这个ref类型定义真的是头疼
   useImperativeHandle(
     ref,
     () => ({
@@ -24,11 +23,7 @@ const UserForm = forwardRef<IRefUserForm, IProps>(({ state }, ref) => {
 
   return (
     <div>
-      <Form
-        form={form}
-        labelCol={{ span: 3 }}
-        name="userForm"
-        initialValues={{ modifier: 'public' }}>
+      <Form form={form} labelCol={{ span: 3 }} name="userForm" initialValues={state || undefined}>
         <Form.Item name="username" label="账号" rules={[{ required: true, message: '请输入账号' }]}>
           <Input ref={inputRef} />
         </Form.Item>
