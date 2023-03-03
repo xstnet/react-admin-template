@@ -1,5 +1,5 @@
 const ArticleCreaetPage: React.FC = () => {
-  return <span>UserPage</span>;
+  return <span>ArticleCreaetPage</span>;
 };
 
 export default ArticleCreaetPage;

@@ -4,6 +4,8 @@ import DashboardPage from '@/pages/Dashboard';
 import UserPage from '@/pages/UserCenter';
 import { ExampleUserListPage } from '@/pages/Example';
 import { ArticleIndexPage } from '@/pages/Article';
+import { ArticleCreatePage } from '@/pages/Article';
+import { ArticleUpdatePage } from '@/pages/Article';
 import { useRoutes } from 'react-router-dom';
 
 // todo: Suspense
@@ -31,6 +33,14 @@ export default function DefaultRoutes() {
     {
       path: '/article/list',
       element: <ArticleIndexPage />
+    },
+    {
+      path: '/article/create',
+      element: <ArticleCreatePage />
+    },
+    {
+      path: '/article/update',
+      element: <ArticleUpdatePage />
     },
     {
       path: '*',
