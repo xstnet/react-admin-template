@@ -60,3 +60,23 @@ export const postUpdateUser = (params?: Api.postUpdateUser['params']) => {
 export const postDeleteUser = (params?: Api.postDeleteUser['params']) => {
   return getResponseData(Http.post<Api.ResponseData>('/user/delete', params));
 };
+
+export const getArticleList = (params?: Api.getArticleList['params'], formData?: KV) => {
+  return getResponseData(
+    Http.get<Api.ResponseData<Api.getArticleList>>('/article/list', { ...params, ...formData })
+  );
+};
+
+export const postCreateArticle = (params?: Api.postCreateUser['params']) => {
+  return getResponseData(
+    Http.post<Api.ResponseData<Api.postCreateUser>>('/article/create', params)
+  );
+};
+
+export const postUpdateArticle = (params?: Api.postUpdateUser['params']) => {
+  return getResponseData(Http.post<Api.ResponseData>('/article/update', params));
+};
+
+export const postDeleteArticle = (params?: Api.postDeleteUser['params']) => {
+  return getResponseData(Http.post<Api.ResponseData>('/article/delete', params));
+};

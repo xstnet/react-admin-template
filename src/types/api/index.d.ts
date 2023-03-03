@@ -40,11 +40,7 @@ namespace Api {
   // 例子-获取用户列表
   interface getUserList extends Example {
     params: PaginateParams;
-    response: PaginateResponse<
-      Model.User & {
-        gender: 1 | 2;
-      }
-    >;
+    response: PaginateResponse<Model.User>;
   }
 
   interface postCreateUser extends Example {
@@ -61,6 +57,26 @@ namespace Api {
 
   interface postDeleteUser extends Example {
     params: { id: number | number[] };
+    response: any;
+  }
+
+  interface getArticleList extends Example {
+    params: PaginateParams & KV;
+    response: PaginateResponse<Model.Article>;
+  }
+
+  interface postDeleteArticle extends Example {
+    params: { id: number };
+    response: any;
+  }
+
+  interface postCreateArticle extends Example {
+    params: Omit<Model.Article, 'id'>;
+    response: any;
+  }
+
+  interface postUpdateArticle extends Example {
+    params: Model.Article;
     response: any;
   }
 }

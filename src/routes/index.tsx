@@ -1,8 +1,9 @@
 import { lazy } from 'react';
 
 import DashboardPage from '@/pages/Dashboard';
-import UserPage from '@/pages/User';
+import UserPage from '@/pages/UserCenter';
 import { ExampleUserListPage } from '@/pages/Example';
+import { ArticleIndexPage } from '@/pages/Article';
 import { useRoutes } from 'react-router-dom';
 
 // todo: Suspense
@@ -26,6 +27,10 @@ export default function DefaultRoutes() {
     {
       path: '/example/userList',
       element: <ExampleUserListPage />
+    },
+    {
+      path: '/article/list',
+      element: <ArticleIndexPage />
     },
     {
       path: '*',

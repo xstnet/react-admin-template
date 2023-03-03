@@ -3,16 +3,15 @@ import Iconfont from '@/components/Iconfont';
 const MenuList: Menu.MenuItemType[] = [
   {
     label: '控制台',
-    icon: 'icon-dashboard',
-    path: '/dashboard'
+    type: 'group',
+    children: [
+      {
+        label: '控制台',
+        icon: 'icon-dashboard',
+        path: '/dashboard'
+      }
+    ]
   },
-  {
-    label: '用户列表',
-    icon: 'icon-article',
-    path: '/user',
-    badge: 99
-  },
-
   {
     label: '示例页面',
     type: 'group',
@@ -26,6 +25,7 @@ const MenuList: Menu.MenuItemType[] = [
       {
         label: '列表页',
         icon: 'icon-list',
+        badge: 99,
         path: '/example/userList'
       }
     ]
@@ -88,6 +88,7 @@ const MenuList: Menu.MenuItemType[] = [
       }
     ]
   },
+
   {
     path: '/document',
     label: '文档',
@@ -101,6 +102,24 @@ const MenuList: Menu.MenuItemType[] = [
       {
         path: '/document/package.json',
         label: 'Package文件说明',
+        icon: 'icon-document'
+      }
+    ]
+  },
+  { type: 'divider' },
+  {
+    path: '/user/center',
+    label: '个人中心',
+    icon: 'icon-user-permissions',
+    children: [
+      {
+        path: '/user/center/index',
+        label: '个人中心',
+        icon: 'icon-example'
+      },
+      {
+        path: '/user/center/update',
+        label: '修改信息',
         icon: 'icon-document'
       }
     ]
