@@ -67,16 +67,22 @@ export const getArticleList = (params?: Api.getArticleList['params'], formData?:
   );
 };
 
-export const postCreateArticle = (params?: Api.postCreateUser['params']) => {
+export const getArticleDetail = (params: Api.getArticleDetail['params']) => {
   return getResponseData(
-    Http.post<Api.ResponseData<Api.postCreateUser>>('/article/create', params)
+    Http.get<Api.ResponseData<Api.getArticleDetail>>('/article/detail', params)
   );
 };
 
-export const postUpdateArticle = (params?: Api.postUpdateUser['params']) => {
+export const postCreateArticle = (params?: Api.postCreateArticle['params']) => {
+  return getResponseData(
+    Http.post<Api.ResponseData<Api.postCreateArticle>>('/article/create', params)
+  );
+};
+
+export const postUpdateArticle = (params?: Api.postUpdateArticle['params']) => {
   return getResponseData(Http.post<Api.ResponseData>('/article/update', params));
 };
 
-export const postDeleteArticle = (params?: Api.postDeleteUser['params']) => {
+export const postDeleteArticle = (params?: Api.postDeleteArticle['params']) => {
   return getResponseData(Http.post<Api.ResponseData>('/article/delete', params));
 };

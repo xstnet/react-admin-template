@@ -23,5 +23,6 @@ namespace Model {
     author: string;
     cover: string;
     content: string;
+    tags: string[];
   }
 }

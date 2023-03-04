@@ -39,7 +39,7 @@ export default function DefaultRoutes() {
       element: <ArticleCreatePage />
     },
     {
-      path: '/article/update',
+      path: '/article/update/:id',
       element: <ArticleUpdatePage />
     },
     {

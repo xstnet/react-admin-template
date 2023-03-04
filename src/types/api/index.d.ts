@@ -65,6 +65,11 @@ namespace Api {
     response: PaginateResponse<Model.Article>;
   }
 
+  interface getArticleDetail extends Example {
+    params: Pick<Model.Article, 'id'>;
+    response: Model.Article;
+  }
+
   interface postDeleteArticle extends Example {
     params: { id: number };
     response: any;

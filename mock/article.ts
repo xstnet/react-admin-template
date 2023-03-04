@@ -4,6 +4,7 @@ Mock.setup({
   timeout: 100
 });
 Mock.mock(/api\/article\/detail/, 'get', (options) => {
+  console.log('🚀 ~ file: article.ts:7 ~ Mock.mock ~ options:', options);
   const data = {
     code: 0,
     message: 'ok',
@@ -12,7 +13,8 @@ Mock.mock(/api\/article\/detail/, 'get', (options) => {
       title: '主题',
       description: '醉丶春风',
       author: '醉丶春风',
-      cover: 'https://www.xstnet.com/static/images/head.gif',
+      tags: [1, 2],
+      // cover: 'https://www.xstnet.com/static/images/head.gif',
       content: 'content',
       create_time: Random.datetime()
     }
