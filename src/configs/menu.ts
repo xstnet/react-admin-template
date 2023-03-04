@@ -43,6 +43,16 @@ const MenuList: Menu.MenuItemType[] = [
         icon: 'icon-article'
       },
       {
+        path: '/article/create',
+        label: '发布文章',
+        hideInMenu: true
+      },
+      {
+        path: '/article/update',
+        label: '更新文章',
+        hideInMenu: true
+      },
+      {
         path: '/article/category',
         label: '分类列表',
         icon: 'icon-list'

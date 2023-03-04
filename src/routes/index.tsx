@@ -31,17 +31,28 @@ export default function DefaultRoutes() {
       element: <ExampleUserListPage />
     },
     {
-      path: '/article/list',
-      element: <ArticleIndexPage />
+      path: '/article',
+      // element: <ArticleIndexPage />,
+      children: [
+        {
+          index: true,
+          element: <ArticleIndexPage />
+        },
+        {
+          path: '/article/list',
+          element: <ArticleIndexPage />
+        },
+        {
+          path: '/article/create',
+          element: <ArticleCreatePage />
+        },
+        {
+          path: '/article/update/:id',
+          element: <ArticleUpdatePage />
+        }
+      ]
     },
-    {
-      path: '/article/create',
-      element: <ArticleCreatePage />
-    },
-    {
-      path: '/article/update/:id',
-      element: <ArticleUpdatePage />
-    },
+
     {
       path: '*',
       element: <span>页面不存在~</span>

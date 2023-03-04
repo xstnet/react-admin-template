@@ -48,6 +48,9 @@ const MenuList: React.FC = () => {
   const makeMenuItems = (menuList: Menu.MenuItemType[]): AntdMenuItem[] => {
     const menuItems: AntdMenuItem[] = [];
     menuList.map((rawMenu) => {
+      if ((rawMenu as Menu.ExtendMenuType).hideInMenu) {
+        return;
+      }
       let newMenu: AntdMenuItem | undefined;
       if (isDividerMenu(rawMenu)) {
         newMenu = { ...rawMenu };

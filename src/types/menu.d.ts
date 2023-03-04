@@ -7,6 +7,7 @@ declare namespace Menu {
     badge?: 'dot' | number;
     children?: MenuItemType[];
     key?: string;
+    hideInMenu?: boolean;
   };
 
   // 菜单类型, 不含子菜单
