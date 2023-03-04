@@ -9,7 +9,7 @@ Mock.mock(/api\/article\/detail/, 'get', (options) => {
     message: 'ok',
     data: {
       id: 1,
-      subject: '主题',
+      title: '主题',
       description: '醉丶春风',
       author: '醉丶春风',
       cover: 'https://www.xstnet.com/static/images/head.gif',
@@ -34,7 +34,7 @@ Mock.mock(/api\/article\/list/, 'get', (options) => {
         {
           'id|+1': pageSize,
           author: '@first@last',
-          subject: () => Mock.Random.ctitle(5, 20),
+          title: () => Mock.Random.ctitle(5, 20),
           description: '@cname',
           cover: () => Random.dataImage('480x270', '封面'),
           content: '@email',

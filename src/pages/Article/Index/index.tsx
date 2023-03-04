@@ -55,8 +55,8 @@ const ArticleIndexPage: React.FC = () => {
         render: (cover) => <Image width={80} height={45} style={{ borderRadius: 4 }} src={cover} />
       },
       {
-        title: '主题',
-        dataIndex: 'subject'
+        title: '标题',
+        dataIndex: 'title'
       },
 
       {

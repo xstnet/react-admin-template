@@ -42,7 +42,8 @@ const UpdateButton: React.FC<IProps> = ({ state, refreshList }) => {
           setTimeout(() => {
             formRef.current?.input?.focus();
           }, 100);
-        }}>
+        }}
+      >
         编辑
       </Button>
       <Modal
@@ -52,7 +53,8 @@ const UpdateButton: React.FC<IProps> = ({ state, refreshList }) => {
         cancelText="取消"
         confirmLoading={updateUserLoading}
         onCancel={() => setShowUpdateModal(false)}
-        onOk={handleSubmit}>
+        onOk={handleSubmit}
+      >
         <UserForm ref={formRef} state={state} />
       </Modal>
     </>

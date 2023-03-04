@@ -18,7 +18,7 @@ namespace Model {
 
   interface Article extends CommonFields {
     id: number;
-    subject: string;
+    title: string;
     description: string;
     author: string;
     cover: string;

@@ -21,8 +21,8 @@ const SearchForm: React.FC<IProps> = ({ search, form }) => {
     >
       <Row gutter={24}>
         <Col span={6}>
-          <Form.Item name={`subject`} label="主题">
-            <Input placeholder="主题" />
+          <Form.Item name={`title`} label="主题">
+            <Input placeholder="标题" />
           </Form.Item>
         </Col>
         <Col span={6}>
