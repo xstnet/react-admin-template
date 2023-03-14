@@ -1,5 +1,2 @@
-const UserCenterPage: React.FC = () => {
-  return <span>UserCenterPage</span>;
-};
-
-export default UserCenterPage;
+export { default as UserCenterPage } from './Index';
+export { default as UserCenterUpdatePage } from './Update';
