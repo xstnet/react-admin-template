@@ -3,11 +3,9 @@ import { Image, Button, Form, Popconfirm, Space, Table, Tag, Typography } from '
 import type { ColumnsType } from 'antd/es/table';
 import { getArticleList, postDeleteArticle } from '@/api';
 import { DeleteOutlined, EditOutlined, PlusOutlined, UndoOutlined } from '@ant-design/icons';
-import AddButton from './components/AddButton';
 import SearchForm from './components/SearchForm';
 import useAntdTableRequest from '@/hooks/useAntdTableRequest';
 import { useRequest } from 'ahooks';
-import UpdateButton from './components/UpdateButton';
 import './index.less';
 import { Link, useNavigate } from 'react-router-dom';
 
