@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Button, Checkbox, Form, Input, Typography } from 'antd';
+import { Button, Checkbox, Col, Form, Input, Row, Typography } from 'antd';
 import Cache from '@/utils/cache';
 import { validateToken } from '@/utils/jwt';
 import { postLogin } from '@/api';
@@ -52,47 +52,51 @@ const LoginPage: React.FC = () => {
     password: '123456'
   };
   return (
-    <div className="login-wrap">
-      <div className="login-form-wrap">
-        <Typography.Title style={{ textAlign: 'center' }}>后台管理系统</Typography.Title>
-        <br />
-        <Form<IFormState>
-          name="loginForm"
-          labelCol={{ span: 5 }}
-          wrapperCol={{ span: 19 }}
-          style={{ maxWidth: 600 }}
-          initialValues={initialValues}
-          onFinish={onFinish}
-          autoComplete="off"
-        >
-          <Form.Item
-            label="用户名"
-            name="username"
-            rules={[{ required: true, message: '请输入用户名!' }]}
+    <>
+      <div className="bg-wrap"></div>
+      <Row className="login-wrap">
+        <Col span={12} className="login-banner"></Col>
+        <Col span={12} className="login-form-wrap">
+          <Typography.Title style={{ textAlign: 'center' }}>后台管理系统</Typography.Title>
+          <br />
+          <Form<IFormState>
+            name="loginForm"
+            labelCol={{ span: 5 }}
+            wrapperCol={{ span: 19 }}
+            style={{ maxWidth: 600 }}
+            initialValues={initialValues}
+            onFinish={onFinish}
+            autoComplete="off"
           >
-            <Input placeholder="admin" />
-          </Form.Item>
+            <Form.Item
+              label="用户名"
+              name="username"
+              rules={[{ required: true, message: '请输入用户名!' }]}
+            >
+              <Input placeholder="admin" />
+            </Form.Item>
 
-          <Form.Item
-            label="密码"
-            name="password"
-            rules={[{ required: true, message: '请输入密码!' }]}
-          >
-            <Input.Password placeholder="123456" />
-          </Form.Item>
+            <Form.Item
+              label="密码"
+              name="password"
+              rules={[{ required: true, message: '请输入密码!' }]}
+            >
+              <Input.Password placeholder="123456" />
+            </Form.Item>
 
-          <Form.Item name="remember" valuePropName="checked" wrapperCol={{ offset: 5 }}>
-            <Checkbox>记住我</Checkbox>
-          </Form.Item>
+            <Form.Item name="remember" valuePropName="checked" wrapperCol={{ offset: 5 }}>
+              <Checkbox>记住我</Checkbox>
+            </Form.Item>
 
-          <Form.Item wrapperCol={{ offset: 5, span: 16 }}>
-            <Button loading={loginRuning} type="primary" htmlType="submit">
-              登录
-            </Button>
-          </Form.Item>
-        </Form>
-      </div>
-    </div>
+            <Form.Item wrapperCol={{ offset: 5, span: 16 }}>
+              <Button loading={loginRuning} type="primary" htmlType="submit">
+                登录
+              </Button>
+            </Form.Item>
+          </Form>
+        </Col>
+      </Row>
+    </>
   );
 };
 
