@@ -55,8 +55,8 @@ const LoginPage: React.FC = () => {
     <>
       <div className="bg-wrap"></div>
       <Row className="login-wrap">
-        <Col span={12} className="login-banner"></Col>
-        <Col span={12} className="login-form-wrap">
+        <Col span={15} className="login-banner"></Col>
+        <Col span={9} className="login-form-wrap">
           <Typography.Title style={{ textAlign: 'center' }}>后台管理系统</Typography.Title>
           <br />
           <Form<IFormState>
