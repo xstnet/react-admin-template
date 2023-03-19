@@ -51,9 +51,17 @@ const Breadcrumb: React.FC = () => {
       if (!memoBreadcrumbNameMap.has(url)) {
         return null;
       }
+
+      // 只给最后一级加链接
       return (
         <AntdBreadcrumb.Item key={url}>
-          <Link to={url}>{memoBreadcrumbNameMap.get(url)}</Link>
+          {index === pathSnippets.length - 1 ? (
+            <Link style={{ color: 'inherit' }} to={url}>
+              {memoBreadcrumbNameMap.get(url)}
+            </Link>
+          ) : (
+            memoBreadcrumbNameMap.get(url)
+          )}
         </AntdBreadcrumb.Item>
       );
     });

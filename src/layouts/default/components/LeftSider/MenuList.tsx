@@ -3,7 +3,7 @@ import { nanoid } from 'nanoid';
 import React, { useContext, useMemo } from 'react';
 
 import type { MenuProps } from 'antd';
-import { isDividerMenu, isGroupMenu, isLeafMenu, isSubMenu } from '@/utils/is';
+import { isDividerMenu, isExtendMenu, isGroupMenu, isLeafMenu, isSubMenu } from '@/utils/is';
 import { useNavigate } from 'react-router-dom';
 import Iconfont from '@/components/Iconfont';
 import { GlobalContext } from '@/contexts/Global';
@@ -16,11 +16,13 @@ const MenuList: React.FC = () => {
 
   const { menuList: RawMenuList } = useContext(GlobalContext);
 
-  let activeMenu = '/dashboard';
-  const pathname = location.pathname;
+  let defaultActiveMenu = '/dashboard';
+  let defaultOpenKeys: string[] = [];
+
+  const { pathname } = location;
 
   const handleClick: MenuProps['onClick'] = (info) => {
-    if (info.key === location.pathname || !info.key) {
+    if (info.key === pathname || !info.key) {
       return;
     }
     console.log('clicked menu', info);
@@ -45,12 +47,26 @@ const MenuList: React.FC = () => {
     return menu.label;
   };
 
-  const makeMenuItems = (menuList: Menu.MenuItemType[]): AntdMenuItem[] => {
+  const makeMenuItems = (
+    menuList: Menu.MenuItemType[],
+    parent?: Menu.ExtendMenuType
+  ): AntdMenuItem[] => {
     const menuItems: AntdMenuItem[] = [];
     menuList.map((rawMenu) => {
-      if ((rawMenu as Menu.ExtendMenuType).hideInMenu) {
-        return;
+      if (isExtendMenu(rawMenu)) {
+        // 隐藏菜单高亮父级
+        // q: 为什么要用 indexOf?
+        // a: 因为要兼容 /article/update/10 这种路由
+        if (rawMenu.parent && pathname.indexOf(rawMenu.path) === 0) {
+          defaultActiveMenu = rawMenu.parent;
+
+          // todo: 默认展开菜单
+        }
+        if (rawMenu.hideInMenu) {
+          return;
+        }
       }
+
       let newMenu: AntdMenuItem | undefined;
       if (isDividerMenu(rawMenu)) {
         newMenu = { ...rawMenu };
@@ -71,11 +87,11 @@ const MenuList: React.FC = () => {
           key: rawMenu.path,
           label: makeMenuBadge(rawMenu),
           // 编译器在这里就会推断 menu 是属于 MenuItemGroupType 或 SubMenuType
-          children: isSubMenu(rawMenu) ? makeMenuItems(rawMenu.children!) : undefined
+          children: isSubMenu(rawMenu) ? makeMenuItems(rawMenu.children!, rawMenu) : undefined
         };
 
         if (rawMenu.path === pathname) {
-          activeMenu = rawMenu.path;
+          defaultActiveMenu = rawMenu.path;
         }
       }
 
@@ -93,8 +109,9 @@ const MenuList: React.FC = () => {
     <Menu
       onClick={handleClick}
       mode="inline"
-      defaultSelectedKeys={[activeMenu]}
+      defaultSelectedKeys={[defaultActiveMenu]}
       items={menuItems}
+      defaultOpenKeys={defaultOpenKeys}
     />
   );
 };

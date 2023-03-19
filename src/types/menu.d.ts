@@ -4,6 +4,18 @@ declare namespace Menu {
   type ExtendMenuType = {
     path: string;
     label: string;
+
+    // 父菜单下的默认子页面
+    // 未实现
+    // index?: boolean;
+
+    // 子路由信息, 用来判断直接从url访问时, 应该高亮哪个菜单
+    // 适用于未在菜单上出现的路由,如添加页面/编辑页面等
+    // 未实现
+    // subRouters?: string[];
+
+    // 父级菜单 path
+    parent?: string;
     badge?: 'dot' | number;
     children?: MenuItemType[];
     key?: string;

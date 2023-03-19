@@ -27,6 +27,25 @@ const MenuList: Menu.MenuItemType[] = [
         icon: 'icon-list',
         badge: 99,
         path: '/example/userList'
+      },
+      {
+        label: '多级菜单',
+        icon: 'icon-list',
+        path: '/multilevel/menu',
+        children: [
+          {
+            label: '二级菜单',
+            icon: 'icon-list',
+            path: '/multilevel/menu/2',
+            children: [
+              {
+                label: '三级菜单',
+                icon: 'icon-list',
+                path: '/multilevel/menu/2/3'
+              }
+            ]
+          }
+        ]
       }
     ]
   },
@@ -45,16 +64,18 @@ const MenuList: Menu.MenuItemType[] = [
       {
         path: '/article/create',
         label: '发布文章',
-        hideInMenu: true
+        hideInMenu: true,
+        parent: '/article/list'
       },
       {
         path: '/article/update',
         label: '更新文章',
-        hideInMenu: true
+        hideInMenu: true,
+        parent: '/article/list'
       },
       {
         path: '/article/category',
-        label: '分类列表',
+        label: '分类管理',
         icon: 'icon-list'
       }
     ]

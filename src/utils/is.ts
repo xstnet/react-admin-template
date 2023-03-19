@@ -25,6 +25,13 @@ export function isSubMenu(menu: any): menu is Menu.SubMenuType {
   return false;
 }
 
+export function isExtendMenu(menu: any): menu is Menu.ExtendMenuType {
+  if (typeof menu.path === 'string' && typeof menu.label === 'string') {
+    return true;
+  }
+  return false;
+}
+
 export function isGroupMenu(menu: any): menu is Menu.MenuItemGroupType {
   if (typeof menu.type !== 'undefined' && menu.type === 'group') {
     return true;
