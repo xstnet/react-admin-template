@@ -17,7 +17,10 @@ const MenuList: React.FC = () => {
   const { menuList: RawMenuList } = useContext(GlobalContext);
 
   let defaultActiveMenu = '/dashboard';
+  // 入栈-出栈来匹配
   let defaultOpenKeys: string[] = [];
+  // 匹配默认打开菜单是否结束
+  let matchedOpenKeysEnd = false;
 
   const { pathname } = location;
 
@@ -52,6 +55,7 @@ const MenuList: React.FC = () => {
     parent?: Menu.ExtendMenuType
   ): AntdMenuItem[] => {
     const menuItems: AntdMenuItem[] = [];
+    !matchedOpenKeysEnd && parent && defaultOpenKeys.push(parent.path);
     menuList.map((rawMenu) => {
       if (isExtendMenu(rawMenu)) {
         // 隐藏菜单高亮父级
@@ -59,6 +63,7 @@ const MenuList: React.FC = () => {
         // a: 因为要兼容 /article/update/10 这种路由
         if (rawMenu.parent && pathname.indexOf(rawMenu.path) === 0) {
           defaultActiveMenu = rawMenu.parent;
+          matchedOpenKeysEnd = true;
 
           // todo: 默认展开菜单
         }
@@ -92,6 +97,7 @@ const MenuList: React.FC = () => {
 
         if (rawMenu.path === pathname) {
           defaultActiveMenu = rawMenu.path;
+          matchedOpenKeysEnd = true;
         }
       }
 
@@ -101,10 +107,12 @@ const MenuList: React.FC = () => {
       }
     });
 
+    !matchedOpenKeysEnd && defaultOpenKeys.pop();
     return menuItems;
   };
 
   const menuItems = useMemo(() => makeMenuItems(RawMenuList), [RawMenuList]);
+
   return (
     <Menu
       onClick={handleClick}
