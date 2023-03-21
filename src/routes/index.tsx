@@ -2,7 +2,7 @@ import { lazy } from 'react';
 
 import DashboardPage from '@/pages/Dashboard';
 import { UserCenterPage, UserCenterUpdatePage } from '@/pages/UserCenter';
-import { ExampleUserListPage } from '@/pages/Example';
+import { BlankPage, ExampleUserListPage } from '@/pages/Example';
 import { ArticleIndexPage } from '@/pages/Article';
 import { NotFoundPage } from '@/pages/Error';
 import { ArticleCreatePage, ArticleUpdatePage } from '@/pages/Article';
@@ -64,6 +64,10 @@ export default function DefaultRoutes() {
           element: <ArticleUpdatePage />
         }
       ]
+    },
+    {
+      path: '/blank',
+      element: <BlankPage />
     },
 
     {

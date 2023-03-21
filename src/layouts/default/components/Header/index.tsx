@@ -1,5 +1,5 @@
 import { GlobalContext } from '@/contexts/Global';
-import { Dropdown, Layout, theme, Space, MenuProps, Avatar } from 'antd';
+import { Dropdown, Layout, theme, Space, MenuProps, Avatar, message } from 'antd';
 import React, { useContext, useEffect } from 'react';
 import {
   EditOutlined,
@@ -34,6 +34,7 @@ const Header: React.FC = () => {
   } = theme.useToken();
 
   const handleFullScreen = () => {
+    message.success(!fullScreen ? '进入全屏模式' : '已退出全屏模式');
     setFullScreen(!fullScreen);
   };
 
@@ -79,7 +80,8 @@ const Header: React.FC = () => {
             className="action-icon"
             title="Go to Github"
             href="https://github.com/xstnet/react-admin-template"
-            rel="norefer noopener">
+            rel="norefer noopener"
+          >
             <GithubOutlined />
           </a>
 
@@ -137,7 +139,8 @@ const Header: React.FC = () => {
       className="header"
       style={{
         background: colorBgContainer
-      }}>
+      }}
+    >
       <>
         {renderLeftContent()}
         {renderRightContent()}

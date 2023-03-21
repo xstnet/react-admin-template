@@ -17,12 +17,6 @@ const MenuList: Menu.MenuItemType[] = [
     type: 'group',
     children: [
       {
-        label: '示例页面',
-        icon: 'icon-example',
-        path: '/example',
-        badge: 'dot'
-      },
-      {
         label: '列表页',
         icon: 'icon-list',
         badge: 99,
@@ -46,6 +40,16 @@ const MenuList: Menu.MenuItemType[] = [
             ]
           }
         ]
+      },
+      {
+        label: '空白页',
+        icon: 'icon-example',
+        path: '/blank'
+      },
+      {
+        label: '404',
+        icon: 'icon-example',
+        path: '/404'
       }
     ]
   },
