@@ -3,7 +3,7 @@ import { isGroupMenu, isLeafMenu, isSubMenu } from '@/utils/is';
 import { HomeOutlined } from '@ant-design/icons';
 import { Breadcrumb as AntdBreadcrumb } from 'antd';
 import React, { useContext, useEffect, useMemo } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useSearchParams } from 'react-router-dom';
 import './index.less';
 
 // breadcrumbNameMap 是一个字符串类型的键值对映射对象，用于保存面包屑导航中每个路径对应的名称。
@@ -31,7 +31,6 @@ const makeBreadcrumbNameMap = (menuList: Menu.MenuItemType[]) => {
 
 const Breadcrumb: React.FC = () => {
   const { menuList } = useContext(GlobalContext);
-
   // 不能放在 useEffect中, memo执行比effect快, 会导致第一次进页面拿不到数据
   const memoBreadcrumbNameMap = useMemo(() => {
     breadcrumbNameMap.clear();
@@ -39,9 +38,29 @@ const Breadcrumb: React.FC = () => {
     return breadcrumbNameMap;
   }, [menuList]);
 
+  console.log('memoBreadcrumbNameMap', memoBreadcrumbNameMap);
+
   // antd 提供的绑定 react-route-v6路由
   // https://ant-design.gitee.io/components/breadcrumb-cn#components-breadcrumb-demo-react-router
   const location = useLocation();
+  const [searchParams] = useSearchParams();
+
+  const makeIframeBreadcrumb: () => React.ReactNode[] = () => {
+    if (location.pathname === '/iframe') {
+      const url = searchParams.get('url');
+      if (url && breadcrumbNameMap.has(url)) {
+        return [
+          <AntdBreadcrumb.Item key={url}>
+            <Link style={{ color: 'inherit' }} to={'/iframe?url=' + url}>
+              {memoBreadcrumbNameMap.get(url)}
+            </Link>
+          </AntdBreadcrumb.Item>
+        ];
+      }
+    }
+
+    return [];
+  };
 
   // 面包屑导航
   const extraBreadcrumbItems = useMemo(() => {
@@ -71,7 +90,8 @@ const Breadcrumb: React.FC = () => {
     <AntdBreadcrumb.Item key="home">
       <HomeOutlined />
     </AntdBreadcrumb.Item>,
-    ...extraBreadcrumbItems
+    ...extraBreadcrumbItems,
+    ...makeIframeBreadcrumb()
   ];
 
   return <AntdBreadcrumb className="breadcrumb">{breadcrumbItems}</AntdBreadcrumb>;

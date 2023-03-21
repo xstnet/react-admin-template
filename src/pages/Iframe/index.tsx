@@ -1,5 +1,5 @@
 import { Alert, Spin } from 'antd';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import './index.less';
 
@@ -11,7 +11,12 @@ const IframePage: React.FC<IProps> = (props) => {
   const { title = 'Iframe Page', name = 'internal-iframe' } = props;
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const [loadingIframe, setLoadingIframe] = useState(true);
+
   const [searchParams] = useSearchParams();
+
+  useEffect(() => {
+    setLoadingIframe(true);
+  }, [searchParams]);
 
   const url = searchParams.get('url');
 

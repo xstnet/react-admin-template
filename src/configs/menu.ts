@@ -123,6 +123,13 @@ const MenuList: Menu.MenuItemType[] = [
         icon: 'icon-document',
         key: 'iframe-antd-document',
         type: 'iframe'
+      },
+      {
+        path: 'https://www.xstnet.com',
+        label: '博客主页(内嵌)',
+        icon: 'icon-document',
+        key: 'iframe-blog',
+        type: 'iframe'
       }
     ]
   },
