@@ -19,19 +19,11 @@ const MenuList: React.FC = () => {
   let defaultActiveMenu = '/dashboard';
   // 入栈-出栈来匹配
   let defaultOpenKeys: string[] = [];
-  // 匹配默认打开菜单是否结束
-  let matchedOpenKeysEnd = false;
+  // 匹配默认展开菜单是否结束
+  let matchOpenKeysEnd = false;
 
   const { pathname } = location;
 
-  const handleClick: MenuProps['onClick'] = (info) => {
-    if (info.key === pathname || !info.key) {
-      return;
-    }
-    console.log('clicked menu', info);
-
-    navigate(info.key);
-  };
   const makeMenuBadge = (menu: Menu.LeafMenuItemType | Menu.SubMenuType) => {
     if (menu.badge) {
       if (menu.badge === 'dot') {
@@ -55,7 +47,7 @@ const MenuList: React.FC = () => {
     parent?: Menu.ExtendMenuType
   ): AntdMenuItem[] => {
     const menuItems: AntdMenuItem[] = [];
-    !matchedOpenKeysEnd && parent && defaultOpenKeys.push(parent.path);
+    !matchOpenKeysEnd && parent && defaultOpenKeys.push(parent.path);
     menuList.map((rawMenu) => {
       if (isExtendMenu(rawMenu)) {
         // 隐藏菜单高亮父级
@@ -63,9 +55,7 @@ const MenuList: React.FC = () => {
         // a: 因为要兼容 /article/update/10 这种路由
         if (rawMenu.parent && pathname.indexOf(rawMenu.path) === 0) {
           defaultActiveMenu = rawMenu.parent;
-          matchedOpenKeysEnd = true;
-
-          // todo: 默认展开菜单
+          matchOpenKeysEnd = true;
         }
         if (rawMenu.hideInMenu) {
           return;
@@ -89,7 +79,7 @@ const MenuList: React.FC = () => {
         newMenu = {
           ...rawMenu,
           icon,
-          key: rawMenu.path,
+          key: rawMenu?.key || rawMenu.path,
           label: makeMenuBadge(rawMenu),
           // 编译器在这里就会推断 menu 是属于 MenuItemGroupType 或 SubMenuType
           children: isSubMenu(rawMenu) ? makeMenuItems(rawMenu.children!, rawMenu) : undefined
@@ -97,7 +87,7 @@ const MenuList: React.FC = () => {
 
         if (rawMenu.path === pathname) {
           defaultActiveMenu = rawMenu.path;
-          matchedOpenKeysEnd = true;
+          matchOpenKeysEnd = true;
         }
       }
 
@@ -107,11 +97,49 @@ const MenuList: React.FC = () => {
       }
     });
 
-    !matchedOpenKeysEnd && defaultOpenKeys.pop();
+    !matchOpenKeysEnd && defaultOpenKeys.pop();
     return menuItems;
   };
 
   const menuItems = useMemo(() => makeMenuItems(RawMenuList), [RawMenuList]);
+  const mapKeyToMenu = useMemo(() => {
+    const computedMapKeyToMenu = new Map<React.Key, Menu.ExtendMenuType>();
+    const push = (list: AntdMenuItem[]) => {
+      list.map((v) => {
+        v?.key && computedMapKeyToMenu.set(v.key, v as Menu.ExtendMenuType);
+        if (isSubMenu(v)) {
+          push((v.children || []) as AntdMenuItem[]);
+        }
+      });
+    };
+    push(menuItems);
+    return computedMapKeyToMenu;
+  }, [menuItems]);
+
+  const handleClick: MenuProps['onClick'] = (info) => {
+    const menu = mapKeyToMenu.get(info.key);
+    console.log('clicked menu', info, menu);
+
+    if (!menu) {
+      console.warn('未获取到菜单信息');
+      return;
+    }
+    if (menu.path === pathname) {
+      return;
+    }
+    if (menu?.type === 'url') {
+      window.open(menu.path, '_blank');
+      return;
+    }
+    if (menu?.type === 'iframe') {
+      console.log('打开iframe页面');
+
+      navigate('/iframe?url=' + menu.path);
+      return;
+    }
+
+    navigate(info.key);
+  };
 
   return (
     <Menu

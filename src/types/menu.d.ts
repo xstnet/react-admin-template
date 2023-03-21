@@ -2,6 +2,7 @@
 declare namespace Menu {
   // 额外扩展的字段
   type ExtendMenuType = {
+    // 默认作为key, path相同时可以手动指定key
     path: string;
     label: string;
 
@@ -18,8 +19,10 @@ declare namespace Menu {
     parent?: string;
     badge?: 'dot' | number;
     children?: MenuItemType[];
+    // path 相同时可定义key
     key?: string;
     hideInMenu?: boolean;
+    type?: 'iframe' | 'url';
   };
 
   // 菜单类型, 不含子菜单

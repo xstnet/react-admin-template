@@ -7,6 +7,7 @@ import { ArticleIndexPage } from '@/pages/Article';
 import { NotFoundPage } from '@/pages/Error';
 import { ArticleCreatePage, ArticleUpdatePage } from '@/pages/Article';
 import { useRoutes } from 'react-router-dom';
+import IframePage from '@/pages/Iframe';
 
 // todo: Suspense
 // const DashboardPage = lazy(() => import('@page/Dashboard'));
@@ -68,6 +69,10 @@ export default function DefaultRoutes() {
     {
       path: '/blank',
       element: <BlankPage />
+    },
+    {
+      path: '/iframe',
+      element: <IframePage />
     },
 
     {
