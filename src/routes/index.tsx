@@ -75,6 +75,10 @@ export default function DefaultRoutes() {
       path: iframeUrlPrefix,
       element: <IframePage />
     },
+    {
+      path: '/multilevel/menu/2/3',
+      element: <BlankPage title="三级菜单" />
+    },
 
     {
       path: '*',

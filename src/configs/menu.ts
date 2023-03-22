@@ -19,7 +19,6 @@ const MenuList: Menu.MenuItemType[] = [
       {
         label: '列表页',
         icon: 'icon-list',
-        badge: 99,
         path: '/example/userList'
       },
       {
@@ -50,6 +49,24 @@ const MenuList: Menu.MenuItemType[] = [
         label: '404',
         icon: 'icon-example',
         path: '/404'
+      }
+    ]
+  },
+  {
+    label: '徽标示例',
+    type: 'group',
+    children: [
+      {
+        label: '红点徽标',
+        icon: 'icon-list',
+        badge: 'dot',
+        path: '/blank'
+      },
+      {
+        label: '数字徽标',
+        icon: 'icon-example',
+        badge: 98,
+        path: '/blank'
       }
     ]
   },
@@ -84,28 +101,28 @@ const MenuList: Menu.MenuItemType[] = [
       }
     ]
   },
-  {
-    path: '/permission',
-    label: '权限管理',
-    icon: 'icon-permissions',
-    children: [
-      {
-        path: '/permission/role',
-        label: '角色列表',
-        icon: 'icon-list'
-      },
-      {
-        path: '/permission/node',
-        label: '权限列表',
-        icon: 'icon-permissions'
-      },
-      {
-        path: '/permission/user',
-        label: '用户列表',
-        icon: 'icon-user-permissions'
-      }
-    ]
-  },
+  // {
+  //   path: '/permission',
+  //   label: '权限管理',
+  //   icon: 'icon-permissions',
+  //   children: [
+  //     {
+  //       path: '/permission/role',
+  //       label: '角色列表',
+  //       icon: 'icon-list'
+  //     },
+  //     {
+  //       path: '/permission/node',
+  //       label: '权限列表',
+  //       icon: 'icon-permissions'
+  //     },
+  //     {
+  //       path: '/permission/user',
+  //       label: '用户列表',
+  //       icon: 'icon-user-permissions'
+  //     }
+  //   ]
+  // },
   {
     path: '/iframe',
     label: '外部页面',
