@@ -1,4 +1,5 @@
 import { GlobalContext } from '@/contexts/Global';
+import { createIframeUrl, iframeUrlPrefix } from '@/utils/iframe';
 import { isExtendMenu, isGroupMenu, isLeafMenu, isSubMenu } from '@/utils/is';
 import { HomeOutlined } from '@ant-design/icons';
 import { Breadcrumb as AntdBreadcrumb } from 'antd';
@@ -52,12 +53,12 @@ const Breadcrumb: React.FC = () => {
   const [searchParams] = useSearchParams();
 
   const makeIframeBreadcrumb: () => React.ReactNode[] = () => {
-    if (location.pathname === '/iframe') {
+    if (location.pathname === iframeUrlPrefix) {
       const url = searchParams.get('url');
       if (url && breadcrumbNameMap.has(url)) {
         return [
           <AntdBreadcrumb.Item key={url}>
-            <Link style={{ color: 'inherit' }} to={'/iframe?url=' + url}>
+            <Link style={{ color: 'inherit' }} to={createIframeUrl(url)}>
               {memoBreadcrumbNameMap.get(url)}
             </Link>
           </AntdBreadcrumb.Item>

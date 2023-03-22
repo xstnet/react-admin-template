@@ -112,14 +112,14 @@ const MenuList: Menu.MenuItemType[] = [
     icon: 'icon-href',
     children: [
       {
-        path: 'https://ant.design/components/overview-cn',
+        path: 'https://ant-design.antgroup.com/components/overview-cn/',
         label: 'antd文档(外链)',
         icon: 'icon-document',
         key: 'webpage-antd-document',
         type: 'url'
       },
       {
-        path: 'https://ant.design/components/overview-cn',
+        path: 'https://ant-design.antgroup.com/components/overview-cn/',
         label: 'antd文档(内嵌)',
         icon: 'icon-document',
         type: 'iframe'

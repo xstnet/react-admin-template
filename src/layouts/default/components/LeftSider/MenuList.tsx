@@ -7,6 +7,7 @@ import { isDividerMenu, isExtendMenu, isGroupMenu, isLeafMenu, isSubMenu } from 
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import Iconfont from '@/components/Iconfont';
 import { GlobalContext } from '@/contexts/Global';
+import { createIframeUrl } from '@/utils/iframe';
 type AntdMenuItem = Required<MenuProps>['items'][number];
 
 // 自定义菜单组件, 增加菜单 badge/路由支持
@@ -144,7 +145,7 @@ const MenuList: React.FC = () => {
     if (menu?.type === 'iframe') {
       console.log('打开iframe页面');
 
-      navigate('/iframe?url=' + menu.path);
+      navigate(createIframeUrl(menu.path));
       return;
     }
 
