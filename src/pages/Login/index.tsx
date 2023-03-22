@@ -6,6 +6,7 @@ import { postLogin } from '@/api';
 import { toDashboardPage } from '@/utils/util';
 import { useRequest } from 'ahooks';
 import './index.less';
+import Config from '@/configs';
 
 interface IFormState {
   username: string;
@@ -22,6 +23,8 @@ const LoginPage: React.FC = () => {
       toDashboardPage();
     }
   });
+
+  document.title = Config.pageTitle;
 
   const onFinish = (values: IFormState) => {
     submit(values);

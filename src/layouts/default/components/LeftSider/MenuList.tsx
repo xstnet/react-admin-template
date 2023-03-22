@@ -8,6 +8,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import Iconfont from '@/components/Iconfont';
 import { GlobalContext } from '@/contexts/Global';
 import { createIframeUrl } from '@/utils/iframe';
+import Config from '@/configs';
 type AntdMenuItem = Required<MenuProps>['items'][number];
 
 // 自定义菜单组件, 增加菜单 badge/路由支持
@@ -22,6 +23,7 @@ const MenuList: React.FC = () => {
   let defaultOpenKeys: string[] = [];
   // 匹配默认展开菜单是否结束
   let matchOpenKeysEnd = false;
+  let incMenuKey = 0;
 
   const { pathname } = location;
   const [searchParams] = useSearchParams();
@@ -90,7 +92,7 @@ const MenuList: React.FC = () => {
         newMenu = {
           ...rawMenu,
           icon,
-          key: rawMenu?.key || rawMenu.path,
+          key: rawMenu?.key || '',
           label: makeMenuBadge(rawMenu),
           // 编译器在这里就会推断 menu 是属于 MenuItemGroupType 或 SubMenuType
           children: isSubMenu(rawMenu) ? makeMenuItems(rawMenu.children!, rawMenu) : undefined
@@ -103,7 +105,7 @@ const MenuList: React.FC = () => {
       }
 
       if (newMenu) {
-        newMenu.key = newMenu.key || nanoid();
+        newMenu.key = newMenu.key;
         menuItems.push(newMenu);
       }
     });
@@ -112,23 +114,40 @@ const MenuList: React.FC = () => {
     return menuItems;
   };
 
-  const menuItems = useMemo(() => makeMenuItems(RawMenuList), [RawMenuList]);
+  // 菜单数据处理
+  const processedMenuList = useMemo(() => {
+    const addKey = (list: Menu.MenuItemType[]): Menu.MenuItemType[] => {
+      return list.map((item: any) => {
+        item.key = ++incMenuKey;
+        if (item.children && Array.isArray(item.children)) {
+          item.children = addKey(item.children);
+        }
+        return { ...item };
+      });
+    };
+    return addKey(RawMenuList);
+  }, [RawMenuList]);
+
+  const menuItems = useMemo(() => makeMenuItems(processedMenuList), [processedMenuList]);
+  // Map: key -> menuItem
   const mapKeyToMenu = useMemo(() => {
     const computedMapKeyToMenu = new Map<React.Key, Menu.ExtendMenuType>();
     const push = (list: AntdMenuItem[]) => {
       list.map((v) => {
         v?.key && computedMapKeyToMenu.set(v.key, v as Menu.ExtendMenuType);
-        if (isSubMenu(v)) {
+        if (isSubMenu(v) || isGroupMenu(v)) {
           push((v.children || []) as AntdMenuItem[]);
         }
       });
     };
     push(menuItems);
     return computedMapKeyToMenu;
-  }, [menuItems]);
+  }, [processedMenuList]);
 
   const handleClick: MenuProps['onClick'] = (info) => {
-    const menu = mapKeyToMenu.get(info.key);
+    const menu = mapKeyToMenu.get(Number(info.key));
+    console.log('mapKeyToMenu', mapKeyToMenu);
+
     console.log('clicked menu', info, menu);
 
     if (!menu) {
@@ -142,6 +161,7 @@ const MenuList: React.FC = () => {
       window.open(menu.path, '_blank');
       return;
     }
+    document.title = `${Config.pageTitlePrefix} - ${menu.label}`;
     if (menu?.type === 'iframe') {
       console.log('打开iframe页面');
 
@@ -149,7 +169,7 @@ const MenuList: React.FC = () => {
       return;
     }
 
-    navigate(info.key);
+    navigate(menu.path);
   };
   console.log('defaultOpenKeys', defaultOpenKeys);
 
