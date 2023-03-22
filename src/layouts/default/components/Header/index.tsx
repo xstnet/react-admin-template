@@ -17,17 +17,18 @@ import Iconfont from '@/components/Iconfont';
 import Cache from '@/utils/cache';
 import { toLoginPage } from '@/utils/util';
 import { postLogout } from '@/api';
+import { MenuContext } from '@/contexts/Menu';
+import { SettingContext } from '@/contexts/Setting';
 
 const Header: React.FC = () => {
+  const { fullScreen, setFullScreen, userInfo, setUserInfo, setIsLogin } =
+    useContext(GlobalContext);
+
+  const { menuCollapsed, setMenuCollapsed } = useContext(MenuContext);
   const {
-    menuCollapsed,
-    setMenuCollapsed,
-    fullScreen,
-    setFullScreen,
-    userInfo,
-    setUserInfo,
-    setIsLogin
-  } = useContext(GlobalContext);
+    settings: { theme: themeMode },
+    setSetting
+  } = useContext(SettingContext);
 
   const {
     token: { colorBgContainer }
@@ -36,6 +37,10 @@ const Header: React.FC = () => {
   const handleFullScreen = () => {
     message.success(!fullScreen ? '进入全屏模式' : '已退出全屏模式');
     setFullScreen(!fullScreen);
+  };
+
+  const handleChangeTheme = () => {
+    setSetting({ followSystemTheme: false, theme: themeMode === 'light' ? 'dark' : 'light' });
   };
 
   const renderLeftContent = () => {
@@ -84,8 +89,22 @@ const Header: React.FC = () => {
           >
             <GithubOutlined />
           </a>
+          {themeMode === 'dark' ? (
+            <Iconfont
+              onClick={handleChangeTheme}
+              title="主题-深色模式"
+              type="icon-theme-dark"
+              className="action-icon"
+            />
+          ) : (
+            <Iconfont
+              onClick={handleChangeTheme}
+              title="主题-明亮模式"
+              type="icon-theme-light"
+              className="action-icon"
+            />
+          )}
 
-          <Iconfont title="主题-明亮" type="icon-theme-light" className="action-icon" />
           <Iconfont title="设置" type="icon-setting" className="action-icon" />
         </>
       );

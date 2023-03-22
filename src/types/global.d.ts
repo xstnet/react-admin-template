@@ -11,6 +11,8 @@ declare global {
   type KV = Record<S, any>;
   type IdType = S | N;
 
+  type ISetFunc<T = boolean> = (value: T) => void;
+
   type TokenMeta<D> = {
     iat: number;
     exp: number;

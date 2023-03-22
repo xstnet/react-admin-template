@@ -1,16 +1,11 @@
-import { MenuList } from '@/configs/menu';
 import { useFullscreen } from 'ahooks';
-import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { createContext, useMemo, useState } from 'react';
+import MenuProvider from './Menu';
+import SettingProvider from './Setting';
 
-type ISetFunc<T = boolean> = (value: T) => void;
 /**
 
-IGlobalContext 接口定义了全局上下文对象的结构。
-@property {boolean} menuCollapsed - 菜单是否收起的状态值。
-@property {ISetFunc} setMenuCollapsed - 设置菜单是否收起的函数。
-@property {Menu.MenuItemType[]} menuList - 菜单列表数组。
-@property {ISetFunc<Menu.MenuItemType[]>} setMenuList - 设置菜单列表的函数。
+IContextValue 接口定义了全局上下文对象的结构。
 @property {boolean} isLogin - 是否已登录的状态值。
 @property {ISetFunc} setIsLogin - 设置是否已登录的函数。
 @property {Api.GetUserInfo['response'] | undefined} userInfo - 用户信息对象或 undefined。
@@ -18,11 +13,7 @@ IGlobalContext 接口定义了全局上下文对象的结构。
 @property {boolean|undefined} fullScreen - 是否全屏显示的状态值或 undefined。
 @property {ISetFunc} setFullScreen - 设置是否全屏显示的函数。
 */
-export interface IGlobalContext {
-  menuCollapsed: boolean;
-  setMenuCollapsed: ISetFunc;
-  menuList: Menu.MenuItemType[];
-  setMenuList: ISetFunc<Menu.MenuItemType[]>;
+export interface IContextValue {
   isLogin: boolean;
   setIsLogin: ISetFunc;
   userInfo: Api.GetUserInfo['response'] | null;
@@ -34,40 +25,39 @@ export interface IGlobalContext {
 // 目前暂不知为什么非要传一个初始值, 用的时候也要传一次, 看起来并没有意义
 // 原因: 给没有使用 Provider包裹的组件, 如果使用了useContext, 将会得到这个值
 // 懒得定义
-const initValue: IGlobalContext = undefined as any;
+const initValue: IContextValue = undefined as any;
 
 // Context
-export const GlobalContext = createContext<IGlobalContext>(initValue);
+export const GlobalContext = createContext<IContextValue>(initValue);
 
 // Provider
 // todo: 可以考虑拆分 provider, 分为 get 和 set
 const GlobalProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
-  const initMenuList = useMemo(() => MenuList, []);
-
-  const [menuList, setMenuList] = useState<IGlobalContext['menuList']>(initMenuList);
   const [isLogin, setIsLogin] = useState(false);
-  const [menuCollapsed, setMenuCollapsed] = useState(false);
+
   const [fullScreen, { toggleFullscreen: setFullScreen }] = useFullscreen(document.body);
-  const [userInfo, setUserInfo] = useState<IGlobalContext['userInfo']>(null);
+  const [userInfo, setUserInfo] = useState<IContextValue['userInfo']>(null);
 
   // 参考 https://mp.weixin.qq.com/s/z9GaB_48LHtL-if4mP-nZQ
-  const contextValue: IGlobalContext = useMemo(
+  const contextValue: IContextValue = useMemo(
     () => ({
-      menuList,
-      setMenuList,
       isLogin,
       setIsLogin,
-      menuCollapsed,
-      setMenuCollapsed,
       userInfo,
       setUserInfo,
       fullScreen,
       setFullScreen
     }),
-    [menuList, isLogin, menuCollapsed, userInfo, fullScreen]
+    [isLogin, userInfo, fullScreen]
   );
 
-  return <GlobalContext.Provider value={contextValue}>{children}</GlobalContext.Provider>;
+  return (
+    <GlobalContext.Provider value={contextValue}>
+      <SettingProvider>
+        <MenuProvider>{children}</MenuProvider>
+      </SettingProvider>
+    </GlobalContext.Provider>
+  );
 };
 
 export default GlobalProvider;

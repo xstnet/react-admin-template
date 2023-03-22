@@ -1,10 +1,10 @@
 import React, { useContext } from 'react';
 import { Layout, theme } from 'antd';
 import MenuList from './MenuList';
-import { GlobalContext } from '@/contexts/Global';
+import { MenuContext } from '@/contexts/Menu';
 
 const LeftSider: React.FC = () => {
-  const { menuCollapsed } = useContext(GlobalContext);
+  const { menuCollapsed } = useContext(MenuContext);
 
   const {
     token: { colorBgContainer }
@@ -16,7 +16,8 @@ const LeftSider: React.FC = () => {
       trigger={null}
       className="left-sider"
       collapsible
-      collapsed={menuCollapsed}>
+      collapsed={menuCollapsed}
+    >
       <MenuList />
     </Layout.Sider>
   );

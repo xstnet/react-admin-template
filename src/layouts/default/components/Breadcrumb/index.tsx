@@ -1,4 +1,5 @@
 import { GlobalContext } from '@/contexts/Global';
+import { MenuContext } from '@/contexts/Menu';
 import { createIframeUrl, iframeUrlPrefix } from '@/utils/iframe';
 import { isExtendMenu, isGroupMenu, isLeafMenu, isSubMenu } from '@/utils/is';
 import { HomeOutlined } from '@ant-design/icons';
@@ -37,7 +38,7 @@ const makeBreadcrumbNameMap = (menuList: Menu.MenuItemType[]) => {
 };
 
 const Breadcrumb: React.FC = () => {
-  const { menuList } = useContext(GlobalContext);
+  const { menuList } = useContext(MenuContext);
   // 不能放在 useEffect中, memo执行比effect快, 会导致第一次进页面拿不到数据
   const memoBreadcrumbNameMap = useMemo(() => {
     breadcrumbNameMap.clear();

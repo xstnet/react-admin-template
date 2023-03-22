@@ -9,6 +9,7 @@ import Iconfont from '@/components/Iconfont';
 import { GlobalContext } from '@/contexts/Global';
 import { createIframeUrl } from '@/utils/iframe';
 import Config from '@/configs';
+import { MenuContext } from '@/contexts/Menu';
 type AntdMenuItem = Required<MenuProps>['items'][number];
 
 // 自定义菜单组件, 增加菜单 badge/路由支持
@@ -16,7 +17,7 @@ type AntdMenuItem = Required<MenuProps>['items'][number];
 const MenuList: React.FC = () => {
   const navigate = useNavigate();
 
-  const { menuList: RawMenuList } = useContext(GlobalContext);
+  const { menuList: RawMenuList } = useContext(MenuContext);
 
   let defaultActiveMenu = '/dashboard';
   // 入栈-出栈来匹配
