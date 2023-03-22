@@ -1,5 +1,5 @@
 import { GlobalContext } from '@/contexts/Global';
-import { isGroupMenu, isLeafMenu, isSubMenu } from '@/utils/is';
+import { isExtendMenu, isGroupMenu, isLeafMenu, isSubMenu } from '@/utils/is';
 import { HomeOutlined } from '@ant-design/icons';
 import { Breadcrumb as AntdBreadcrumb } from 'antd';
 import React, { useContext, useEffect, useMemo } from 'react';
@@ -14,6 +14,12 @@ const breadcrumbNameMap = new Map<string, string>();
 // makeBreadcrumbNameMap 函数用于生成面包屑导航路径和名称的映射关系，并将其保存在 breadcrumbNameMap 中。
 const makeBreadcrumbNameMap = (menuList: Menu.MenuItemType[]) => {
   menuList.map((menu) => {
+    if (isExtendMenu(menu)) {
+      // 外部链接不参与 面包屑, 防止与内部链接path相同而导致 label 错误
+      if (menu?.type === 'url') {
+        return;
+      }
+    }
     if (isGroupMenu(menu)) {
       makeBreadcrumbNameMap(menu.children || []);
     }

@@ -115,20 +115,19 @@ const MenuList: Menu.MenuItemType[] = [
         path: 'https://ant.design/components/overview-cn',
         label: 'antd文档(外链)',
         icon: 'icon-document',
+        key: 'webpage-antd-document',
         type: 'url'
       },
       {
         path: 'https://ant.design/components/overview-cn',
         label: 'antd文档(内嵌)',
         icon: 'icon-document',
-        key: 'iframe-antd-document',
         type: 'iframe'
       },
       {
         path: 'https://www.xstnet.com',
         label: '博客主页(内嵌)',
         icon: 'icon-document',
-        key: 'iframe-blog',
         type: 'iframe'
       }
     ]

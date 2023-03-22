@@ -4,7 +4,7 @@ import React, { useContext, useMemo } from 'react';
 
 import type { MenuProps } from 'antd';
 import { isDividerMenu, isExtendMenu, isGroupMenu, isLeafMenu, isSubMenu } from '@/utils/is';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import Iconfont from '@/components/Iconfont';
 import { GlobalContext } from '@/contexts/Global';
 type AntdMenuItem = Required<MenuProps>['items'][number];
@@ -23,6 +23,7 @@ const MenuList: React.FC = () => {
   let matchOpenKeysEnd = false;
 
   const { pathname } = location;
+  const [searchParams] = useSearchParams();
 
   const makeMenuBadge = (menu: Menu.LeafMenuItemType | Menu.SubMenuType) => {
     if (menu.badge) {
@@ -57,6 +58,15 @@ const MenuList: React.FC = () => {
           defaultActiveMenu = rawMenu.parent;
           matchOpenKeysEnd = true;
         }
+
+        // 判断当前菜单是否iframe
+        if (rawMenu.type === 'iframe') {
+          const url = searchParams.get('url') || '';
+          if (url === rawMenu.path) {
+            matchOpenKeysEnd = true;
+            defaultActiveMenu = url;
+          }
+        }
         if (rawMenu.hideInMenu) {
           return;
         }
@@ -85,7 +95,7 @@ const MenuList: React.FC = () => {
           children: isSubMenu(rawMenu) ? makeMenuItems(rawMenu.children!, rawMenu) : undefined
         };
 
-        if (rawMenu.path === pathname) {
+        if (!matchOpenKeysEnd && rawMenu.path === pathname) {
           defaultActiveMenu = rawMenu.path;
           matchOpenKeysEnd = true;
         }
@@ -140,6 +150,7 @@ const MenuList: React.FC = () => {
 
     navigate(info.key);
   };
+  console.log('defaultOpenKeys', defaultOpenKeys);
 
   return (
     <Menu
