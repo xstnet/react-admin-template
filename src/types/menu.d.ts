@@ -4,6 +4,8 @@ declare namespace Menu {
   type ExtendMenuType = {
     path: string;
     label: string;
+    // 自动生成, 也可以手动指定
+    key?: string;
 
     // 父菜单下的默认子页面
     // 未实现
