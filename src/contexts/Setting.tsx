@@ -28,6 +28,8 @@ export const SettingContext = createContext<IContextValue>(initValue);
 const SettingProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const initSettings = useMemo(() => {
     const settingsCache = Cache.getObject('settings') || {};
+    console.log('settingsCache', settingsCache);
+
     return {
       theme: 'light',
       compactMode: false,
@@ -45,7 +47,7 @@ const SettingProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     const writeSettings = { ...settings, ...newSettings };
     setSetting(writeSettings);
     // 存储设置
-    Cache.set('setting', writeSettings);
+    Cache.set('settings', writeSettings);
   }, []);
 
   const contextValue: IContextValue = {

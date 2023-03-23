@@ -46,8 +46,6 @@ const Breadcrumb: React.FC = () => {
     return breadcrumbNameMap;
   }, [menuList]);
 
-  console.log('memoBreadcrumbNameMap', memoBreadcrumbNameMap);
-
   // antd 提供的绑定 react-route-v6路由
   // https://ant-design.gitee.io/components/breadcrumb-cn#components-breadcrumb-demo-react-router
   const location = useLocation();
