@@ -12,14 +12,13 @@ import './index.less';
 import { validateToken } from '@/utils/jwt';
 import PageLoading from '@/components/Loading/PageLoading';
 import { GlobalContext } from '@/contexts/Global';
+import useThemeToken from '@/hooks/useThemeToken';
 import { AxiosError } from 'axios';
 
 const DefaultLayout: React.FC = () => {
   const [getUserInfoLoading, setGetUserInfoLoading] = useState(true);
   const { setIsLogin, setUserInfo } = useContext(GlobalContext);
-  const {
-    token: { colorBgContainer }
-  } = theme.useToken();
+  const { colorBgContainer } = useThemeToken();
   useEffect(() => {
     if (!validateToken()) {
       // token 无效

@@ -9,8 +9,8 @@ import AddButton from './components/AddButton';
 import SearchForm from './components/SearchForm';
 import useAntdTableRequest from '@/hooks/useAntdTableRequest';
 import { useRequest } from 'ahooks';
-import { noop } from '@/utils/util';
 import UpdateButton from './components/UpdateButton';
+import ContentBox from '@/components/ContextBox';
 
 const ExampleUserListPage: React.FC = () => {
   console.log('render ExampleUserListPage');
@@ -143,15 +143,15 @@ const ExampleUserListPage: React.FC = () => {
 
   return (
     <>
-      <div className="content-box ">
+      <ContentBox>
         <div>
           <Typography.Title level={5}>搜索</Typography.Title>
         </div>
         <SearchForm search={search} form={searchForm} />
-      </div>
+      </ContentBox>
 
       <br />
-      <div className="content-box ">
+      <ContentBox>
         <div className="table-header">
           <div className="left">
             <Typography.Title level={5}>用户列表</Typography.Title>
@@ -182,7 +182,7 @@ const ExampleUserListPage: React.FC = () => {
           </div>
         </div>
         <Table rowKey="id" rowSelection={rowSelection} columns={columns} {...tableProps} />
-      </div>
+      </ContentBox>
     </>
   );
 };

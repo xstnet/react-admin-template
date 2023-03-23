@@ -1,4 +1,5 @@
 import { postCreateArticle } from '@/api';
+import ContentBox from '@/components/ContextBox';
 import Cache from '@/utils/cache';
 import { PlusOutlined, SendOutlined, SaveOutlined } from '@ant-design/icons';
 import { useRequest } from 'ahooks';
@@ -53,7 +54,7 @@ const ArticleCreaetPage: React.FC = () => {
   };
 
   return (
-    <div className="content-box">
+    <ContentBox>
       <Typography.Title level={3}>发布文章</Typography.Title>
       <Divider />
       <Form<Model.Article>
@@ -125,7 +126,7 @@ const ArticleCreaetPage: React.FC = () => {
           </Col>
         </Row>
       </Form>
-    </div>
+    </ContentBox>
   );
 };
 

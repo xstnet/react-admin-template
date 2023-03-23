@@ -1,4 +1,5 @@
 import { getArticleDetail, postUpdateArticle } from '@/api';
+import ContentBox from '@/components/ContextBox';
 import { PlusOutlined, SendOutlined } from '@ant-design/icons';
 import { useRequest } from 'ahooks';
 import {
@@ -56,7 +57,7 @@ const ArticleUpdatePage: React.FC = () => {
   };
 
   return (
-    <div className="content-box">
+    <ContentBox>
       <Typography.Title level={3}>更新文章</Typography.Title>
       <Divider />
       <Spin spinning={getDetailLoading}>
@@ -122,7 +123,7 @@ const ArticleUpdatePage: React.FC = () => {
           </Row>
         </Form>
       </Spin>
-    </div>
+    </ContentBox>
   );
 };
 

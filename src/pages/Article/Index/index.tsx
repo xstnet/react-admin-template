@@ -8,6 +8,7 @@ import useAntdTableRequest from '@/hooks/useAntdTableRequest';
 import { useRequest } from 'ahooks';
 import './index.less';
 import { Link, useNavigate } from 'react-router-dom';
+import ContentBox from '@/components/ContextBox';
 
 const ArticleIndexPage: React.FC = () => {
   console.log('render ArticleIndexPage');
@@ -107,15 +108,15 @@ const ArticleIndexPage: React.FC = () => {
 
   return (
     <>
-      <div className="content-box ">
+      <ContentBox>
         <div>
           <Typography.Title level={5}>搜索</Typography.Title>
         </div>
         <SearchForm search={search} form={searchForm} />
-      </div>
+      </ContentBox>
 
       <br />
-      <div className="content-box ">
+      <ContentBox>
         <div className="table-header">
           <div className="left">
             <Typography.Title level={5}>文章列表</Typography.Title>
@@ -138,7 +139,7 @@ const ArticleIndexPage: React.FC = () => {
           </div>
         </div>
         <Table rowKey="id" columns={columns} {...tableProps} />
-      </div>
+      </ContentBox>
     </>
   );
 };

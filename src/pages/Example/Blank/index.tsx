@@ -1,3 +1,4 @@
+import ContentBox from '@/components/ContextBox';
 import { Typography } from 'antd';
 
 interface IProps {
@@ -5,11 +6,9 @@ interface IProps {
 }
 const BlankPage: React.FC<IProps> = ({ title = '空白页' }) => {
   return (
-    <div>
-      <div className="content-box" style={{ height: '500px' }}>
-        <Typography.Title level={4}>{title}</Typography.Title>
-      </div>
-    </div>
+    <ContentBox style={{ height: '500px' }}>
+      <Typography.Title level={4}>{title}</Typography.Title>
+    </ContentBox>
   );
 };
 

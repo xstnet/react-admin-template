@@ -1,3 +1,4 @@
+import ContentBox from '@/components/ContextBox';
 import { Alert, Spin } from 'antd';
 import { useEffect, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
@@ -26,15 +27,15 @@ const IframePage: React.FC<IProps> = (props) => {
 
   if (!url) {
     return (
-      <div className="content-box">
+      <ContentBox>
         <Alert message="无效的url地址" type="error" />
-      </div>
+      </ContentBox>
     );
   }
 
   return (
     <>
-      <div className="content-box" style={{ height: '100%', padding: 0 }}>
+      <ContentBox style={{ height: '100%', padding: 0 }}>
         <Spin
           wrapperClassName="iframeSpin"
           spinning={loadingIframe}
@@ -50,7 +51,7 @@ const IframePage: React.FC<IProps> = (props) => {
             src={url}
           />
         </Spin>
-      </div>
+      </ContentBox>
     </>
   );
 };

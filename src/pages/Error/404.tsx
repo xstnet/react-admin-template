@@ -1,10 +1,11 @@
+import ContentBox from '@/components/ContextBox';
 import { Link, useLocation } from 'react-router-dom';
 
 const NotFoundPage: React.FC<KV> = () => {
   const location = useLocation();
 
   return (
-    <div className="content-box" style={{}}>
+    <ContentBox style={{}}>
       <div
         style={{
           fontSize: '40px',
@@ -20,7 +21,7 @@ const NotFoundPage: React.FC<KV> = () => {
       <br />
       <br />
       <Link to="/">回到首页</Link>
-    </div>
+    </ContentBox>
   );
 };
 
