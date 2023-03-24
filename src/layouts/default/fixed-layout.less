@@ -1,0 +1,38 @@
+.default-layout {
+  &[data-fixed-header='1'] {
+    .header {
+      position: fixed;
+      z-index: 10;
+      top: 0;
+      left: 0;
+      right: 0;
+    }
+
+    .content-layout,
+    .left-sider {
+      margin-top: var(--headerHeight);
+    }
+  }
+
+  &[data-fixed-menu='1'] {
+    .left-sider {
+      overflow: auto;
+      height: 100vh;
+      position: fixed;
+      left: 0;
+      top: var(--headerHeight);
+      bottom: 0;
+      z-index: 1;
+    }
+
+    .content-layout {
+      margin-left: var(--menuWidth);
+    }
+  }
+
+  &[data-menu-collapsed='1'] {
+    .content-layout {
+      margin-left: var(--menuCollapsedWidth);
+    }
+  }
+}

@@ -1,4 +1,5 @@
 import ContentBox from '@/components/ContextBox';
+import { Typography } from 'antd';
 import { Link, useLocation } from 'react-router-dom';
 
 const NotFoundPage: React.FC<KV> = () => {
@@ -6,20 +7,11 @@ const NotFoundPage: React.FC<KV> = () => {
 
   return (
     <ContentBox style={{}}>
-      <div
-        style={{
-          fontSize: '40px',
-          color: 'rgba(0,0,0,.6)'
-        }}
-      >
-        404
-      </div>
-      <br />
-      <div>页面不存在~</div>
-      <br />
-      <div>路由: {location.pathname}</div>
-      <br />
-      <br />
+      <Typography.Title>404</Typography.Title>
+      <Typography.Paragraph>页面不存在</Typography.Paragraph>
+
+      <Typography.Paragraph>路由: {location.pathname}</Typography.Paragraph>
+
       <Link to="/">回到首页</Link>
     </ContentBox>
   );

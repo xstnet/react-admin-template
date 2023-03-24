@@ -1,6 +1,5 @@
 import { Layout, notification, theme } from 'antd';
 import LeftSider from './components/LeftSider/Index';
-import DefaultRoutes from '@/routes';
 import Header from './components/Header';
 import Content from './components/Content';
 import Breadcrumb from './components/Breadcrumb';
@@ -8,17 +7,25 @@ import { useContext, useEffect, useState } from 'react';
 
 import { toLoginPage } from '@/utils/util';
 import { getUserInfo } from '@/api';
-import './index.less';
 import { validateToken } from '@/utils/jwt';
 import PageLoading from '@/components/Loading/PageLoading';
 import { GlobalContext } from '@/contexts/Global';
 import useThemeToken from '@/hooks/useThemeToken';
 import { AxiosError } from 'axios';
+import { SettingContext } from '@/contexts/Setting';
+import './index.less';
+import './fixed-layout.less';
+import { MenuContext } from '@/contexts/Menu';
 
 const DefaultLayout: React.FC = () => {
   const [getUserInfoLoading, setGetUserInfoLoading] = useState(true);
   const { setIsLogin, setUserInfo } = useContext(GlobalContext);
+  const { menuCollapsed } = useContext(MenuContext);
   const { colorBgContainer } = useThemeToken();
+  const {
+    settings: { fixedMenu, fixedHeader }
+  } = useContext(SettingContext);
+
   useEffect(() => {
     if (!validateToken()) {
       // token 无效
@@ -50,7 +57,13 @@ const DefaultLayout: React.FC = () => {
     return <PageLoading title="页面加载中" loading={getUserInfoLoading} />;
   }
   return (
-    <Layout style={{ background: colorBgContainer }} className="default-layout">
+    <Layout
+      data-fixed-menu={fixedMenu ? 1 : 0}
+      data-menu-collapsed={menuCollapsed ? 1 : 0}
+      data-fixed-header={fixedHeader ? 1 : 0}
+      style={{ background: colorBgContainer }}
+      className="default-layout"
+    >
       <Header />
 
       <Layout>

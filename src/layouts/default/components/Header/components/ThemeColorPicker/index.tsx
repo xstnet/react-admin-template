@@ -3,13 +3,16 @@ import { useState } from 'react';
 import './index.less';
 
 interface IProps {
+  // antd 自定义表单组件
+  value?: string;
+  onChange?: (value: string) => void;
+
   presetColors?: string[];
   defaultSelectedColor?: string;
 }
 const ThemeColorPicker: React.FC<IProps> = (props) => {
   const defaultColors = [
     '#1890ff',
-    '#2f54eb',
     '#722ed1',
     '#eb2f96',
     '#00b96b',
@@ -18,17 +21,28 @@ const ThemeColorPicker: React.FC<IProps> = (props) => {
     '#1677ff',
     '#f5222d',
     '#fa8c16',
-    '#a0d911',
-    '#fadb14',
     '#faad14'
   ];
-  const { presetColors = defaultColors, defaultSelectedColor = '' } = props;
-  const [selectedColor, setSelectedColor] = useState(defaultSelectedColor);
+  const { onChange, presetColors = defaultColors, defaultSelectedColor = '' } = props;
+  const { value = defaultSelectedColor } = props;
+
+  const [selectedColor, setSelectedColor] = useState(value);
+
+  const handleClick = (color: string) => {
+    setSelectedColor(color);
+    onChange?.(color);
+  };
   return (
     <div className="theme-color-wrap">
       {presetColors.map((color) => {
         return (
-          <div key={color} className="theme-color-item" style={{ backgroundColor: color }}>
+          <div
+            key={color}
+            onClick={() => handleClick(color)}
+            className="theme-color-item"
+            style={{ backgroundColor: color }}
+            title={color}
+          >
             {selectedColor === color && <CheckOutlined className="checked-icon" />}
           </div>
         );
