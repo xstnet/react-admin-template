@@ -12,7 +12,7 @@ export interface IContextValue {
     // 固定头部
     fixedHeader: boolean;
     // 固定菜单栏
-    fixdeMenu: boolean;
+    fixedMenu: boolean;
     // 主色调
     primaryColor: string;
   };
@@ -35,7 +35,7 @@ const SettingProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
       compactMode: false,
       followSystemTheme: false,
       fixedHeader: false,
-      fixdeMenu: false,
+      fixedMenu: false,
       primaryColor: '#00b96b',
       ...settingsCache
     } as IContextValue['settings'];
@@ -43,12 +43,15 @@ const SettingProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
 
   const [settings, setSetting] = useState<IContextValue['settings']>(initSettings);
   // 部分 set
-  const setSettingPartial = useCallback<IContextValue['setSetting']>((newSettings) => {
-    const writeSettings = { ...settings, ...newSettings };
-    setSetting(writeSettings);
-    // 存储设置
-    Cache.set('settings', writeSettings);
-  }, []);
+  const setSettingPartial = useCallback<IContextValue['setSetting']>(
+    (newSettings) => {
+      const writeSettings = { ...settings, ...newSettings };
+      setSetting(writeSettings);
+      // 存储设置
+      Cache.set('settings', writeSettings);
+    },
+    [settings]
+  );
 
   const contextValue: IContextValue = {
     settings,

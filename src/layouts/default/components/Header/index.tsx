@@ -19,6 +19,7 @@ import { toLoginPage } from '@/utils/util';
 import { postLogout } from '@/api';
 import { MenuContext } from '@/contexts/Menu';
 import { SettingContext } from '@/contexts/Setting';
+import SettingIcon from './components/SettingIcon';
 
 const Header: React.FC = () => {
   const { fullScreen, setFullScreen, userInfo, setUserInfo, setIsLogin } =
@@ -105,7 +106,7 @@ const Header: React.FC = () => {
             />
           )}
 
-          <Iconfont title="设置" type="icon-setting" className="action-icon" />
+          <SettingIcon />
         </>
       );
     };
