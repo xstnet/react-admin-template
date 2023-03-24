@@ -11,6 +11,7 @@
     .content-layout,
     .left-sider {
       margin-top: var(--headerHeight);
+      transition: none;
     }
   }
 
@@ -20,13 +21,20 @@
       height: 100vh;
       position: fixed;
       left: 0;
-      top: var(--headerHeight);
+      top: 0;
       bottom: 0;
       z-index: 1;
     }
 
     .content-layout {
       margin-left: var(--menuWidth);
+    }
+  }
+
+  &[data-fixed-menu='1'][data-fixed-header='0'] {
+    .left-sider {
+      top: var(--headerHeight);
+      transition: none;
     }
   }
 
