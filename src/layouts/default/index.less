@@ -1,14 +1,11 @@
 .default-layout {
   min-height: 100vh;
-  .content-layout {
-    transition: margin-left 0.2s;
-    transition-duration: 0.2s;
-    transition-timing-function: ease;
-    transition-delay: 0s;
-    transition-property: margin-left;
-  }
+
   .left-sider {
-    transition: none;
+    // 允许的动画效果属性
+    // 在切换固定header时, 会有一个从上而下的动画, 但是并不需要, 在这里排除掉 top 和 margin-top的动画效果
+    transition-property: width, margin-left, margin-right, padding, position, flex, min-width,
+      max-width;
   }
 
   .content-layout {

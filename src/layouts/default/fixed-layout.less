@@ -11,7 +11,6 @@
     .content-layout,
     .left-sider {
       margin-top: var(--headerHeight);
-      transition: none;
     }
   }
 
@@ -19,28 +18,19 @@
     .left-sider {
       overflow: auto;
       height: 100vh;
-      position: fixed;
+      position: sticky;
       left: 0;
-      top: 0;
+      top: var(--headerHeight);
+      height: calc(100vh - var(--headerHeight));
       bottom: 0;
       z-index: 1;
-    }
-
-    .content-layout {
-      margin-left: var(--menuWidth);
-    }
-  }
-
-  &[data-fixed-menu='1'][data-fixed-header='0'] {
-    .left-sider {
-      top: var(--headerHeight);
-      transition: none;
+      // 禁止滚动反弹
+      overscroll-behavior: contain;
     }
   }
 
   &[data-menu-collapsed='1'] {
     .content-layout {
-      margin-left: var(--menuCollapsedWidth);
     }
   }
 }

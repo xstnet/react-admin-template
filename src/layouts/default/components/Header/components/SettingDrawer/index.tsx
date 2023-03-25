@@ -37,13 +37,21 @@ const SettingDrawer: React.FC<IProps> = (props) => {
   const handleSettingFormChange = (changedValues: Partial<IFormState>, values: IFormState) => {
     const settingItems = { ...changedValues };
     // 设置外观
-    const { theme } = settingItems;
+    const { theme, fixedMenu, fixedHeader } = settingItems;
     // 变更主题时, 判断是否跟随系统
     if (theme) {
       console.log('themeee', theme);
 
       settingItems.followSystemTheme = theme === 'followSystem';
     }
+    // 固定菜单时, 头部也必须联动固定
+    if (fixedMenu) {
+      settingItems.fixedHeader = true;
+    }
+    if (fixedHeader === false) {
+      settingItems.fixedMenu = false;
+    }
+    // todo fixedMenu时 滚动反弹效果去除
     setSetting(settingItems as typeof settings);
 
     console.log('chage', changedValues, values);
@@ -89,7 +97,12 @@ const SettingDrawer: React.FC<IProps> = (props) => {
         <Form.Item label="固定头部" valuePropName="checked" name="fixedHeader">
           <Switch checkedChildren="开启" unCheckedChildren="关闭" />
         </Form.Item>
-        <Form.Item label="固定菜单" valuePropName="checked" name="fixedMenu">
+        <Form.Item
+          help="固定菜单启用时, 头部也会同步固定"
+          label="固定菜单"
+          valuePropName="checked"
+          name="fixedMenu"
+        >
           <Switch checkedChildren="开启" unCheckedChildren="关闭" />
         </Form.Item>
         <Form.Item valuePropName="checked" label="显示页脚" name="showFootor">

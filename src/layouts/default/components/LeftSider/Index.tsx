@@ -3,11 +3,9 @@ import { Layout } from 'antd';
 import MenuList from './MenuList';
 import { MenuContext } from '@/contexts/Menu';
 import useThemeToken from '@/hooks/useThemeToken';
-import { SettingContext } from '@/contexts/Setting';
 
 const LeftSider: React.FC = () => {
   const { menuCollapsed } = useContext(MenuContext);
-
   const { colorBgContainer } = useThemeToken();
 
   return (
