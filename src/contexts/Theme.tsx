@@ -3,6 +3,7 @@ import { ConfigProvider, theme as AntdTheme } from 'antd';
 import React, { createContext, useContext } from 'react';
 import { SettingContext } from './Setting';
 import useSystemThemeMode from '@/hooks/useSystemThemeMode';
+import 'dayjs/locale/zh-cn';
 
 export interface IContextValue {}
 
