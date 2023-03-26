@@ -151,6 +151,7 @@ const MenuList: React.FC = () => {
 
   return (
     <Menu
+      style={{ height: '100%' }}
       onClick={handleClick}
       mode="inline"
       defaultSelectedKeys={[defaultActiveMenu]}

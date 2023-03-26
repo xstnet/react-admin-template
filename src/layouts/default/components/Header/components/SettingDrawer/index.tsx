@@ -1,9 +1,10 @@
 import Iconfont from '@/components/Iconfont';
 import { SettingContext } from '@/contexts/Setting';
+import useSystemThemeMode from '@/hooks/useSystemThemeMode';
 import { noop } from '@/utils/util';
 import { useUpdateEffect } from 'ahooks';
 import { Drawer, Radio, Form, Switch, Divider } from 'antd';
-import { useContext, useEffect, useMemo } from 'react';
+import { useContext, useMemo } from 'react';
 import ThemeColorPicker from '../ThemeColorPicker';
 
 interface IProps {
@@ -23,6 +24,7 @@ const SettingDrawer: React.FC<IProps> = (props) => {
   const { open, onClose = noop } = props;
   const { settings, setSetting } = useContext(SettingContext);
   const [form] = Form.useForm<IFormState>();
+  const [systemThemeMode] = useSystemThemeMode();
 
   // 设置初始值
   const initFormState: IFormState = useMemo(() => {
@@ -42,7 +44,12 @@ const SettingDrawer: React.FC<IProps> = (props) => {
     if (theme) {
       console.log('themeee', theme);
 
-      settingItems.followSystemTheme = theme === 'followSystem';
+      settingItems.followSystemTheme = false;
+      if (theme === 'followSystem') {
+        settingItems.followSystemTheme = true;
+        // 重置主题和系统一样
+        settingItems.theme = systemThemeMode;
+      }
     }
     // 固定菜单时, 头部也必须联动固定
     if (fixedMenu) {

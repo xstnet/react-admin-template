@@ -34,8 +34,8 @@ const SettingProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
       theme: 'light',
       compactMode: false,
       followSystemTheme: false,
-      fixedHeader: false,
-      fixedMenu: false,
+      fixedHeader: true,
+      fixedMenu: true,
       primaryColor: '#00b96b',
       ...settingsCache
     } as IContextValue['settings'];
@@ -46,6 +46,7 @@ const SettingProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const setSettingPartial = useCallback<IContextValue['setSetting']>(
     (newSettings) => {
       const writeSettings = { ...settings, ...newSettings };
+
       setSetting(writeSettings);
       // 存储设置
       Cache.set('settings', writeSettings);
