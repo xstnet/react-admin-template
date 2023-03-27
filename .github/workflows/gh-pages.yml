@@ -20,7 +20,7 @@ jobs:
         run: |
           npm i -g pnpm
           pnpm install
-          pnpm run build
+          pnpm run gh-pages
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@releases/v3
         with:

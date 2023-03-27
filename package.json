@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
+    "gh-pages": "tsc && vite build --base=/react-admin-template",
     "preview": "vite preview"
   },
   "dependencies": {
