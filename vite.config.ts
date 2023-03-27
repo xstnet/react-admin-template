@@ -15,6 +15,7 @@ export default defineConfig({
       '@page': _resolve('src/pages')
     }
   },
+  envDir: _resolve('env'),
 
   build: {
     rollupOptions: {

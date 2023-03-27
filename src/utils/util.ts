@@ -7,13 +7,13 @@ export function stopElementEvent(e: Event, prevent = true, propagation = true) {
 // location.href 真香
 export function toLoginPage(delay = 500) {
   setTimeout(() => {
-    window.location.href = '/login';
+    window.location.href = import.meta.env.BASE_URL + 'login';
   }, delay);
 }
 
 export function toDashboardPage(delay = 500) {
   setTimeout(() => {
-    window.location.href = '/dashboard';
+    window.location.href = import.meta.env.BASE_URL + 'dashboard';
   }, delay);
 }
 
