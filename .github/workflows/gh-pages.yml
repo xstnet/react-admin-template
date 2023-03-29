@@ -37,6 +37,7 @@ jobs:
           echo "    Redirecting..." >> dist/404.html
           echo "  </body>" >> dist/404.html
           echo "</html>" >> dist/404.html
+
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@releases/v3
         with:
