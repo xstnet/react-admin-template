@@ -81,7 +81,7 @@ const SettingDrawer: React.FC<IProps> = (props) => {
         {/* <Divider>外观</Divider> */}
 
         <Form.Item label="外观" name="theme">
-          <Radio.Group buttonStyle="solid" defaultValue={initFormState.theme}>
+          <Radio.Group buttonStyle="solid">
             <Radio.Button value="light">
               <Iconfont type="icon-theme-light" /> 浅色
             </Radio.Button>
