@@ -29,7 +29,7 @@ const DefaultLayout: React.FC = () => {
   useEffect(() => {
     if (!validateToken()) {
       // token 无效
-      toLoginPage();
+      return;
     }
 
     // 第一个接口必须要保成功
@@ -50,6 +50,12 @@ const DefaultLayout: React.FC = () => {
         }
       });
   }, []);
+
+  if (!validateToken()) {
+    // token 无效
+    toLoginPage();
+    return <></>;
+  }
 
   console.log('default layout render...');
 
