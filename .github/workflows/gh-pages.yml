@@ -26,19 +26,19 @@ jobs:
 
       - name: Generate 404 Page 🔧 # This example project is built using npm and outputs the result to the 'build' folder. Replace with the commands required to build your project, or remove this step entirely if your site is pre-built.
         run: |
-          echo "<!DOCTYPE html>" > dist/404.html
-          echo "<html>" >> dist/404.html
-          echo "  <head>" >> dist/404.html
-          echo "    <title>Redirecting...</title>" >> dist/404.html
-          echo "    <script>" >> dist/404.html
-          echo "      var path = window.location.pathname.replace(/^\\/?(.+\\/)?/, \"\$1\");" >> dist/404.html
-          echo "      window.location.replace(\"/\" + path);" >> dist/404.html
-          echo "    </script>" >> dist/404.html
-          echo "  </head>" >> dist/404.html
-          echo "  <body>" >> dist/404.html
-          echo "    Redirecting..." >> dist/404.html
-          echo "  </body>" >> dist/404.html
-          echo "</html>" >> dist/404.html
+          echo "<!DOCTYPE html>" > 404.html
+          echo "<html>" >> 404.html
+          echo "  <head>" >> 404.html
+          echo "    <title>Redirecting...</title>" >> 404.html
+          echo "    <script>" >> 404.html
+          echo "      var path = window.location.pathname.replace(/^\\/?(.+\\/)?/, \"\$1\");" >> 404.html
+          echo "      window.location.replace(\"/\" + path);" >> 404.html
+          echo "    </script>" >> 404.html
+          echo "  </head>" >> 404.html
+          echo "  <body>" >> 404.html
+          echo "    Redirecting..." >> 404.html
+          echo "  </body>" >> 404.html
+          echo "</html>" >> 404.html
 
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@releases/v3
