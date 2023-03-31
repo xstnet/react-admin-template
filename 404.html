@@ -3,8 +3,10 @@
   <head>
     <title>Redirecting...</title>
     <script>
-      var path = window.location.pathname.replace(/^\/?(.+\/)?/, "$1");
-      window.location.replace("/" + path);
+      const repo = location.pathname.replace(/\/[^/]+$/, '');
+      const page = location.pathname.split(repo)[1]+location.search;
+      const redirectUrl = ;
+      window.location.replace(redirectUrl);
     </script>
   </head>
   <body>
