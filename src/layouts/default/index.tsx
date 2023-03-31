@@ -33,6 +33,7 @@ const DefaultLayout: React.FC = () => {
   useEffect(() => {
     if (!validateToken()) {
       // token 无效
+      navigate('/login');
       return;
     }
 
@@ -64,8 +65,9 @@ const DefaultLayout: React.FC = () => {
 
   if (!validateToken()) {
     // token 无效
+    // 初次可能会无效, react-route推荐在组件渲染之后再进行跳转, 所以初次跳转方法放到了 useEffect中
     navigate('/login');
-    return <></>;
+    return null;
   }
 
   if (getUserInfoLoading) {
