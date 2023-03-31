@@ -24,7 +24,7 @@ const MenuList: React.FC = () => {
   // 匹配默认展开菜单是否结束
   let matchOpenKeysEnd = false;
 
-  const { pathname } = location;
+  const pathname = location.pathname.replace(import.meta.env.BASE_URL.replace(/\/$/, ''), '');
   const [searchParams] = useSearchParams();
 
   // 菜单点击事件
