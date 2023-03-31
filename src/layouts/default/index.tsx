@@ -28,6 +28,8 @@ const DefaultLayout: React.FC = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
 
+  console.log('default layout render...');
+
   useEffect(() => {
     if (!validateToken()) {
       // token 无效
@@ -65,8 +67,6 @@ const DefaultLayout: React.FC = () => {
     navigate('/login');
     return <></>;
   }
-
-  console.log('default layout render...');
 
   if (getUserInfoLoading) {
     return <PageLoading title="页面加载中" loading={getUserInfoLoading} />;
