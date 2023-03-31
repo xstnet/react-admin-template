@@ -3,9 +3,11 @@
   <head>
     <title>Redirecting...</title>
     <script>
-      const repo = location.pathname.replace(/\/[^/]+$/, '');
-      const page = location.pathname.split(repo)[1]+location.search;
-      const redirectUrl = location.origin+repo+'?ghpage='+encodeURIComponent(page);
+      const path = location.pathname;
+      const pos = path.indexOf('\/', 1);
+      const repo = path.substring(0, pos);
+      const ghpage = path.substring(pos);
+      const redirectUrl = location.origin+repo+'/?ghpage='+encodeURIComponent(ghpage+location.search);
       window.location.replace(redirectUrl);
     </script>
   </head>
