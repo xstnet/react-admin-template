@@ -31,8 +31,10 @@ jobs:
           echo "  <head>" >> dist/404.html
           echo "    <title>Redirecting...</title>" >> dist/404.html
           echo "    <script>" >> dist/404.html
-          echo "      var path = window.location.pathname.replace(/^\\/?(.+\\/)?/, \"\$1\");" >> dist/404.html
-          echo "      window.location.replace(\"/\" + path);" >> dist/404.html
+          echo "      const repo = location.pathname.replace(/\/[^/]+$/, '');" >> dist/404.html
+          echo "      const page = location.pathname.split(repo)[1]+location.search;" >> dist/404.html
+          echo "      const redirectUrl = `${location.origin}${repo}?ghpage=${encodeURIComponent(page)}`;" >> dist/404.html
+          echo "      window.location.replace(redirectUrl);" >> dist/404.html
           echo "    </script>" >> dist/404.html
           echo "  </head>" >> dist/404.html
           echo "  <body>" >> dist/404.html

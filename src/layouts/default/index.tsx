@@ -5,7 +5,6 @@ import Content from './components/Content';
 import Breadcrumb from './components/Breadcrumb';
 import { useContext, useEffect, useState } from 'react';
 
-import { toLoginPage } from '@/utils/util';
 import { getUserInfo } from '@/api';
 import { validateToken } from '@/utils/jwt';
 import PageLoading from '@/components/Loading/PageLoading';
@@ -16,6 +15,7 @@ import { SettingContext } from '@/contexts/Setting';
 import './index.less';
 import './fixed-layout.less';
 import { MenuContext } from '@/contexts/Menu';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 const DefaultLayout: React.FC = () => {
   const [getUserInfoLoading, setGetUserInfoLoading] = useState(true);
@@ -25,6 +25,8 @@ const DefaultLayout: React.FC = () => {
   const {
     settings: { fixedMenu, fixedHeader }
   } = useContext(SettingContext);
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
 
   useEffect(() => {
     if (!validateToken()) {
@@ -38,6 +40,13 @@ const DefaultLayout: React.FC = () => {
         setGetUserInfoLoading(false);
         setIsLogin(true);
         setUserInfo!(data);
+
+        // 借助 gh-page 404.html的功能跳转回来, 解析路由并加载相应的页面
+        if (searchParams.has('ghpage')) {
+          const ghpage = decodeURIComponent(searchParams.get('ghpage')!);
+          navigate(ghpage);
+          return;
+        }
       })
       .catch((e) => {
         if (e instanceof AxiosError) {
@@ -53,7 +62,7 @@ const DefaultLayout: React.FC = () => {
 
   if (!validateToken()) {
     // token 无效
-    toLoginPage();
+    navigate('/login');
     return <></>;
   }
 

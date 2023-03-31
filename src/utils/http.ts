@@ -60,7 +60,12 @@ axios.interceptors.response.use(
     if (data.code === ResponseCodeEnum.noLogin) {
       message.error('您还没有登录, 即将跳转到登录页面, 请稍后...');
       Cache.remove(Config.tokenKey);
-      toLoginPage();
+      // gh-page 不支持前端路由, 清除token后刷新页面,由组件控制跳转
+      if (import.meta.env.MODE === 'gh-page') {
+        location.reload();
+      } else {
+        toLoginPage();
+      }
       return Promise.reject(data);
     }
 
@@ -68,7 +73,11 @@ axios.interceptors.response.use(
     if (data.code === ResponseCodeEnum.loginExpired) {
       message.error('登录已失效, 即将跳转到登录页面...');
       Cache.remove(Config.tokenKey);
-      toLoginPage();
+      if (import.meta.env.MODE === 'gh-page') {
+        location.reload();
+      } else {
+        toLoginPage();
+      }
       return Promise.reject(data);
     }
 

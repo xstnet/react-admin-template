@@ -15,11 +15,11 @@ import {
 import './index.less';
 import Iconfont from '@/components/Iconfont';
 import Cache from '@/utils/cache';
-import { toLoginPage } from '@/utils/util';
 import { postLogout } from '@/api';
 import { MenuContext } from '@/contexts/Menu';
 import { SettingContext } from '@/contexts/Setting';
 import SettingIcon from './components/SettingIcon';
+import { useNavigate } from 'react-router-dom';
 
 const Header: React.FC = () => {
   const { fullScreen, setFullScreen, userInfo, setUserInfo, setIsLogin } =
@@ -34,6 +34,8 @@ const Header: React.FC = () => {
   const {
     token: { colorBgContainer }
   } = theme.useToken();
+
+  const navigate = useNavigate();
 
   const handleFullScreen = () => {
     message.success(!fullScreen ? '进入全屏模式' : '已退出全屏模式');
@@ -133,7 +135,7 @@ const Header: React.FC = () => {
             Cache.removeToken();
             setIsLogin(false);
             setUserInfo(null);
-            toLoginPage();
+            navigate('/login');
           });
         }
       }

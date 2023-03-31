@@ -3,10 +3,10 @@ import { Button, Checkbox, Col, ConfigProvider, Form, Input, Row, theme, Typogra
 import Cache from '@/utils/cache';
 import { validateToken } from '@/utils/jwt';
 import { postLogin } from '@/api';
-import { toDashboardPage } from '@/utils/util';
 import { useRequest } from 'ahooks';
 import './index.less';
 import Config from '@/configs';
+import { useNavigate } from 'react-router-dom';
 
 interface IFormState {
   username: string;
@@ -16,12 +16,13 @@ interface IFormState {
 
 // todo: dark theme 适配
 const LoginPage: React.FC = () => {
+  const navigate = useNavigate();
   const { loading: loginRuning, run: submit } = useRequest(postLogin, {
     manual: true,
     debounceWait: 300,
     onSuccess: (data) => {
       Cache.setToken(data.token);
-      toDashboardPage();
+      navigate('/dashboard');
     }
   });
 
@@ -40,7 +41,7 @@ const LoginPage: React.FC = () => {
   useEffect(() => {
     if (validateToken()) {
       // 跳转到控制台页, 再通过接口继续判断token的有效性
-      toDashboardPage();
+      navigate('/dashboard');
     }
   }, []);
 
