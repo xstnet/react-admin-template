@@ -5,7 +5,7 @@
     <script>
       const repo = location.pathname.replace(/\/[^/]+$/, '');
       const page = location.pathname.split(repo)[1]+location.search;
-      const redirectUrl = ;
+      const redirectUrl = location.origin+repo+'?ghpage='+encodeURIComponent(page);
       window.location.replace(redirectUrl);
     </script>
   </head>
