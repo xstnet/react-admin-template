@@ -18,13 +18,15 @@ const VisitLineChart: React.FC = () => {
     { tab: '访问量', key: 'pv' },
     { tab: 'IP', key: 'ip' }
   ];
-  const visitData = Array.from({ length: 7 }).map((_, i) => ({
-    name: dayjs()
-      .subtract(i + 1, 'day')
-      .format('MM-DD'),
-    pv: randomNumber(1000, 10000),
-    ip: randomNumber(100, 1000)
-  }));
+  const visitData = Array.from({ length: 7 })
+    .map((_, i) => ({
+      name: dayjs()
+        .subtract(i + 1, 'day')
+        .format('MM-DD'),
+      pv: randomNumber(1000, 10000),
+      ip: randomNumber(100, 1000)
+    }))
+    .reverse();
 
   return (
     <Card activeTabKey={activeTab} onTabChange={(key) => setActiveTab(key)} tabList={tabList}>
