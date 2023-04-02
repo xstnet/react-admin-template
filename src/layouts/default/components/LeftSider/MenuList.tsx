@@ -8,6 +8,7 @@ import Iconfont from '@/components/Iconfont';
 import { createIframeUrl } from '@/utils/iframe';
 import Config from '@/configs';
 import { MenuContext } from '@/contexts/Menu';
+import { trimRightStr } from '@/utils/util';
 
 type AntdMenuItem = Required<MenuProps>['items'][number];
 
@@ -24,7 +25,7 @@ const MenuList: React.FC = () => {
   // 匹配默认展开菜单是否结束
   let matchOpenKeysEnd = false;
 
-  const pathname = location.pathname.replace(import.meta.env.BASE_URL.replace(/\/$/, ''), '');
+  const pathname = location.pathname.replace(trimRightStr(import.meta.env.BASE_URL, '/'), '');
   const [searchParams] = useSearchParams();
 
   // 菜单点击事件

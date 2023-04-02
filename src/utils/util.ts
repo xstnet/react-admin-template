@@ -18,3 +18,34 @@ export function toDashboardPage(delay = 500) {
 }
 
 export function noop() {}
+
+export function trimStr(str: string, substr: string, mode: 1 | 2 | 3 = 3): string {
+  if (typeof str !== 'string' || typeof substr !== 'string') {
+    return '';
+  }
+
+  if (!substr.length) {
+    return str;
+  }
+
+  if (mode & 1) {
+    // 从字符串头部开始查找要去除的内容
+    if (str.startsWith(substr)) {
+      return str.substring(substr.length);
+    }
+  }
+  if (mode & 2) {
+    // 从字符串尾部开始查找要去除的内容
+    if (str.endsWith(substr)) {
+      return str.substring(0, str.length - substr.length);
+    }
+  }
+
+  return str;
+}
+export function trimLeftStr(str: string, substr: string): string {
+  return trimStr(str, substr, 1);
+}
+export function trimRightStr(str: string, substr: string): string {
+  return trimStr(str, substr, 2);
+}
