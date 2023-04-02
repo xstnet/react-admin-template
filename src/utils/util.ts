@@ -49,3 +49,7 @@ export function trimLeftStr(str: string, substr: string): string {
 export function trimRightStr(str: string, substr: string): string {
   return trimStr(str, substr, 2);
 }
+
+export function randomNumber(min: number, max: number) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}

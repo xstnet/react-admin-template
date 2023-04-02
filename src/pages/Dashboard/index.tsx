@@ -1,6 +1,8 @@
 import { ArrowUpOutlined } from '@ant-design/icons';
 import { Card, Col, Row, Statistic } from 'antd';
 
+import VisitLineChart from './components/VisitLineChart';
+
 const DashboardPage: React.FC = () => {
   return (
     <>
@@ -44,6 +46,15 @@ const DashboardPage: React.FC = () => {
                 suffix="%"
               />
             </Card>
+          </Col>
+        </Row>
+        <br />
+        <Row gutter={16}>
+          <Col span={12}>
+            <VisitLineChart />
+          </Col>
+          <Col span={12}>
+            <Card>待定</Card>
           </Col>
         </Row>
       </div>
