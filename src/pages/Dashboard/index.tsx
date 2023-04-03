@@ -1,21 +1,13 @@
 import { ArrowUpOutlined } from '@ant-design/icons';
 import { Card, Col, Row, Statistic } from 'antd';
-import { PieChart, Pie, Legend, Cell, Tooltip, ResponsiveContainer } from 'recharts';
-
+import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
+import TodoList from './components/TodoList';
 import VisitLineChart from './components/VisitLineChart';
+
 const data01 = [
   { name: '视频类', value: 400 },
   { name: '图文类', value: 300 },
   { name: '资讯类', value: 300 }
-];
-
-const data02 = [
-  { name: 'Group A1', value: 2400 },
-  { name: 'Group B1', value: 4567 },
-  { name: 'Group C1', value: 1398 },
-  { name: 'Group D1', value: 9800 },
-  { name: 'Group E1', value: 3908 },
-  { name: 'Group F1', value: 4800 }
 ];
 
 const DashboardPage: React.FC = () => {
@@ -89,7 +81,7 @@ const DashboardPage: React.FC = () => {
                     ))}
                   </Pie>
 
-                  <Tooltip />
+                  <Tooltip wrapperStyle={{ outline: 'none' }} />
                 </PieChart>
               </ResponsiveContainer>
             </Card>
@@ -98,10 +90,10 @@ const DashboardPage: React.FC = () => {
         <br />
         <Row gutter={16}>
           <Col span={12}>
-            <VisitLineChart />
+            <TodoList />
           </Col>
           <Col span={12}>
-            <Card>登录历史</Card>
+            <Card title="登录历史">登录历史</Card>
           </Col>
         </Row>
       </div>

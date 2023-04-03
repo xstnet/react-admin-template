@@ -10,3 +10,16 @@ export enum GenderEnum {
   // 女
   female = 2
 }
+
+export enum TodoItemEnum {
+  Incomplete = 1,
+  completed = 2,
+  deleted = 10
+}
+
+export enum DayjsFormatEnum {
+  day = 'YYYY-MM-DD',
+  second = 'YYYY-MM-DD HH:mm:ss',
+  minute = 'YYYY-MM-DD HH:mm',
+  hour = 'YYYY-MM-DD HH'
+}

@@ -13,7 +13,7 @@ import {
 } from 'recharts';
 
 const VisitLineChart: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<'pv' | 'ip'>('pv');
+  const [activeTab, setActiveTab] = useState('pv');
   const tabList = [
     { tab: '访问量', key: 'pv' },
     { tab: 'IP', key: 'ip' }
@@ -39,12 +39,13 @@ const VisitLineChart: React.FC = () => {
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="name" />
           <YAxis />
-          <Tooltip />
+          <Tooltip wrapperStyle={{ outline: 'none' }} />
           <Area
             type="monotone"
+            strokeWidth={2}
             dataKey={activeTab}
-            stroke={chartColor[activeTab].stroke}
-            fill={chartColor[activeTab].fill}
+            stroke={chartColor[activeTab as 'pv'].stroke}
+            fill={chartColor[activeTab as 'pv'].fill}
           />
         </AreaChart>
       </ResponsiveContainer>
