@@ -13,11 +13,15 @@ import {
 } from 'recharts';
 
 const VisitLineChart: React.FC = () => {
-  const [activeTab, setActiveTab] = useState('pv');
+  const [activeTab, setActiveTab] = useState<'pv' | 'ip'>('pv');
   const tabList = [
     { tab: '访问量', key: 'pv' },
     { tab: 'IP', key: 'ip' }
   ];
+  const chartColor = {
+    pv: { stroke: '#8884d8', fill: '#b5b1e6' },
+    ip: { stroke: '#00b96b', fill: '#82ca9d' }
+  };
   const visitData = Array.from({ length: 7 })
     .map((_, i) => ({
       name: dayjs()
@@ -36,7 +40,12 @@ const VisitLineChart: React.FC = () => {
           <XAxis dataKey="name" />
           <YAxis />
           <Tooltip />
-          <Area type="monotone" dataKey={activeTab} stroke="#8884d8" fill="#8884d8" />
+          <Area
+            type="monotone"
+            dataKey={activeTab}
+            stroke={chartColor[activeTab].stroke}
+            fill={chartColor[activeTab].fill}
+          />
         </AreaChart>
       </ResponsiveContainer>
     </Card>
