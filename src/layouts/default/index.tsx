@@ -16,6 +16,7 @@ import './index.less';
 import './fixed-layout.less';
 import { MenuContext } from '@/contexts/Menu';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import SmallScreenNotify from './components/SmallScreenNotify';
 
 const DefaultLayout: React.FC = () => {
   const [getUserInfoLoading, setGetUserInfoLoading] = useState(true);
@@ -82,7 +83,6 @@ const DefaultLayout: React.FC = () => {
       className="default-layout"
     >
       <Header />
-
       <Layout>
         <LeftSider />
         <Layout className="content-layout">
@@ -90,6 +90,7 @@ const DefaultLayout: React.FC = () => {
           <Content />
         </Layout>
       </Layout>
+      <SmallScreenNotify />
     </Layout>
   );
 };
