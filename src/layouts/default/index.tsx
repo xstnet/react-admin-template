@@ -1,4 +1,4 @@
-import { Layout, notification, theme } from 'antd';
+import { Layout, notification } from 'antd';
 import LeftSider from './components/LeftSider/Index';
 import Header from './components/Header';
 import Content from './components/Content';
@@ -25,7 +25,7 @@ const DefaultLayout: React.FC = () => {
   const { menuCollapsed } = useContext(MenuContext);
   const { colorBgContainer } = useThemeToken();
   const {
-    settings: { fixedMenu, fixedHeader }
+    settings: { fixedMenu, fixedHeader, theme }
   } = useContext(SettingContext);
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -81,7 +81,7 @@ const DefaultLayout: React.FC = () => {
       data-menu-collapsed={menuCollapsed ? 1 : 0}
       data-fixed-header={fixedHeader ? 1 : 0}
       style={{ background: colorBgContainer }}
-      className="default-layout"
+      className={`default-layout theme-${theme}`}
     >
       <Header />
       <Layout>

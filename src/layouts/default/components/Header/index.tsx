@@ -19,6 +19,7 @@ import { postLogout } from '@/api';
 import { MenuContext } from '@/contexts/Menu';
 import { SettingContext } from '@/contexts/Setting';
 import SettingIcon from './components/SettingIcon';
+import NotifyIcon from './components/NotifyIcon';
 import { useNavigate } from 'react-router-dom';
 
 const Header: React.FC = () => {
@@ -67,6 +68,8 @@ const Header: React.FC = () => {
         <>
           {/* 搜索按钮 */}
           <Iconfont title="搜索" type="icon-search" className="action-icon" />
+          <NotifyIcon />
+
           {/* 全屏按钮 */}
           {fullScreen ? (
             <FullscreenExitOutlined
@@ -81,7 +84,6 @@ const Header: React.FC = () => {
               onClick={handleFullScreen}
             />
           )}
-
           {/* Github */}
           <a
             target="_blank"
