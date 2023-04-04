@@ -11,6 +11,7 @@ export interface IContextValue {
     followSystemTheme: boolean;
     // 固定头部
     fixedHeader: boolean;
+    showFooter: boolean;
     // 固定菜单栏
     fixedMenu: boolean;
     // 主色调
@@ -36,6 +37,7 @@ const SettingProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
       followSystemTheme: false,
       fixedHeader: true,
       fixedMenu: true,
+      showFooter: true,
       primaryColor: '#00b96b',
       ...settingsCache
     } as IContextValue['settings'];

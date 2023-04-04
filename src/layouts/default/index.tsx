@@ -17,6 +17,7 @@ import './fixed-layout.less';
 import { MenuContext } from '@/contexts/Menu';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import SmallScreenNotify from './components/SmallScreenNotify';
+import Footer from './components/Footer';
 
 const DefaultLayout: React.FC = () => {
   const [getUserInfoLoading, setGetUserInfoLoading] = useState(true);
@@ -88,8 +89,10 @@ const DefaultLayout: React.FC = () => {
         <Layout className="content-layout">
           <Breadcrumb />
           <Content />
+          <Footer />
         </Layout>
       </Layout>
+
       <SmallScreenNotify />
     </Layout>
   );

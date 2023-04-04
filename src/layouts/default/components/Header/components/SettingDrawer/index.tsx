@@ -30,8 +30,7 @@ const SettingDrawer: React.FC<IProps> = (props) => {
   const initFormState: IFormState = useMemo(() => {
     return {
       ...settings,
-      theme: settings.followSystemTheme ? 'followSystem' : settings.theme,
-      showFooter: undefined
+      theme: settings.followSystemTheme ? 'followSystem' : settings.theme
     };
   }, [settings]);
 
@@ -112,7 +111,7 @@ const SettingDrawer: React.FC<IProps> = (props) => {
         >
           <Switch checkedChildren="开启" unCheckedChildren="关闭" />
         </Form.Item>
-        <Form.Item valuePropName="checked" label="显示页脚" name="showFootor">
+        <Form.Item valuePropName="checked" label="显示页脚" name="showFooter">
           <Switch checkedChildren="开启" unCheckedChildren="关闭" />
         </Form.Item>
       </Form>
