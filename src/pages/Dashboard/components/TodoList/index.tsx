@@ -21,12 +21,12 @@ const now = () => dayjs().format(DayjsFormatEnum.second);
 const TodoList: React.FC = () => {
   // 当前正聚焦的todo item, 用以显示操作项, 如: 编辑/删除等
   const [focusTodo, setFocusTodo] = useState(0);
-  const { colorPrimary } = useThemeToken();
+  const { colorError } = useThemeToken();
   const [todoList, setTodoList] = useState<ITodoItem[]>([
     {
       id: randomNumber(100, 1000000000),
       name: '鼠标悬浮时在显示编辑图标',
-      status: TodoItemEnum.Incomplete,
+      status: TodoItemEnum.completed,
       create_time: now(),
       update_time: now()
     },
@@ -110,7 +110,7 @@ const TodoList: React.FC = () => {
                     <Tooltip title="删除">
                       <DeleteOutlined
                         onClick={() => handleDelete(id)}
-                        style={{ color: colorPrimary }}
+                        style={{ color: colorError }}
                       />
                     </Tooltip>
                   )}

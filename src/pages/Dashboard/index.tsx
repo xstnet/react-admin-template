@@ -1,6 +1,7 @@
 import { ArrowUpOutlined } from '@ant-design/icons';
 import { Card, Col, Row, Statistic } from 'antd';
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from 'recharts';
+import LoginHistory from './components/LoginHistory';
 import TodoList from './components/TodoList';
 import VisitLineChart from './components/VisitLineChart';
 
@@ -57,12 +58,12 @@ const DashboardPage: React.FC = () => {
         </Row>
         <br />
         <Row gutter={16}>
-          <Col span={18}>
+          <Col span={18} style={{ height: 300 }}>
             <VisitLineChart />
           </Col>
           <Col span={6}>
             <Card title="内容占比">
-              <ResponsiveContainer width="100%" height={200}>
+              <ResponsiveContainer width="100%" height={300}>
                 <PieChart width={400} height={400}>
                   <Pie
                     data={data01}
@@ -70,7 +71,7 @@ const DashboardPage: React.FC = () => {
                     nameKey="name"
                     cx="50%"
                     cy="50%"
-                    outerRadius={70}
+                    outerRadius={90}
                     label
                   >
                     {data01.map((entry, index) => (
@@ -93,7 +94,7 @@ const DashboardPage: React.FC = () => {
             <TodoList />
           </Col>
           <Col span={12}>
-            <Card title="登录历史">登录历史</Card>
+            <LoginHistory />
           </Col>
         </Row>
       </div>

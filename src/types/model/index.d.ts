@@ -25,4 +25,11 @@ namespace Model {
     content: string;
     tags: string[];
   }
+
+  interface LoginHistory extends CommonFields {
+    id: number;
+    userId: User['id'];
+    loginIp: string;
+    nickname: User['nickname'];
+  }
 }

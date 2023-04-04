@@ -34,7 +34,7 @@ const VisitLineChart: React.FC = () => {
 
   return (
     <Card activeTabKey={activeTab} onTabChange={(key) => setActiveTab(key)} tabList={tabList}>
-      <ResponsiveContainer width={'100%'} height={200}>
+      <ResponsiveContainer width={'100%'} height={300}>
         <AreaChart data={visitData}>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="name" />
