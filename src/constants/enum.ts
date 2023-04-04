@@ -12,7 +12,7 @@ export enum GenderEnum {
 }
 
 export enum TodoItemEnum {
-  Incomplete = 1,
+  incomplete = 1,
   completed = 2,
   deleted = 10
 }

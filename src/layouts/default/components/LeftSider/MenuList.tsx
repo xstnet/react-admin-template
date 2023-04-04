@@ -3,7 +3,7 @@ import React, { useContext, useMemo } from 'react';
 
 import type { MenuProps } from 'antd';
 import { isDividerMenu, isExtendMenu, isGroupMenu, isLeafMenu, isSubMenu } from '@/utils/is';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import Iconfont from '@/components/Iconfont';
 import { createIframeUrl } from '@/utils/iframe';
 import Config from '@/configs';
@@ -16,16 +16,18 @@ type AntdMenuItem = Required<MenuProps>['items'][number];
 // 后期可以考虑把 Menu单独提取到一个 Provider中, 减少组件渲染
 const MenuList: React.FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const { menuList: processedMenuList, mapKeyToMenu, mapPathToMenu } = useContext(MenuContext);
 
-  let defaultActiveMenu = '/dashboard';
+  let defaultActiveMenu = mapPathToMenu.get('/dashboard')?.key || '';
   // 入栈-出栈来匹配
   let defaultOpenKeys: string[] = [];
   // 匹配默认展开菜单是否结束
   let matchOpenKeysEnd = false;
 
-  const pathname = location.pathname.replace(trimRightStr(import.meta.env.BASE_URL, '/'), '');
+  // react-route-dom 提供的pathname不带 base 前缀, 用着方便
+  const { pathname } = location;
   const [searchParams] = useSearchParams();
 
   // 菜单点击事件
@@ -88,8 +90,6 @@ const MenuList: React.FC = () => {
           // q: 为什么要用 indexOf?
           // a: 因为要兼容 /article/update/10 这种路由
           if (rawMenu.parent && pathname.indexOf(rawMenu.path) === 0) {
-            console.log('dddddd', mapPathToMenu, mapPathToMenu.get(rawMenu.parent), rawMenu.parent);
-
             defaultActiveMenu = mapPathToMenu.get(rawMenu.parent)?.key || '';
             matchOpenKeysEnd = true;
           }
@@ -149,7 +149,6 @@ const MenuList: React.FC = () => {
 
     return makeMenuItems(processedMenuList);
   }, [processedMenuList]);
-
   return (
     <Menu
       style={{ height: '100%' }}

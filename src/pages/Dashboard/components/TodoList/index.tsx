@@ -25,8 +25,8 @@ const TodoList: React.FC = () => {
   const [todoList, setTodoList] = useState<ITodoItem[]>([
     {
       id: randomNumber(100, 1000000000),
-      name: '鼠标悬浮时在显示编辑图标',
-      status: TodoItemEnum.completed,
+      name: '多tab布局支持',
+      status: TodoItemEnum.incomplete,
       create_time: now(),
       update_time: now()
     },
@@ -46,7 +46,7 @@ const TodoList: React.FC = () => {
     setTodoList([
       {
         name: newTotoValue,
-        status: TodoItemEnum.Incomplete,
+        status: TodoItemEnum.incomplete,
         id: randomNumber(100, 1000000000),
         create_time: dayjs().format('YYYY-MM-DD HH:MM:SS'),
         update_time: dayjs().format('YYYY-MM-DD HH:MM:SS')
@@ -62,7 +62,7 @@ const TodoList: React.FC = () => {
       todoList.map((item) =>
         item.id !== id
           ? item
-          : { ...item, status: checked ? TodoItemEnum.completed : TodoItemEnum.Incomplete }
+          : { ...item, status: checked ? TodoItemEnum.completed : TodoItemEnum.incomplete }
       )
     );
   };
@@ -90,7 +90,7 @@ const TodoList: React.FC = () => {
         </Space.Compact>
         {todoList.map(({ id, status, name }) => {
           const completed = status === TodoItemEnum.completed;
-          const showAction = focusTodo === id && status === TodoItemEnum.Incomplete;
+          const showAction = focusTodo === id && status === TodoItemEnum.incomplete;
           return (
             <Checkbox
               onChange={({ target: { checked } }) => handleChangeStatus(id, checked)}
