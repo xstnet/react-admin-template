@@ -48,7 +48,7 @@ const UpdateButton: React.FC<IProps> = ({ state, refreshList }) => {
       </Button>
       <Modal
         open={showUpdateModal}
-        title="更新用户信息用户"
+        title="更新用户信息"
         okText="保存"
         cancelText="取消"
         confirmLoading={updateUserLoading}

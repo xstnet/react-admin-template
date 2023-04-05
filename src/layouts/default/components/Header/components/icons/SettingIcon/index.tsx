@@ -1,7 +1,6 @@
 import Iconfont from '@/components/Iconfont';
-import { Drawer } from 'antd';
 import { useState } from 'react';
-import SettingDrawer from '../SettingDrawer';
+import SettingDrawer from '../../SettingDrawer';
 
 interface IProps {}
 const SettingIcon: React.FC<IProps> = (props) => {

@@ -25,16 +25,17 @@ const UserForm = forwardRef<IRefUserForm, IProps>(({ state }, ref) => {
     <div>
       <Form form={form} labelCol={{ span: 3 }} name="userForm" initialValues={state || undefined}>
         <Form.Item name="username" label="账号" rules={[{ required: true, message: '请输入账号' }]}>
-          <Input ref={inputRef} />
+          <Input placeholder="请输入账号" ref={inputRef} />
         </Form.Item>
         <Form.Item
           name="password"
           label="密码"
-          rules={[{ required: !state, message: '请输入密码' }]}>
-          <Input.Password />
+          rules={[{ required: !state, message: '请输入密码' }]}
+        >
+          <Input.Password placeholder={state ? '不修改密码请留空!' : '请输入密码'} />
         </Form.Item>
         <Form.Item name="nickname" label="昵称" rules={[{ required: true, message: '请输入昵称' }]}>
-          <Input />
+          <Input placeholder="请输入昵称" />
         </Form.Item>
         <Form.Item name="gender" label="性别">
           <Radio.Group>
@@ -43,10 +44,10 @@ const UserForm = forwardRef<IRefUserForm, IProps>(({ state }, ref) => {
           </Radio.Group>
         </Form.Item>
         <Form.Item name="mobile" label="手机号">
-          <Input />
+          <Input placeholder="请输入手机号" />
         </Form.Item>
         <Form.Item name="email" label="邮箱">
-          <Input />
+          <Input placeholder="请输入邮箱" />
         </Form.Item>
       </Form>
     </div>

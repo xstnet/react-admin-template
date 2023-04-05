@@ -20,7 +20,7 @@ const now = () => dayjs().format(DayjsFormatEnum.second);
 
 const TodoList: React.FC = () => {
   // 当前正聚焦的todo item, 用以显示操作项, 如: 编辑/删除等
-  const [focusTodo, setFocusTodo] = useState(0);
+  const [hoverTodo, sethoverTodo] = useState(0);
   const { colorError } = useThemeToken();
   const [todoList, setTodoList] = useState<ITodoItem[]>([
     {
@@ -90,7 +90,7 @@ const TodoList: React.FC = () => {
         </Space.Compact>
         {todoList.map(({ id, status, name }) => {
           const completed = status === TodoItemEnum.completed;
-          const showAction = focusTodo === id && status === TodoItemEnum.incomplete;
+          const showAction = hoverTodo === id && status === TodoItemEnum.incomplete;
           return (
             <Checkbox
               onChange={({ target: { checked } }) => handleChangeStatus(id, checked)}
@@ -100,8 +100,8 @@ const TodoList: React.FC = () => {
               <Text
                 type={completed ? 'secondary' : undefined}
                 delete={completed}
-                onMouseEnter={() => setFocusTodo(id)}
-                onMouseLeave={() => setFocusTodo(0)}
+                onMouseEnter={() => sethoverTodo(id)}
+                onMouseLeave={() => sethoverTodo(0)}
                 editable={showAction ? { onChange: (newName) => handleUpdate(id, newName) } : false}
               >
                 <Space>

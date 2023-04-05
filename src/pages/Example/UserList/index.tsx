@@ -63,13 +63,14 @@ const ExampleUserListPage: React.FC = () => {
         dataIndex: 'id'
       },
       {
-        title: '头像',
-        dataIndex: 'avatar',
-        render: (avatar) => <Avatar src={avatar} />
-      },
-      {
         title: '账号',
-        dataIndex: 'username'
+        dataIndex: 'username',
+        render: (_, { avatar, username }) => (
+          <>
+            {' '}
+            <Avatar src={avatar} /> {username}
+          </>
+        )
       },
 
       {

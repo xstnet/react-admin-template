@@ -1,11 +1,8 @@
 import { GlobalContext } from '@/contexts/Global';
-import { Dropdown, Layout, theme, Space, MenuProps, Avatar, message } from 'antd';
-import React, { useContext, useEffect } from 'react';
+import { Dropdown, Layout, theme, Space, MenuProps, Avatar } from 'antd';
+import React, { useContext } from 'react';
 import {
   EditOutlined,
-  FullscreenOutlined,
-  FullscreenExitOutlined,
-  GithubOutlined,
   LogoutOutlined,
   MenuFoldOutlined,
   MenuUnfoldOutlined,
@@ -17,35 +14,26 @@ import Iconfont from '@/components/Iconfont';
 import Cache from '@/utils/cache';
 import { postLogout } from '@/api';
 import { MenuContext } from '@/contexts/Menu';
-import { SettingContext } from '@/contexts/Setting';
-import SettingIcon from './components/SettingIcon';
-import NotifyIcon from './components/NotifyIcon';
 import { useNavigate } from 'react-router-dom';
+import {
+  SearchIcon,
+  GithubIcon,
+  FullScreenIcon,
+  ThemeIcon,
+  NotifyIcon,
+  SettingIcon
+} from './components/icons';
 
 const Header: React.FC = () => {
-  const { fullScreen, setFullScreen, userInfo, setUserInfo, setIsLogin } =
-    useContext(GlobalContext);
+  const { userInfo, setUserInfo, setIsLogin } = useContext(GlobalContext);
 
   const { menuCollapsed, setMenuCollapsed } = useContext(MenuContext);
-  const {
-    settings: { theme: themeMode },
-    setSetting
-  } = useContext(SettingContext);
 
   const {
     token: { colorBgContainer }
   } = theme.useToken();
 
   const navigate = useNavigate();
-
-  const handleFullScreen = () => {
-    message.success(!fullScreen ? '进入全屏模式' : '已退出全屏模式');
-    setFullScreen(!fullScreen);
-  };
-
-  const handleChangeTheme = () => {
-    setSetting({ followSystemTheme: false, theme: themeMode === 'light' ? 'dark' : 'light' });
-  };
 
   const renderLeftContent = () => {
     return (
@@ -66,50 +54,11 @@ const Header: React.FC = () => {
     const renderIcons = () => {
       return (
         <>
-          {/* 搜索按钮 */}
-          <Iconfont title="搜索" type="icon-search" className="action-icon" />
+          <SearchIcon />
           <NotifyIcon />
-
-          {/* 全屏按钮 */}
-          {fullScreen ? (
-            <FullscreenExitOutlined
-              title="退出全屏模式"
-              className="action-icon"
-              onClick={handleFullScreen}
-            />
-          ) : (
-            <FullscreenOutlined
-              title="进入全屏模式"
-              className="action-icon"
-              onClick={handleFullScreen}
-            />
-          )}
-          {/* Github */}
-          <a
-            target="_blank"
-            className="action-icon"
-            title="Go to Github"
-            href="https://github.com/xstnet/react-admin-template"
-            rel="norefer noopener"
-          >
-            <GithubOutlined />
-          </a>
-          {themeMode === 'dark' ? (
-            <Iconfont
-              onClick={handleChangeTheme}
-              title="主题-深色模式"
-              type="icon-theme-dark"
-              className="action-icon"
-            />
-          ) : (
-            <Iconfont
-              onClick={handleChangeTheme}
-              title="主题-明亮模式"
-              type="icon-theme-light"
-              className="action-icon"
-            />
-          )}
-
+          <FullScreenIcon />
+          <GithubIcon />
+          <ThemeIcon />
           <SettingIcon />
         </>
       );
