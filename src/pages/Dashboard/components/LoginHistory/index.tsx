@@ -24,6 +24,7 @@ const LoginHistory: React.FC<{}> = () => {
     }
   ];
 
+  // 使用相同数据构造数组, 此时没有有效的key
   const data: Model.LoginHistory[] = Array(5).fill({
     id: randomNumber(10, 100000),
     userId: 1,
@@ -34,7 +35,13 @@ const LoginHistory: React.FC<{}> = () => {
 
   return (
     <Card title="登录历史" extra={<Link to="/">查看更多</Link>}>
-      <Table pagination={false} size="small" columns={columns} dataSource={data} />
+      <Table
+        rowKey={() => randomNumber(10, 100000)}
+        pagination={false}
+        size="small"
+        columns={columns}
+        dataSource={data}
+      />
     </Card>
   );
 };
