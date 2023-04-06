@@ -1,6 +1,6 @@
-import { Tooltip } from 'antd';
+import { Tooltip, TooltipProps } from 'antd';
 
-interface IProps {
+interface IProps extends ItemSharedProps {
   time: string;
 }
 
@@ -25,7 +25,7 @@ const afterRules: TimeRulesType[] = [
   [-Infinity, 3600 * 24 * 30 * 12, '%d年后']
 ];
 
-const RelativeTime: React.FC<IProps> = ({ time }) => {
+const RelativeTime: React.FC<IProps> = ({ time, ...props }) => {
   const currTimeAT = Math.floor(new Date().getTime() / 1000);
   const fromTimeAt = Math.floor(new Date(time).getTime() / 1000);
 
@@ -49,7 +49,7 @@ const RelativeTime: React.FC<IProps> = ({ time }) => {
 
   return (
     <Tooltip title={time}>
-      <span>{timeFormat}</span>
+      <span {...props}>{timeFormat}</span>
     </Tooltip>
   );
 };

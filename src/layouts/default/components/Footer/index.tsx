@@ -30,7 +30,20 @@ const Footer = () => {
       <Link href="https://github.com/xstnet" target="_blank">
         <Text type="secondary">醉丶春风</Text>
       </Link>
-      <Text type="secondary">©2023 Created by Ant Design V5</Text>
+      <Text type="secondary">
+        ©2023 Created by
+        <Link
+          target="_blank"
+          href="https://ant-design.antgroup.com/index-cn"
+          style={{
+            margin: '0 6px',
+            color: 'inherit'
+          }}
+        >
+          Ant Design
+        </Link>
+        V5
+      </Text>
     </Layout.Footer>
   );
 };

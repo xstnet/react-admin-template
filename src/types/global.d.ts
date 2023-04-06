@@ -1,3 +1,5 @@
+import { CSSProperties } from 'react';
+
 declare global {
   //设置全局属性
   interface Window {
@@ -25,6 +27,11 @@ declare global {
   type TokenData = {
     uid: number;
   };
+
+  interface ItemSharedProps {
+    className?: string;
+    style?: CSSProperties;
+  }
 }
 
 // 必须要导出,不然无效
