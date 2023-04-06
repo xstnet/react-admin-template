@@ -109,9 +109,12 @@ const NotifyCard: React.FC<IProps> = () => {
           </Button>
         }
       />
-      <Space style={{ width: '100%', justifyContent: 'center' }}>
+      <Divider style={{ margin: '8px 0' }} />
+      <Space
+        split={<Divider type="vertical" />}
+        style={{ width: '100%', justifyContent: 'center', marginBottom: 0 }}
+      >
         <Button type="link">全部已读</Button>
-        <Divider type="vertical" />
         <Button type="link">查看更多</Button>
       </Space>
     </>

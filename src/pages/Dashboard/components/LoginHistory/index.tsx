@@ -1,3 +1,4 @@
+import RelativeTime from '@/components/RelativeTime';
 import { DayjsFormatEnum } from '@/constants/enum';
 import { randomNumber } from '@/utils/util';
 import { Card } from 'antd';
@@ -20,7 +21,10 @@ const LoginHistory: React.FC<{}> = () => {
     {
       title: '登录时间',
       dataIndex: 'create_time',
-      key: 'create_time'
+      key: 'create_time',
+      render: (create_time) => {
+        return <RelativeTime time={create_time} />;
+      }
     }
   ];
 
@@ -30,7 +34,7 @@ const LoginHistory: React.FC<{}> = () => {
     userId: 1,
     loginIp: '127.0.0.1',
     nickname: 'admin',
-    create_time: dayjs().format(DayjsFormatEnum.second)
+    create_time: dayjs().subtract(3, 'second').format(DayjsFormatEnum.second)
   });
 
   return (
