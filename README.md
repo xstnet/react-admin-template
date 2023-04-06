@@ -1,18 +1,42 @@
-## react-admin-template
-react-admin-template
+## React 后台管理系统模板
 
-使用 `vite+react+typescript+antd` 开发的后台管理模板
+这是一个基于 `Vite`、`TypeScript` 和 `Ant Design` 的 `React` 后台管理系统模板。
 
-Demo: https://xstnet.github.io/react-admin-template
+[![Vite Version](https://img.shields.io/badge/Vite-4.1.0-green)](https://vitejs.dev/)
+[![TypeScript Version](https://img.shields.io/badge/TypeScript-4.9.3-blue)](https://www.typescriptlang.org/)
+[![React Version](https://img.shields.io/badge/React-18.2.0-blue)](https://reactjs.org/)
+[![Ant Design Version](https://img.shields.io/badge/Ant%20Design-5.2.1-blue)](https://ant.design/)
+[![License](https://img.shields.io/badge/License-MIT-blue)](https://github.com/xstnet/react-admin-template/LICENSE)
+
+
+
+预览(Preview): https://xstnet.github.io/react-admin-template
+
+## 特性
+
+- 采用`Vite+TypeScript`开发, 完善的类型定义和提示, `tsc`构建通过, 实现`0 error`
+- 纯前端页面, 全部使用`mock`数据, 无后端依赖
+- 极少的第三方依赖项, 
+- 拥抱`Hooks`组件, 全部组件采用`Hooks`开发
+- `Context`状态管理方案
+- 内置`明暗`两套主题方案, 可扩展
+- 单页面/多标签(开发中) 布局切换
+- 支持子目录部署
 
 ## Install
 
-> 本项目包管理工具采用 `pnpm`
-
-> 需要先全局安装 `pnpm`
 ```
 git clone https://github.com/xstnet/react-admin-template.git
 cd react-admin-template
 pnpm install
 pnpm run dev
 ```
+
+## Build
+```
+pnpm run build
+```
+
+## License
+
+本项目采用 MIT 许可证进行授权。许可证文本请查看 [LICENSE](LICENSE) 文件。
