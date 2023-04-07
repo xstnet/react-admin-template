@@ -1,36 +1,35 @@
-import { Layout, notification } from 'antd';
-import LeftSider from './components/LeftSider/Index';
-import Header from './components/Header';
-import Content from './components/Content';
-import Breadcrumb from './components/Breadcrumb';
+import { notification } from 'antd';
 import { useContext, useEffect, useState } from 'react';
 
 import { getUserInfo } from '@/api';
 import { validateToken } from '@/utils/jwt';
 import PageLoading from '@/components/Loading/PageLoading';
 import { GlobalContext } from '@/contexts/Global';
-import useThemeToken from '@/hooks/useThemeToken';
 import { AxiosError } from 'axios';
 import { SettingContext } from '@/contexts/Setting';
 import './index.less';
 import './fixed-layout.less';
-import { MenuContext } from '@/contexts/Menu';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import SmallScreenNotify from './components/SmallScreenNotify';
-import Footer from './components/Footer';
+import SmallScreenNotify from '../components/SmallScreenNotify';
+import MultitabLayout from '../multitab';
+import SingleLaylut from '../single';
+import { MenuContext } from '@/contexts/Menu';
+import useThemeToken from '@/hooks/useThemeToken';
 
-const DefaultLayout: React.FC = () => {
+const GlobalLayout: React.FC = () => {
   const [getUserInfoLoading, setGetUserInfoLoading] = useState(true);
   const { setIsLogin, setUserInfo } = useContext(GlobalContext);
-  const { menuCollapsed } = useContext(MenuContext);
+
   const { colorBgContainer } = useThemeToken();
   const {
-    settings: { fixedMenu, fixedHeader, theme }
+    settings: { multitabMode, fixedMenu, fixedHeader, theme }
   } = useContext(SettingContext);
+  const { menuCollapsed } = useContext(MenuContext);
+
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
 
-  console.log('default layout render...');
+  console.log('global layout render...');
 
   useEffect(() => {
     if (!validateToken()) {
@@ -76,26 +75,17 @@ const DefaultLayout: React.FC = () => {
     return <PageLoading title="页面加载中" loading={getUserInfoLoading} />;
   }
   return (
-    <Layout
+    <div
       data-fixed-menu={fixedMenu ? 1 : 0}
       data-menu-collapsed={menuCollapsed ? 1 : 0}
       data-fixed-header={fixedHeader ? 1 : 0}
       style={{ background: colorBgContainer }}
-      className={`default-layout theme-${theme}`}
+      className={`global-layout theme-${theme}`}
     >
-      <Header />
-      <Layout>
-        <LeftSider />
-        <Layout className="content-layout">
-          <Breadcrumb />
-          <Content />
-          <Footer />
-        </Layout>
-      </Layout>
-
+      {multitabMode ? <MultitabLayout /> : <SingleLaylut />}
       <SmallScreenNotify />
-    </Layout>
+    </div>
   );
 };
 
-export default DefaultLayout;
+export default GlobalLayout;

@@ -4,6 +4,7 @@ import React from 'react';
 import './index.less';
 
 const Content: React.FC = () => {
+  console.log('Content render...');
   return (
     <Layout.Content className="content">
       <DefaultRoutes />

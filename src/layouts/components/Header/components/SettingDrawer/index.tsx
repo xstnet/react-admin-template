@@ -11,6 +11,7 @@ interface IProps {
   open: boolean;
   onClose?: () => void;
 }
+
 interface IFormState {
   theme: 'dark' | 'light' | 'followSystem';
   compactMode: any;
@@ -100,6 +101,14 @@ const SettingDrawer: React.FC<IProps> = (props) => {
           <ThemeColorPicker defaultSelectedColor={settings.primaryColor} />
         </Form.Item>
         <Divider>布局</Divider>
+        <Form.Item
+          help={'功能正在开发中'}
+          label="多标签页"
+          valuePropName="checked"
+          name="multitabMode"
+        >
+          <Switch checkedChildren="启用" unCheckedChildren="关闭" />
+        </Form.Item>
         <Form.Item label="固定头部" valuePropName="checked" name="fixedHeader">
           <Switch checkedChildren="开启" unCheckedChildren="关闭" />
         </Form.Item>
@@ -111,7 +120,7 @@ const SettingDrawer: React.FC<IProps> = (props) => {
         >
           <Switch checkedChildren="开启" unCheckedChildren="关闭" />
         </Form.Item>
-        <Form.Item valuePropName="checked" label="显示页脚" name="showFooter">
+        <Form.Item valuePropName="checked" label="显示底部" name="showFooter">
           <Switch checkedChildren="开启" unCheckedChildren="关闭" />
         </Form.Item>
       </Form>
