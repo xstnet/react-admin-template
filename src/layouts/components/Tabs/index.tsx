@@ -1,30 +1,18 @@
+import { MultitabContext } from '@/contexts/Multitab';
 import { SettingContext } from '@/contexts/Setting';
 import { Tabs as AntdTabs } from 'antd';
 import { useContext } from 'react';
-import Content from '../Content';
 import './index.less';
 
 const Tabs = () => {
-  const {
-    settings: { showFooter }
-  } = useContext(SettingContext);
-
-  if (!showFooter) {
-    return null;
-  }
-
+  const { tabs, activeTab, open } = useContext(MultitabContext);
   return (
     <AntdTabs
-      defaultActiveKey="1"
-      items={new Array(2).fill(null).map((_, i) => {
-        const id = String(i);
-        return {
-          label: `Tab-${id}`,
-          key: id,
-          disabled: i === 28,
-          children: <Content />
-        };
-      })}
+      activeKey={activeTab}
+      items={tabs}
+      onChange={(e) => {
+        open(e);
+      }}
     />
   );
 };

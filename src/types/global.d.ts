@@ -32,6 +32,8 @@ declare global {
     className?: string;
     style?: CSSProperties;
   }
+
+  type noop = () => void;
 }
 
 // 必须要导出,不然无效
