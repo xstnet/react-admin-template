@@ -43,12 +43,6 @@ const MenuList: React.FC = () => {
       console.warn('未获取到菜单信息');
       return;
     }
-    if (menu.path === pathname || hasTab(menu.key!)) {
-      openTab(menu.key!);
-      console.log('rrrrrrrrrrr', menu.key);
-
-      return;
-    }
 
     if (menu?.type === 'url') {
       window.open(menu.path, '_blank');

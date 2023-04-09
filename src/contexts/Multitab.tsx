@@ -30,12 +30,10 @@ const MultitabProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     console.log('getabactions');
 
     const openTab: IContextValue['openTab'] = (key) => {
-      // if (!key) return;
+      if (!key) return;
       setActiveTab(key);
     };
     const hasTab: IContextValue['hasTab'] = (key) => {
-      console.log('hasss', typeof key, key, tabs.findIndex((item) => item.key === key) > -1);
-
       return tabs.findIndex((item) => item.key === key) > -1;
     };
     const addTab: IContextValue['addTab'] = (info, open = true) => {
