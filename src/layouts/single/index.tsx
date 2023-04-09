@@ -1,13 +1,15 @@
-import { Layout,  } from 'antd';
+import { Layout } from 'antd';
 import Breadcrumb from '../components/Breadcrumb';
 import Content from '../components/Content';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
 import LeftSider from '../components/LeftSider/Index';
+import DefaultRoutes from '@/routes';
+import { Outlet } from 'react-router-dom';
 
 const SingleLaylut = () => {
   console.log('SingleLaylut render...');
-
+  //   DefaultRoutes;
   return (
     <Layout>
       <Header />
@@ -15,7 +17,9 @@ const SingleLaylut = () => {
         <LeftSider />
         <Layout className="content-layout">
           <Breadcrumb />
-          <Content />
+          <Content>
+            <DefaultRoutes />
+          </Content>
           <Footer />
         </Layout>
       </Layout>

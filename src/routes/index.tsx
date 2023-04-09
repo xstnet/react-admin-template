@@ -15,6 +15,8 @@ import { iframeUrlPrefix } from '@/utils/iframe';
 // const UserPage = lazy(() => import('@page/User'));
 
 export default function DefaultRoutes() {
+  console.log('routerrrrrrrrrrr');
+
   const routes = useRoutes([
     {
       path: '/',

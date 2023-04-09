@@ -1,15 +1,15 @@
-import DefaultRoutes from '@/routes';
+// import DefaultRoutes from '@/routes';
 import { Layout } from 'antd';
-import React from 'react';
+import React, { PropsWithChildren } from 'react';
 import './index.less';
+import { Outlet } from 'react-router-dom';
 
-const Content: React.FC = () => {
+const Content: React.FC<PropsWithChildren> = ({ children }) => {
   console.log('Content render...');
-  return (
-    <Layout.Content className="content">
-      <DefaultRoutes />
-    </Layout.Content>
-  );
+  console.log('childdddddddd', children);
+
+  // DefaultRoutes();
+  return <Layout.Content className="content">{children}</Layout.Content>;
 };
 
 export default React.memo(Content);

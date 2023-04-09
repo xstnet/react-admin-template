@@ -1,15 +1,14 @@
-import { MenuContext } from '@/contexts/Menu';
-import { SettingContext } from '@/contexts/Setting';
-import useThemeToken from '@/hooks/useThemeToken';
 import { Layout } from 'antd';
-import { useContext } from 'react';
-import Content from '../components/Content';
+import Content from './components/Content';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
-import MultitabLeftSider from '../components/MultitabLeftSider/Index';
+import LeftSider from './components/LeftSider/Index';
 import Breadcrumb from '../components/Breadcrumb';
-import Tabs from '../components/Tabs';
+import Tabs from './components/Tabs';
 import MultitabProvider from '@/contexts/Multitab';
+import DefaultRoutes from '@/routes';
+import { useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 
 const MultitabLayout = () => {
   console.log('MultitabLayout render...');
@@ -19,12 +18,13 @@ const MultitabLayout = () => {
       <Layout>
         <Header />
         <Layout>
-          <MultitabLeftSider />
+          <LeftSider />
           <Layout className="content-layout">
             <Tabs />
-
             <Breadcrumb />
-            {/* <Content /> */}
+            <Content>
+              <DefaultRoutes />
+            </Content>
             <Footer />
           </Layout>
         </Layout>

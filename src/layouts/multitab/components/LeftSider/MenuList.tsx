@@ -31,12 +31,11 @@ const MenuList: React.FC = () => {
   // react-route-dom 提供的pathname不带 base 前缀, 用着方便
   const { pathname } = location;
   const [searchParams] = useSearchParams();
-  const { add: addTab } = useContext(MultitabContext);
+  const { addTab, openTab, hasTab } = useContext(MultitabContext);
 
   // 菜单点击事件
   const handleClick: MenuProps['onClick'] = (info) => {
     const menu = mapKeyToMenu.get(info.key);
-    console.log('mapKeyToMenu', mapKeyToMenu);
 
     console.log('clicked menu', info, menu);
 
@@ -44,9 +43,13 @@ const MenuList: React.FC = () => {
       console.warn('未获取到菜单信息');
       return;
     }
-    if (menu.path === pathname) {
+    if (menu.path === pathname || hasTab(menu.key!)) {
+      openTab(menu.key!);
+      console.log('rrrrrrrrrrr', menu.key);
+
       return;
     }
+
     if (menu?.type === 'url') {
       window.open(menu.path, '_blank');
       return;
@@ -60,7 +63,6 @@ const MenuList: React.FC = () => {
     }
 
     navigate(menu.path);
-    addTab({ label: menu.label, key: menu.key!, children: <Content /> });
   };
 
   const menuItems = useMemo(() => {

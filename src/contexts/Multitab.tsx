@@ -1,4 +1,4 @@
-import React, { createContext, useMemo, useState } from 'react';
+import React, { createContext, useCallback, useMemo, useState } from 'react';
 import { TabsProps } from 'antd';
 import { createNanoEvents, Emitter } from 'nanoevents';
 
@@ -8,9 +8,10 @@ export interface IContextValue {
   activeTab: S;
   tabs: ItemsType[];
   setTabs: ISetFunc<ItemsType[]>;
-  add: (info: ItemsType, open?: boolean) => void;
-  remove: (key: S) => void;
-  open: (key: S) => void;
+  addTab: (info: ItemsType, open?: boolean) => void;
+  removeTab: (key: S) => void;
+  openTab: (key: S) => void;
+  hasTab: (key: S) => boolean;
   event: Emitter;
 }
 
@@ -23,25 +24,49 @@ export const MultitabContext = createContext<IContextValue>(initValue);
 const MultitabProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const [tabs, setTabs] = useState<IContextValue['tabs']>([]);
   const [activeTab, setActiveTab] = useState<IContextValue['activeTab']>('');
+  const tabEvent = useMemo(() => createNanoEvents(), []);
+
+  const getTabActions = useCallback(() => {
+    console.log('getabactions');
+
+    const openTab: IContextValue['openTab'] = (key) => {
+      // if (!key) return;
+      setActiveTab(key);
+    };
+    const hasTab: IContextValue['hasTab'] = (key) => {
+      console.log('hasss', typeof key, key, tabs.findIndex((item) => item.key === key) > -1);
+
+      return tabs.findIndex((item) => item.key === key) > -1;
+    };
+    const addTab: IContextValue['addTab'] = (info, open = true) => {
+      console.log('ddddddddd', tabs);
+
+      if (!hasTab(info.key)) {
+        setTabs((tabs) => [...tabs, { ...info }]);
+      }
+      if (open && activeTab !== info.key) {
+        openTab(info.key);
+      }
+    };
+    const removeTab = () => {};
+
+    return {
+      openTab,
+      addTab,
+      removeTab,
+      hasTab
+    };
+  }, [tabs]);
+
+  const tabActions = useMemo(() => getTabActions(), [getTabActions]);
 
   const contextValue = useMemo(() => {
     return {
       tabs,
       setTabs,
       activeTab,
-      add: function (info: ItemsType, open = true) {
-        if (tabs.findIndex((item) => item.key === info.key) === -1) {
-          setTabs([...tabs, { ...info }]);
-        }
-        if (open) {
-          setActiveTab(info.key);
-        }
-      },
-      remove: function (key: string) {},
-      open: function (key: string) {
-        setActiveTab(key);
-      },
-      event: createNanoEvents()
+      event: tabEvent,
+      ...tabActions
     };
   }, [tabs, activeTab]);
 
