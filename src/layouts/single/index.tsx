@@ -11,7 +11,7 @@ const SingleLaylut = () => {
   console.log('SingleLaylut render...');
   //   DefaultRoutes;
   return (
-    <Layout>
+    <Layout className="single-tab-layout">
       <Header />
       <Layout>
         <LeftSider />

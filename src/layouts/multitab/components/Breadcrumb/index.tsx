@@ -36,7 +36,7 @@ const makeBreadcrumbNameMap = (menuList: Menu.MenuItemType[]) => {
   });
 };
 
-const Breadcrumb: React.FC = () => {
+const Breadcrumb: React.FC<{}> = () => {
   const { menuList } = useContext(MenuContext);
   // 不能放在 useEffect中, memo执行比effect快, 会导致第一次进页面拿不到数据
   const memoBreadcrumbNameMap = useMemo(() => {
@@ -98,7 +98,6 @@ const Breadcrumb: React.FC = () => {
     ...extraBreadcrumbItems,
     ...makeIframeBreadcrumb()
   ];
-
   return <AntdBreadcrumb className="breadcrumb">{breadcrumbItems}</AntdBreadcrumb>;
 };
 
