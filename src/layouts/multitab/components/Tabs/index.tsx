@@ -9,7 +9,7 @@ const Tabs = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const { mapKeyToMenu } = useContext(MenuContext);
-  const { tabs, activeTab, openTab } = useContext(MultitabContext);
+  const { tabs, activeTab, openTab, removeTab } = useContext(MultitabContext);
 
   const handleChangeTab = (tabKey: S) => {
     console.log('tabclick, tabKey', tabKey, typeof tabKey);
@@ -18,7 +18,26 @@ const Tabs = () => {
       navigate(path);
     }
   };
-  return <AntdTabs activeKey={activeTab} items={tabs} onChange={handleChangeTab} />;
+
+  type TargetKey = React.MouseEvent | React.KeyboardEvent | string;
+  const onEdit = (targetKey: TargetKey, action: 'add' | 'remove') => {
+    if (action === 'add') {
+      return;
+    } else {
+      removeTab(targetKey as string);
+    }
+  };
+  return (
+    <AntdTabs
+      className="tabs-wrapper"
+      type="editable-card"
+      hideAdd
+      activeKey={activeTab}
+      items={tabs}
+      onChange={handleChangeTab}
+      onEdit={onEdit}
+    />
+  );
 };
 
 export default Tabs;

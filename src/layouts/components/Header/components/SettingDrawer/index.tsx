@@ -102,7 +102,7 @@ const SettingDrawer: React.FC<IProps> = (props) => {
         </Form.Item>
         <Divider>布局</Divider>
         <Form.Item
-          help={'功能正在开发中'}
+          help={'功能正在完善中'}
           label="多标签页"
           valuePropName="checked"
           name="multitabMode"

@@ -1,5 +1,63 @@
 .multitab-layout {
-  .ant-tabs-nav {
-    margin-bottom: 0;
+  .tabs-wrapper {
+    position: fixed;
+    background-color: inherit;
+    z-index: 8;
+    margin-left: -16px;
+    // margin-top: 10px;
+    width: 100%;
+    .ant-tabs-nav {
+      margin-bottom: 0;
+      padding-bottom: 1px;
+      .ant-tabs-tab {
+        background: inherit;
+        border: none;
+
+        position: relative;
+        padding: 8px 40px;
+        margin: 0 -15px !important;
+        background-image: radial-gradient(
+            circle at 27px 12px,
+            var(--color, rgba(33, 150, 243, 0.59)) 12px,
+            transparent 0
+          ),
+          linear-gradient(var(--color, #4caf50), var(--color, #4caf50)),
+          linear-gradient(var(--color, #f44336), var(--color, #f44336)),
+          radial-gradient(circle at 15px 0, transparent 15px, var(--color, #9c27b0) 0);
+        background-size: calc(100% - 54px), calc(100% - 30px) calc(100% - 12px),
+          calc(100% - 54px) 100%, 100% 15px;
+        background-position: left top, center bottom, center bottom, -15px bottom;
+        background-repeat: repeat-x, no-repeat, no-repeat, repeat-x;
+
+        --color: transparent;
+        color: inherit;
+
+        &:hover {
+          --color: #fff;
+        }
+      }
+      .ant-tabs-tab-active {
+        --color: #fff;
+        z-index: 1;
+      }
+    }
+  }
+}
+
+.theme-dark {
+  .multitab-layout {
+    .tabs-wrapper {
+      .ant-tabs-nav {
+        .ant-tabs-tab {
+          &:hover {
+            --color: #5a5959;
+          }
+        }
+        .ant-tabs-tab-active {
+          --color: #5a5959;
+          z-index: 1;
+        }
+      }
+    }
   }
 }

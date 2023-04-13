@@ -1,6 +1,8 @@
-import React, { createContext, useCallback, useMemo, useState } from 'react';
+import React, { createContext, useCallback, useContext, useMemo, useState } from 'react';
 import { TabsProps } from 'antd';
 import { createNanoEvents, Emitter } from 'nanoevents';
+import { useNavigate } from 'react-router-dom';
+import { MenuContext } from './Menu';
 
 type ItemsType = Pick<Required<TabsProps>, 'items'>['items'][number];
 
@@ -25,6 +27,8 @@ const MultitabProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const [tabs, setTabs] = useState<IContextValue['tabs']>([]);
   const [activeTab, setActiveTab] = useState<IContextValue['activeTab']>('');
   const tabEvent = useMemo(() => createNanoEvents(), []);
+  const navigate = useNavigate();
+  const { mapKeyToMenu } = useContext(MenuContext);
 
   const getTabActions = useCallback(() => {
     const openTab: IContextValue['openTab'] = (key) => {
@@ -44,7 +48,20 @@ const MultitabProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
         openTab(info.key);
       }
     };
-    const removeTab = () => {};
+    const removeTab: IContextValue['removeTab'] = (tabKey) => {
+      const closedTabIndex = tabs.findIndex((item) => item.key === tabKey);
+      if (closedTabIndex === -1) {
+        return;
+      }
+      const nextActiveTab = tabs[closedTabIndex === 0 ? 1 : closedTabIndex - 1];
+
+      setTabs((tabs) => tabs.filter((item) => item.key !== tabKey));
+      if (activeTab === tabKey) {
+        nextActiveTab &&
+          mapKeyToMenu.has(nextActiveTab.key) &&
+          navigate(mapKeyToMenu.get(nextActiveTab.key)?.path!);
+      }
+    };
 
     return {
       openTab,

@@ -1,6 +1,7 @@
 // import DefaultRoutes from '@/routes';
 import { MenuContext } from '@/contexts/Menu';
 import { MultitabContext } from '@/contexts/Multitab';
+import { CloseOutlined } from '@ant-design/icons';
 import { Layout } from 'antd';
 import React, { PropsWithChildren, useContext, useEffect } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';

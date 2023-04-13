@@ -1,10 +1,9 @@
-import { RefObject, ReactNode, useContext } from 'react';
-import React, { Suspense, memo, useState, useRef, useEffect } from 'react';
-import { createPortal } from 'react-dom';
-import { useLocation, useMatches, useOutlet } from 'react-router-dom';
+import { ReactNode, useContext } from 'react';
+import { memo, useState, useRef, useEffect } from 'react';
+import { useLocation, useOutlet } from 'react-router-dom';
 import { MultitabContext } from '@/contexts/Multitab';
 import { MenuContext } from '@/contexts/Menu';
-import PageLoading from '@/components/Loading/PageLoading';
+import Content from './Content';
 
 interface IProps {}
 export default memo(({}: IProps) => {
@@ -57,47 +56,11 @@ export default memo(({}: IProps) => {
 
       {cachedNodes.map(({ id, element }) => {
         return (
-          <Component active={id === activeTabKey} renderDiv={placeholderRef} name={id} key={id}>
+          <Content active={id === activeTabKey} parentRef={placeholderRef} id={id} key={id}>
             {element}
-          </Component>
+          </Content>
         );
       })}
     </>
   );
 });
-
-export interface ComponentReactElement {
-  children?: ReactNode | ReactNode[];
-}
-
-interface ComponentProps extends ComponentReactElement {
-  active: boolean;
-  name: string;
-  renderDiv: RefObject<HTMLDivElement>;
-}
-
-export const Component: React.FC<ComponentProps> = ({ active, children, name, renderDiv }) => {
-  const [targetElement] = useState(() => document.createElement('div'));
-  const activatedRef = useRef(false);
-  activatedRef.current = activatedRef.current || active;
-
-  useEffect(() => {
-    if (active) {
-      renderDiv.current?.appendChild(targetElement);
-    } else {
-      try {
-        renderDiv.current?.removeChild(targetElement);
-      } catch (e) {}
-    }
-  }, [active, name, renderDiv, targetElement]);
-
-  useEffect(() => {
-    targetElement.setAttribute('id', name);
-  }, [name, targetElement]);
-
-  return (
-    <Suspense fallback={<PageLoading loading delay={200} />}>
-      {activatedRef.current && createPortal(children, targetElement)}
-    </Suspense>
-  );
-};
