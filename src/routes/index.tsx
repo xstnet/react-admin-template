@@ -83,11 +83,11 @@ export default function DefaultRoutes() {
         },
         {
           path: '/badge/dot',
-          element: <BlankPage />
+          element: <BlankPage title="红点徽标" />
         },
         {
           path: '/badge/count',
-          element: <BlankPage />
+          element: <BlankPage title="数字徽标" />
         },
         {
           path: iframeUrlPrefix,

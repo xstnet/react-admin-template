@@ -69,7 +69,7 @@ const MultitabProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
       removeTab,
       hasTab
     };
-  }, [tabs]);
+  }, [tabs, activeTab]);
 
   const tabActions = useMemo(() => getTabActions(), [getTabActions]);
 

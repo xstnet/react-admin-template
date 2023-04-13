@@ -10,7 +10,7 @@ const BlankPage: React.FC<IProps> = ({ title = '空白页' }) => {
   return (
     <ContentBox style={{ height: '500px' }}>
       <Typography.Title level={4}>{title}</Typography.Title>
-      <span>count: {count}</span>
+      <Typography.Text>Count: {count}</Typography.Text>
       <br />
       <Button onClick={(e) => setCount((v) => v + 1)}>add</Button>
     </ContentBox>

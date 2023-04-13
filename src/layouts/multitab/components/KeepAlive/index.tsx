@@ -24,7 +24,7 @@ export default memo(({}: IProps) => {
     if (!activeTabKey) {
       return;
     }
-    const tabskes = tabs.map((i) => i.key);
+    const tabskey = tabs.map((i) => i.key);
 
     setCachedNodes((reactNodes) => {
       // 添加
@@ -35,19 +35,11 @@ export default memo(({}: IProps) => {
           element
         });
       } else {
-        console.log('else');
+        // 标签已存在, 重新激活
+        // console.log('');
       }
-      // 缓存路由列表和标签页列表同步
-      if (tabskes) {
-        console.log('tttt', reactNodes);
-        console.log(
-          'tttt1',
-          reactNodes.filter((i) => tabskes.includes(i.id))
-        );
-
-        return reactNodes.filter((i) => tabskes.includes(i.id));
-      }
-      return reactNodes;
+      // 同步标签页, 比如关闭了标签, 这里要相应的丢弃
+      return reactNodes.filter((i) => tabskey.includes(i.id));
     });
   }, [pathname, tabs]);
 
