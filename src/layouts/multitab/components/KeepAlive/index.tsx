@@ -4,6 +4,7 @@ import { useLocation, useOutlet } from 'react-router-dom';
 import { MultitabContext } from '@/contexts/Multitab';
 import { MenuContext } from '@/contexts/Menu';
 import Content from './Content';
+import './index.less';
 
 interface IProps {}
 export default memo(({}: IProps) => {

@@ -1,0 +1,9 @@
+.global-layout {
+  // 高度穿透, 给iframe页面使用
+  .keep-alive {
+    height: 100%;
+    & > div {
+      height: 100%;
+    }
+  }
+}
