@@ -18,7 +18,7 @@ const SingleLaylut = () => {
         <Layout className="content-layout">
           <Breadcrumb />
           <Content>
-            <DefaultRoutes />
+            <Outlet />
           </Content>
           <Footer />
         </Layout>

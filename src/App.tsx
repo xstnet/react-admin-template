@@ -1,8 +1,7 @@
 import GlobalProvider from '@/contexts/Global';
-import { Route, Routes } from 'react-router-dom';
-import LoginPage from './pages/Login';
+import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { useEffect } from 'react';
-import GlobalLayout from './layouts/global';
+import DefaultRoutes from './routes';
 
 function App() {
   // 自定义loading效果
@@ -10,16 +9,10 @@ function App() {
     // Spin.setDefaultIndicator(<GlobalLoading />);
   }, []);
 
+  const routes = createBrowserRouter(DefaultRoutes(), { basename: import.meta.env.BASE_URL });
   return (
     <GlobalProvider>
-      <div className="App">
-        <Routes>
-          {/* 无登录态 登录页 */}
-          <Route element={<LoginPage />} path="/login" />
-          {/* 有登录态 */}
-          <Route path="*" element={<GlobalLayout />} />
-        </Routes>
-      </div>
+      <RouterProvider router={routes} />
     </GlobalProvider>
   );
 }

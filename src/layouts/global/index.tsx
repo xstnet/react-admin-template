@@ -15,6 +15,7 @@ import MultitabLayout from '../multitab';
 import SingleLaylut from '../single';
 import { MenuContext } from '@/contexts/Menu';
 import useThemeToken from '@/hooks/useThemeToken';
+import React from 'react';
 
 const GlobalLayout: React.FC = () => {
   const [getUserInfoLoading, setGetUserInfoLoading] = useState(true);
@@ -34,7 +35,7 @@ const GlobalLayout: React.FC = () => {
   useEffect(() => {
     if (!validateToken()) {
       // token 无效
-      navigate('/login');
+      // navigate('/login');
       return;
     }
 
@@ -88,4 +89,4 @@ const GlobalLayout: React.FC = () => {
   );
 };
 
-export default GlobalLayout;
+export default React.memo(GlobalLayout);

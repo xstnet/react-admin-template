@@ -27,8 +27,6 @@ const MultitabProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const tabEvent = useMemo(() => createNanoEvents(), []);
 
   const getTabActions = useCallback(() => {
-    console.log('getabactions');
-
     const openTab: IContextValue['openTab'] = (key) => {
       if (!key) return;
       setActiveTab(key);

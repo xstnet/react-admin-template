@@ -6,10 +6,13 @@ import LeftSider from './components/LeftSider/Index';
 import Breadcrumb from './components/Breadcrumb';
 import Tabs from './components/Tabs';
 import MultitabProvider from '@/contexts/Multitab';
-import DefaultRoutes from '@/routes';
+import { Outlet, useLocation } from 'react-router-dom';
+import { KeepAlive } from '@/components/KeepAlive';
+import React from 'react';
 
 const MultitabLayout = () => {
   console.log('MultitabLayout render...');
+  const { pathname } = useLocation();
 
   return (
     <MultitabProvider>
@@ -19,11 +22,8 @@ const MultitabLayout = () => {
           <LeftSider />
           <Layout className="content-layout">
             <Tabs />
-            <Content>
-              <Breadcrumb />
-
-              <DefaultRoutes />
-            </Content>
+            <Breadcrumb />
+            <Content />
             <Footer />
           </Layout>
         </Layout>
@@ -32,4 +32,4 @@ const MultitabLayout = () => {
   );
 };
 
-export default MultitabLayout;
+export default React.memo(MultitabLayout);

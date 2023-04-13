@@ -6,6 +6,26 @@ import { ResponseCodeEnum } from '@/constants/enum';
 import { message } from 'antd';
 import { toLoginPage } from './util';
 
+function requestLog(response: AxiosResponse<any, any>) {
+  if (!import.meta.env.DEV) {
+    // 自行开启
+    // return;
+  }
+  const { config } = response;
+  console.group(`${config.method?.toLocaleUpperCase()} ${config.url}`);
+  console.log('Path:', config.url);
+  console.log('Method:', config.method);
+  console.log('Params:', config.params);
+  console.log('StatusCode:', response.status);
+  console.log(
+    'Response:',
+    typeof response.data === 'object'
+      ? Object.assign(Object.create(null), response.data)
+      : response.data
+  );
+  console.groupEnd();
+}
+
 const timeout = 10 * 1000;
 
 axios.defaults.baseURL = Config.apiBaseUrl;
@@ -15,7 +35,6 @@ axios.defaults.timeout = timeout;
 // 添加请求拦截器
 axios.interceptors.request.use(
   (config) => {
-    console.group(`${config.method}${config.url}${JSON.stringify(config.params)}`);
     config.headers.Authorization = `Bearer ${Cache.getString(Config.tokenKey)}`;
     return config;
   },
@@ -28,6 +47,8 @@ axios.interceptors.request.use(
 // 添加响应拦截器
 axios.interceptors.response.use(
   (response) => {
+    requestLog(response);
+
     // 2xx 范围内的状态码都会触发该函数。
     const data = response.data as Api.ResponseData<any>;
     // 接口请求错误判断
@@ -41,12 +62,8 @@ axios.interceptors.response.use(
         'response:',
         response
       );
-      console.groupEnd();
       return Promise.reject(response);
     }
-
-    console.log('Request log: ', response.config.url, response.data, response);
-    console.groupEnd();
 
     // 请求成功
     if (data.code === 0) {

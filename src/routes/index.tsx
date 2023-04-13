@@ -6,86 +6,96 @@ import { BlankPage, ExampleUserListPage } from '@/pages/Example';
 import { ArticleIndexPage } from '@/pages/Article';
 import { NotFoundPage } from '@/pages/Error';
 import { ArticleCreatePage, ArticleUpdatePage } from '@/pages/Article';
-import { useRoutes } from 'react-router-dom';
+import { RouteObject } from 'react-router-dom';
 import IframePage from '@/pages/Iframe';
 import { iframeUrlPrefix } from '@/utils/iframe';
+import GlobalLayout from '@/layouts/global';
+import LoginPage from '@/pages/Login';
 
 // todo: Suspense
 // const DashboardPage = lazy(() => import('@page/Dashboard'));
 // const UserPage = lazy(() => import('@page/User'));
 
 export default function DefaultRoutes() {
-  console.log('routerrrrrrrrrrr');
-
-  const routes = useRoutes([
+  const routes: RouteObject[] = [
+    {
+      path: '/login',
+      element: <LoginPage />
+    },
     {
       path: '/',
-      element: <DashboardPage />
-    },
-    {
-      path: '/dashboard',
-      element: <DashboardPage />
-    },
-    {
-      path: '/user',
+      element: <GlobalLayout />,
       children: [
         {
-          index: true,
-          element: <UserCenterPage />
+          path: '/',
+          element: <DashboardPage />
         },
         {
-          path: '/user/center/index',
-          element: <UserCenterPage />
+          path: '/dashboard',
+          element: <DashboardPage />
         },
         {
-          path: '/user/center/update',
-          element: <UserCenterUpdatePage />
-        }
-      ]
-    },
-    {
-      path: '/example/userList',
-      element: <ExampleUserListPage />
-    },
-    {
-      path: '/article',
-      // element: <ArticleIndexPage />,
-      children: [
-        {
-          index: true,
-          element: <ArticleIndexPage />
+          path: '/user',
+          children: [
+            {
+              index: true,
+              element: <UserCenterPage />
+            },
+            {
+              path: '/user/center/index',
+              element: <UserCenterPage />
+            },
+            {
+              path: '/user/center/update',
+              element: <UserCenterUpdatePage />
+            }
+          ]
         },
         {
-          path: '/article/list',
-          element: <ArticleIndexPage />
+          path: '/example/userList',
+          element: <ExampleUserListPage />
         },
         {
-          path: '/article/create',
-          element: <ArticleCreatePage />
+          path: '/article',
+          // element: <ArticleIndexPage />,
+          children: [
+            {
+              index: true,
+              element: <ArticleIndexPage />
+            },
+            {
+              path: '/article/list',
+              element: <ArticleIndexPage />
+            },
+            {
+              path: '/article/create',
+              element: <ArticleCreatePage />
+            },
+            {
+              path: '/article/update/:id',
+              element: <ArticleUpdatePage />
+            }
+          ]
         },
         {
-          path: '/article/update/:id',
-          element: <ArticleUpdatePage />
-        }
-      ]
-    },
-    {
-      path: '/blank',
-      element: <BlankPage />
-    },
-    {
-      path: iframeUrlPrefix,
-      element: <IframePage />
-    },
-    {
-      path: '/multilevel/menu/2/3',
-      element: <BlankPage title="三级菜单" />
-    },
+          path: '/blank',
+          element: <BlankPage />
+        },
+        {
+          path: iframeUrlPrefix,
+          element: <IframePage />
+        },
+        {
+          path: '/multilevel/menu/2/3',
+          element: <BlankPage title="三级菜单" />
+        },
 
-    {
-      path: '*',
-      element: <NotFoundPage />
+        {
+          path: '*',
+          element: <NotFoundPage />
+        }
+      ]
     }
-  ]);
+  ];
   return routes;
 }
