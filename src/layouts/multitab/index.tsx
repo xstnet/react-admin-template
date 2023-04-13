@@ -6,12 +6,10 @@ import LeftSider from '../components/LeftSider/Index';
 import Breadcrumb from '../components/Breadcrumb';
 import Tabs from './components/Tabs';
 import MultitabProvider from '@/contexts/Multitab';
-import { useLocation } from 'react-router-dom';
 import React from 'react';
 
 const MultitabLayout = () => {
   console.log('MultitabLayout render...');
-  const { pathname } = useLocation();
 
   return (
     <MultitabProvider>

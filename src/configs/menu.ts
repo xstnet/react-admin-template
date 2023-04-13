@@ -60,13 +60,13 @@ const MenuList: Menu.MenuItemType[] = [
         label: '红点徽标',
         icon: 'icon-list',
         badge: 'dot',
-        path: '/blank'
+        path: '/badge/dot'
       },
       {
         label: '数字徽标',
         icon: 'icon-example',
         badge: 98,
-        path: '/blank'
+        path: '/badge/count'
       }
     ]
   },

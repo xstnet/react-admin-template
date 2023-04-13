@@ -1,5 +1,5 @@
 import { Badge, Menu } from 'antd';
-import React, { useContext, useMemo } from 'react';
+import React, { useContext, useEffect, useMemo, useState } from 'react';
 
 import type { MenuProps } from 'antd';
 import { isDividerMenu, isExtendMenu, isGroupMenu, isLeafMenu, isSubMenu } from '@/utils/is';
@@ -8,7 +8,7 @@ import Iconfont from '@/components/Iconfont';
 import { createIframeUrl } from '@/utils/iframe';
 import Config from '@/configs';
 import { MenuContext } from '@/contexts/Menu';
-import { trimRightStr } from '@/utils/util';
+import { useUpdateEffect } from 'ahooks';
 
 type AntdMenuItem = Required<MenuProps>['items'][number];
 
@@ -16,7 +16,9 @@ type AntdMenuItem = Required<MenuProps>['items'][number];
 // 后期可以考虑把 Menu单独提取到一个 Provider中, 减少组件渲染
 const MenuList: React.FC = () => {
   const navigate = useNavigate();
-  const location = useLocation();
+  // react-route-dom 提供的pathname不带 base 前缀, 用着方便
+  const { pathname } = useLocation();
+  const [activeKey, setActiveKey] = useState<string[]>();
 
   const { menuList: processedMenuList, mapKeyToMenu, mapPathToMenu } = useContext(MenuContext);
 
@@ -26,9 +28,16 @@ const MenuList: React.FC = () => {
   // 匹配默认展开菜单是否结束
   let matchOpenKeysEnd = false;
 
-  // react-route-dom 提供的pathname不带 base 前缀, 用着方便
-  const { pathname } = location;
   const [searchParams] = useSearchParams();
+
+  useUpdateEffect(() => {
+    const menuInfo = mapPathToMenu.get(pathname) || undefined;
+    console.log('pathffff', pathname, menuInfo, activeKey);
+
+    if (menuInfo) {
+      setActiveKey([menuInfo.key!]);
+    }
+  }, [pathname]);
 
   // 菜单点击事件
   const handleClick: MenuProps['onClick'] = (info) => {
@@ -155,6 +164,7 @@ const MenuList: React.FC = () => {
       onClick={handleClick}
       mode="inline"
       defaultSelectedKeys={[defaultActiveMenu]}
+      selectedKeys={activeKey}
       items={menuItems}
       defaultOpenKeys={defaultOpenKeys}
     />

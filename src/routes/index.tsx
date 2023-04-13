@@ -82,6 +82,14 @@ export default function DefaultRoutes() {
           element: <BlankPage />
         },
         {
+          path: '/badge/dot',
+          element: <BlankPage />
+        },
+        {
+          path: '/badge/count',
+          element: <BlankPage />
+        },
+        {
           path: iframeUrlPrefix,
           element: <IframePage />
         },
