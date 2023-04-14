@@ -7,6 +7,7 @@ import Breadcrumb from '../components/Breadcrumb';
 import Tabs from './components/Tabs';
 import MultitabProvider from '@/contexts/Multitab';
 import React from 'react';
+import './index.less';
 
 const MultitabLayout = () => {
   console.log('MultitabLayout render...');

@@ -4,12 +4,11 @@ import Content from '../components/Content';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
 import LeftSider from '../components/LeftSider/Index';
-import DefaultRoutes from '@/routes';
 import { Outlet } from 'react-router-dom';
+import './index.less';
 
 const SingleLaylut = () => {
   console.log('SingleLaylut render...');
-  //   DefaultRoutes;
   return (
     <Layout className="single-tab-layout">
       <Header />
