@@ -95,6 +95,7 @@ const MenuList: Menu.MenuItemType[] = [
         icon: 'icon-article'
       },
       {
+        // 演示子页面不和父页面路径前缀一致时, 怎么去自动高亮菜单显示
         path: '/article/create',
         label: '发布文章',
         hideInMenu: true,

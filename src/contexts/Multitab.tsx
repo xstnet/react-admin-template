@@ -8,10 +8,14 @@ type ItemsType = Pick<Required<TabsProps>, 'items'>['items'][number];
 // 这样定义是为了一看就明白 tabKey是可以当做 path 使用的
 type TabKey = Menu.SubMenuType['path'];
 export interface MultitabContextValue {
-  activeTab: S;
+  activeTab: TabKey;
   tabs: ItemsType[];
   setTabs: ISetFunc<ItemsType[]>;
+  // info: 标签页信息
+  // open: 立即打开标签页
   addTab: (info: ItemsType, open?: boolean) => void;
+  // 打开标签并跳转页面, 适用于手动控制tabs的地方, 因为菜单项会自动跳转, 手动操作 tabs则不会
+  addTabWithNavigate: MultitabContextValue['addTab'];
   removeTab: (key: TabKey) => void;
   openTab: (key: TabKey) => void;
   hasTab: (key: TabKey) => boolean;
@@ -33,7 +37,9 @@ const MultitabProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const getTabActions = useCallback(() => {
     const openTab: MultitabContextValue['openTab'] = (key) => {
       if (!key) return;
-      setActiveTab(key);
+      if (key !== activeTab) {
+        setActiveTab(key);
+      }
     };
     const hasTab: MultitabContextValue['hasTab'] = (key) => {
       return tabs.findIndex((item) => item.key === key) > -1;
@@ -45,6 +51,12 @@ const MultitabProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
       if (open && activeTab !== info.key) {
         openTab(info.key);
       }
+    };
+
+    const addTabWithNavigate: typeof addTab = (info) => {
+      // 你都要跳转了, 肯定是要打开这个标签页的, 不可能后台打开的
+      addTab(info, true);
+      navigate(info.key);
     };
     const removeTab: MultitabContextValue['removeTab'] = (tabKey) => {
       const closedTabIndex = tabs.findIndex((item) => item.key === tabKey);
@@ -64,7 +76,8 @@ const MultitabProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
       openTab,
       addTab,
       removeTab,
-      hasTab
+      hasTab,
+      addTabWithNavigate
     };
   }, [tabs, activeTab]);
 

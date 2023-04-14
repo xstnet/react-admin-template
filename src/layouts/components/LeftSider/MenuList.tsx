@@ -22,7 +22,7 @@ const MenuList: React.FC = () => {
 
   const { menuList: processedMenuList, mapPathToMenu } = useContext(MenuContext);
 
-  let defaultActiveMenu = mapPathToMenu.get('/dashboard')?.key || '';
+  let defaultActiveMenu = '/dashboard';
   // 入栈-出栈来匹配
   let defaultOpenKeys: string[] = [];
   // 匹配默认展开菜单是否结束
@@ -30,13 +30,30 @@ const MenuList: React.FC = () => {
 
   const [searchParams] = useSearchParams();
 
+  // 第一次使用 defaultActiveMenu,
+  // 如果使用 useEffect, 第一次就赋值了, defaultActiveMenu就不会生效
   useUpdateEffect(() => {
-    // const menuInfo = mapPathToMenu.get(pathname) || undefined;
-    // console.log('pathffff', pathname, menuInfo, activeKey);
-    console.log('ppppppppppppppp');
-
-    if (1) {
-      setActiveKey([pathname!]);
+    let menuInfo = mapPathToMenu.get(pathname);
+    // 菜单存在, 并且不是隐藏菜单, 再高亮他, 否则高亮他爹
+    // 但是有一个问题, 参数在路由上的匹配不到, 先用一个最长字符串匹配来获取吧, 比如 /article/update/10, 能匹配到 /article, 也能匹配到 /article/update, 优先使用最长匹配
+    if (!menuInfo) {
+      let longestMatch = '';
+      mapPathToMenu.forEach(({ path }) => {
+        if (pathname.startsWith(path) && path.length > longestMatch.length) {
+          longestMatch = path;
+        }
+      });
+      if (longestMatch) {
+        menuInfo = mapPathToMenu.get(longestMatch);
+      }
+    }
+    // 👆🏻👆🏻👆🏻 匹配结束
+    if (menuInfo) {
+      if (!menuInfo?.hideInMenu) {
+        setActiveKey([pathname!]);
+      } else {
+        setActiveKey([menuInfo.parent!]);
+      }
     }
   }, [pathname]);
 
@@ -99,7 +116,9 @@ const MenuList: React.FC = () => {
           // q: 为什么要用 indexOf?
           // a: 因为要兼容 /article/update/10 这种路由
           if (rawMenu.parent && pathname.indexOf(rawMenu.path) === 0) {
-            defaultActiveMenu = mapPathToMenu.get(rawMenu.parent)?.key || '';
+            console.log('ccccccccccccccccccccc', rawMenu.parent);
+
+            defaultActiveMenu = rawMenu.parent;
             matchOpenKeysEnd = true;
           }
 

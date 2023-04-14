@@ -13,7 +13,7 @@ declare global {
   type KV = Record<S, any>;
   type IdType = S | N;
 
-  type ISetFunc<T = boolean> = (value: T) => void;
+  type ISetFunc<S = boolean> = (prevState: S | ((prev: S) => S)) => void;
 
   type TokenMeta<D> = {
     iat: number;

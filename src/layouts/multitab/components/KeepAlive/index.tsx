@@ -1,6 +1,6 @@
 import { ReactNode, useContext } from 'react';
 import { memo, useState, useRef, useEffect } from 'react';
-import { useLocation, useOutlet } from 'react-router-dom';
+import { useLocation, useMatches, useOutlet } from 'react-router-dom';
 import { MultitabContext } from '@/contexts/Multitab';
 import Content from './Content';
 import './index.less';
@@ -9,6 +9,11 @@ type CachedNodeType = { id: string; element?: ReactNode };
 interface IProps {}
 const KeepAlive: React.FC<IProps> = () => {
   const element = useOutlet();
+  console.log('elementelement', element);
+
+  const matches = useMatches();
+  console.log('matches', matches);
+
   const { pathname } = useLocation();
 
   const activeTabKey = pathname;
@@ -38,7 +43,7 @@ const KeepAlive: React.FC<IProps> = () => {
       // 同步标签页, 比如关闭了标签, 这里要相应的丢弃
       return reactNodes.filter((i) => tabsKeys.includes(i.id));
     });
-  }, [pathname, tabs]);
+  }, [tabs]);
 
   return (
     <>

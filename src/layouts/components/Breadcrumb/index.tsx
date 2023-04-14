@@ -51,6 +51,7 @@ const Breadcrumb: React.FC = () => {
   const [searchParams] = useSearchParams();
 
   const makeIframeBreadcrumb: () => React.ReactNode[] = () => {
+    // iframe链接 处理
     if (location.pathname === iframeUrlPrefix) {
       const url = searchParams.get('url');
       if (url && breadcrumbNameMap.has(url)) {
