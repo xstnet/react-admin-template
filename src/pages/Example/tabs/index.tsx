@@ -1,11 +1,15 @@
 import ContentBox from '@/components/ContextBox';
 import { MultitabContext } from '@/contexts/Multitab';
-import { Button, Space, Divider } from 'antd';
+import { SettingContext } from '@/contexts/Setting';
+import { Button, Space, Divider, Alert } from 'antd';
 import { useContext } from 'react';
 import { useLocation } from 'react-router-dom';
 
 const TabsPage: React.FC<{}> = () => {
   const { removeTab, tabs, setTabs, addTabWithNavigate, addTab } = useContext(MultitabContext);
+  const {
+    settings: { multitabMode }
+  } = useContext(SettingContext);
   const { pathname } = useLocation();
   // 关闭标签页
   const handleCloseTabs = (type: 'left' | 'right' | 'other' | number) => {
@@ -34,8 +38,12 @@ const TabsPage: React.FC<{}> = () => {
   };
   return (
     <ContentBox>
+      {!multitabMode && <Alert type="error" message="请开启多标签模式" />}
+      <br />
+
       <Space>
         <Button
+          disabled={!multitabMode}
           onClick={() => {
             addTabWithNavigate({ label: '控制台', key: '/dashboard' });
           }}
@@ -43,6 +51,7 @@ const TabsPage: React.FC<{}> = () => {
           打开控制台标签页
         </Button>
         <Button
+          disabled={!multitabMode}
           onClick={() => {
             addTab({ label: '文章列表', key: '/article/list' }, false);
           }}
@@ -50,6 +59,7 @@ const TabsPage: React.FC<{}> = () => {
           后台打开文章列表
         </Button>
         <Button
+          disabled={!multitabMode}
           onClick={() => {
             addTabWithNavigate({ label: '编辑文章ID: 1', key: '/article/update/1' });
           }}
@@ -57,6 +67,7 @@ const TabsPage: React.FC<{}> = () => {
           编辑文章ID: 1
         </Button>
         <Button
+          disabled={!multitabMode}
           onClick={() => {
             addTabWithNavigate({ label: '编辑文章ID: 2', key: '/article/update/2' });
           }}
@@ -66,10 +77,18 @@ const TabsPage: React.FC<{}> = () => {
       </Space>
       <Divider />
       <Space>
-        <Button onClick={handleCloseTabs.bind(this, 1)}>关闭第二个标签页</Button>
-        <Button onClick={handleCloseTabs.bind(this, 'left')}>关闭左侧标签页</Button>
-        <Button onClick={handleCloseTabs.bind(this, 'right')}>关闭右侧标签页</Button>
-        <Button onClick={handleCloseTabs.bind(this, 'other')}>关闭其他标签页</Button>
+        <Button disabled={!multitabMode} onClick={handleCloseTabs.bind(this, 1)}>
+          关闭第二个标签页
+        </Button>
+        <Button disabled={!multitabMode} onClick={handleCloseTabs.bind(this, 'left')}>
+          关闭左侧标签页
+        </Button>
+        <Button disabled={!multitabMode} onClick={handleCloseTabs.bind(this, 'right')}>
+          关闭右侧标签页
+        </Button>
+        <Button disabled={!multitabMode} onClick={handleCloseTabs.bind(this, 'other')}>
+          关闭其他标签页
+        </Button>
       </Space>
     </ContentBox>
   );

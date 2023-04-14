@@ -22,7 +22,7 @@ export interface MultitabContextValue {
   event: Emitter;
 }
 
-const initValue: MultitabContextValue = undefined as any;
+const initValue: MultitabContextValue = {} as any;
 
 // Context
 export const MultitabContext = createContext<MultitabContextValue>(initValue);

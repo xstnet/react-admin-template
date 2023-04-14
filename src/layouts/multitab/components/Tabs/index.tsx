@@ -1,6 +1,7 @@
-import { MenuContext } from '@/contexts/Menu';
 import { MultitabContext } from '@/contexts/Multitab';
-import { Tabs as AntdTabs } from 'antd';
+import useThemeToken from '@/hooks/useThemeToken';
+import { ReloadOutlined } from '@ant-design/icons';
+import { Button, Space, Tabs as AntdTabs, Tooltip } from 'antd';
 import { useContext } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import './index.less';
@@ -9,10 +10,9 @@ const Tabs = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const { tabs, activeTab, removeTab } = useContext(MultitabContext);
+  const { colorPrimary } = useThemeToken();
 
   const handleChangeTab = (tabKey: S) => {
-    console.log('tabclick, tabKey', tabKey, typeof tabKey);
-
     if (tabKey && tabKey !== pathname) {
       navigate(tabKey);
     }
@@ -24,6 +24,29 @@ const Tabs = () => {
       removeTab(targetKey as string);
     }
   };
+
+  const handleReload = () => {
+    // hack 实现
+    removeTab(pathname);
+    setTimeout(() => {
+      console.log('pathname', pathname);
+      navigate(pathname);
+    }, 10);
+  };
+  const TabsOperate = () => {
+    return (
+      <Space>
+        <Tooltip title="刷新当前页面">
+          <Button
+            onClick={handleReload}
+            type="link"
+            style={{ color: colorPrimary }}
+            icon={<ReloadOutlined />}
+          />
+        </Tooltip>
+      </Space>
+    );
+  };
   return (
     <AntdTabs
       className="tabs-wrapper"
@@ -33,6 +56,7 @@ const Tabs = () => {
       items={[...tabs]}
       onChange={handleChangeTab}
       onEdit={onEdit}
+      tabBarExtraContent={<TabsOperate />}
     />
   );
 };

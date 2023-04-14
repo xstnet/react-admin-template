@@ -7,8 +7,6 @@ import PageLoading from '@/components/Loading/PageLoading';
 import { GlobalContext } from '@/contexts/Global';
 import { AxiosError } from 'axios';
 import { SettingContext } from '@/contexts/Setting';
-import './index.less';
-import './fixed-layout.less';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import SmallScreenNotify from '../components/SmallScreenNotify';
 import MultitabLayout from '../multitab';
@@ -16,6 +14,8 @@ import SingleLaylut from '../single';
 import { MenuContext } from '@/contexts/Menu';
 import useThemeToken from '@/hooks/useThemeToken';
 import React from 'react';
+import './index.less';
+import './fixed-layout.less';
 
 const GlobalLayout: React.FC = () => {
   const [getUserInfoLoading, setGetUserInfoLoading] = useState(true);
