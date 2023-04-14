@@ -11,15 +11,16 @@ import './index.less';
 
 const Content: React.FC<PropsWithChildren> = ({ children }) => {
   console.log('multitab Content render...');
-  const location = useLocation();
+  const { pathname } = useLocation();
   const { addTab, activeTab, hasTab, openTab } = useContext(MultitabContext);
   const { mapPathToMenu } = useContext(MenuContext);
-  const { pathname } = location;
 
   const handleAddTab = () => {
     console.log('handleAddTab');
 
     const menuItem = mapPathToMenu.get(pathname);
+    console.log('menuItem', menuItem);
+
     if (!menuItem || !menuItem.path) {
       return;
     }
@@ -28,6 +29,8 @@ const Content: React.FC<PropsWithChildren> = ({ children }) => {
       openTab(menuItem.key!);
       return;
     }
+    console.log('addttttttt');
+
     addTab({
       label: menuItem.label,
       key: menuItem.key!,
@@ -37,7 +40,7 @@ const Content: React.FC<PropsWithChildren> = ({ children }) => {
 
   useEffect(() => {
     handleAddTab();
-  }, [location]);
+  }, [pathname]);
 
   useEffect(() => {
     return () => {

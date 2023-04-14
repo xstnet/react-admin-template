@@ -6,7 +6,7 @@ import LeftSider from '../components/LeftSider/Index';
 import Breadcrumb from '../components/Breadcrumb';
 import Tabs from './components/Tabs';
 import MultitabProvider from '@/contexts/Multitab';
-import React from 'react';
+import React, { useEffect } from 'react';
 import './index.less';
 
 const MultitabLayout = () => {

@@ -11,6 +11,7 @@ import IframePage from '@/pages/Iframe';
 import { iframeUrlPrefix } from '@/utils/iframe';
 import GlobalLayout from '@/layouts/global';
 import LoginPage from '@/pages/Login';
+import TabsPage from '@/pages/Example/tabs';
 
 // todo: Suspense
 // const DashboardPage = lazy(() => import('@page/Dashboard'));
@@ -52,8 +53,11 @@ export default function DefaultRoutes() {
           ]
         },
         {
-          path: '/example/userList',
-          element: <ExampleUserListPage />
+          path: '/example',
+          children: [
+            { path: '/example/userList', element: <ExampleUserListPage /> },
+            { path: '/example/tabs/manage', element: <TabsPage /> }
+          ]
         },
         {
           path: '/article',

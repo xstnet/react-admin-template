@@ -2,52 +2,50 @@ import { MenuList } from '@/configs/menu';
 import { isSubMenu, isGroupMenu, isExtendMenu } from '@/utils/is';
 import React, { createContext, useMemo, useState } from 'react';
 
-export interface IContextValue {
+export interface MenuContextValue {
   menuCollapsed: boolean;
   setMenuCollapsed: ISetFunc;
   menuList: Menu.MenuItemType[];
   setMenuList: ISetFunc<Menu.MenuItemType[]>;
   mapPathToMenu: Map<string, Menu.ExtendMenuType>;
-  mapKeyToMenu: Map<React.Key, Menu.ExtendMenuType>;
 }
 
-const initValue: IContextValue = undefined as any;
+const initValue: MenuContextValue = undefined as any;
 
 // Context
-export const MenuContext = createContext<IContextValue>(initValue);
+export const MenuContext = createContext<MenuContextValue>(initValue);
 
 // Provider
 const MenuProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   let incMenuKey = 0;
   const initMenuList = useMemo(() => MenuList, [MenuList]);
 
-  const [rawMenuList, setMenuList] = useState<IContextValue['menuList']>(initMenuList);
+  const [rawMenuList, setMenuList] = useState<MenuContextValue['menuList']>(initMenuList);
   const [menuCollapsed, setMenuCollapsed] = useState(false);
 
-  const { mapPathToMenu, mapKeyToMenu, processedMenuList } = useMemo(() => {
+  const { mapPathToMenu, processedMenuList } = useMemo(() => {
     // 菜单数据处理
     // 1. key 绑定
     // 2. 创建 map key--->menuItem
     // 2. 创建 map path-->menuItem
     const processeMenu = () => {
-      const mapKeyToMenu = new Map<React.Key, Menu.ExtendMenuType>();
       const mapPathToMenu = new Map<string, Menu.ExtendMenuType>();
 
       const addKey = (item: Menu.MenuItemType): Menu.MenuItemType => {
-        if (!item.key) {
-          item.key = String(++incMenuKey);
+        if (isExtendMenu(item)) {
+          item.key = item?.key || item.path;
         }
         return { ...item };
       };
       const recursive = (list: Menu.MenuItemType[]): Menu.MenuItemType[] => {
         return list.map((item: any) => {
           const newItem = addKey(item);
+          // 含有子级菜单, 或者是一个Group, 递归
           if (isSubMenu(newItem) || isGroupMenu(newItem)) {
             newItem.children = recursive(newItem.children || []);
           }
 
           isExtendMenu(newItem) && mapPathToMenu.set(newItem.path, newItem);
-          newItem?.key && mapKeyToMenu.set(newItem.key, newItem as Menu.ExtendMenuType);
 
           return newItem;
         });
@@ -55,20 +53,19 @@ const MenuProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
 
       const processedMenuList = recursive(rawMenuList);
 
-      return { processedMenuList, mapKeyToMenu, mapPathToMenu };
+      return { processedMenuList, mapPathToMenu };
     };
 
     return processeMenu();
   }, [rawMenuList]);
 
-  const contextValue: IContextValue = useMemo(
+  const contextValue: MenuContextValue = useMemo(
     () => ({
       menuList: processedMenuList,
       setMenuList,
       menuCollapsed,
       setMenuCollapsed,
-      mapPathToMenu,
-      mapKeyToMenu
+      mapPathToMenu
     }),
     [rawMenuList, menuCollapsed]
   );

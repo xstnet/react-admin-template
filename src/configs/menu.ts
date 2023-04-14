@@ -41,6 +41,18 @@ const MenuList: Menu.MenuItemType[] = [
         ]
       },
       {
+        label: 'Tabs标签页',
+        icon: 'icon-list',
+        path: '/example/tabs',
+        children: [
+          {
+            label: '标签管理',
+            icon: 'icon-list',
+            path: '/example/tabs/manage'
+          }
+        ]
+      },
+      {
         label: '空白页',
         icon: 'icon-example',
         path: '/blank'

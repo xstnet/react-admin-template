@@ -25,8 +25,15 @@ const TodoList: React.FC = () => {
   const [todoList, setTodoList] = useState<ITodoItem[]>([
     {
       id: randomNumber(100, 1000000000),
-      name: '多tab布局支持',
+      name: '全局搜索',
       status: TodoItemEnum.incomplete,
+      create_time: now(),
+      update_time: now()
+    },
+    {
+      id: randomNumber(100, 1000000000),
+      name: '多tab布局支持',
+      status: TodoItemEnum.completed,
       create_time: now(),
       update_time: now()
     },

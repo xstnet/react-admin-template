@@ -5,7 +5,7 @@ import SettingProvider from './Setting';
 
 /**
 
-IContextValue 接口定义了全局上下文对象的结构。
+GlobalContextValue 接口定义了全局上下文对象的结构。
 @property {boolean} isLogin - 是否已登录的状态值。
 @property {ISetFunc} setIsLogin - 设置是否已登录的函数。
 @property {Api.GetUserInfo['response'] | undefined} userInfo - 用户信息对象或 undefined。
@@ -13,7 +13,7 @@ IContextValue 接口定义了全局上下文对象的结构。
 @property {boolean|undefined} fullScreen - 是否全屏显示的状态值或 undefined。
 @property {ISetFunc} setFullScreen - 设置是否全屏显示的函数。
 */
-export interface IContextValue {
+export interface GlobalContextValue {
   isLogin: boolean;
   setIsLogin: ISetFunc;
   userInfo: Api.GetUserInfo['response'] | null;
@@ -25,10 +25,10 @@ export interface IContextValue {
 // 目前暂不知为什么非要传一个初始值, 用的时候也要传一次, 看起来并没有意义
 // 原因: 给没有使用 Provider包裹的组件, 如果使用了useContext, 将会得到这个值
 // 懒得定义
-const initValue: IContextValue = undefined as any;
+const initValue: GlobalContextValue = undefined as any;
 
 // Context
-export const GlobalContext = createContext<IContextValue>(initValue);
+export const GlobalContext = createContext<GlobalContextValue>(initValue);
 
 // Provider
 // todo: 可以考虑拆分 provider, 分为 get 和 set
@@ -36,10 +36,10 @@ const GlobalProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const [isLogin, setIsLogin] = useState(false);
 
   const [fullScreen, { toggleFullscreen: setFullScreen }] = useFullscreen(document.body);
-  const [userInfo, setUserInfo] = useState<IContextValue['userInfo']>(null);
+  const [userInfo, setUserInfo] = useState<GlobalContextValue['userInfo']>(null);
 
   // 参考 https://mp.weixin.qq.com/s/z9GaB_48LHtL-if4mP-nZQ
-  const contextValue: IContextValue = useMemo(
+  const contextValue: GlobalContextValue = useMemo(
     () => ({
       isLogin,
       setIsLogin,

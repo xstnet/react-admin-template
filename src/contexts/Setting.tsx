@@ -2,7 +2,7 @@ import Cache from '@/utils/cache';
 import React, { createContext, useCallback, useMemo, useState } from 'react';
 import ThemeProvider from './Theme';
 
-export interface IContextValue {
+export interface SettingContextValue {
   settings: {
     theme: 'light' | 'dark';
     // 紧凑模式
@@ -20,13 +20,13 @@ export interface IContextValue {
     // 主色调
     primaryColor: string;
   };
-  setSetting: ISetFunc<Partial<IContextValue['settings']>>;
+  setSetting: ISetFunc<Partial<SettingContextValue['settings']>>;
 }
 
-const initValue: IContextValue = undefined as any;
+const initValue: SettingContextValue = undefined as any;
 
 // Context
-export const SettingContext = createContext<IContextValue>(initValue);
+export const SettingContext = createContext<SettingContextValue>(initValue);
 
 // Provider
 const SettingProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
@@ -44,12 +44,12 @@ const SettingProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
       multitabMode: false,
       primaryColor: '#00b96b',
       ...settingsCache
-    } as IContextValue['settings'];
+    } as SettingContextValue['settings'];
   }, []);
 
-  const [settings, setSetting] = useState<IContextValue['settings']>(initSettings);
+  const [settings, setSetting] = useState<SettingContextValue['settings']>(initSettings);
   // 部分 set
-  const setSettingPartial = useCallback<IContextValue['setSetting']>(
+  const setSettingPartial = useCallback<SettingContextValue['setSetting']>(
     (newSettings) => {
       const writeSettings = { ...settings, ...newSettings };
 
@@ -60,7 +60,7 @@ const SettingProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     [settings]
   );
 
-  const contextValue: IContextValue = {
+  const contextValue: SettingContextValue = {
     settings,
     setSetting: setSettingPartial
   };

@@ -5,12 +5,12 @@ import { SettingContext } from './Setting';
 import useSystemThemeMode from '@/hooks/useSystemThemeMode';
 import 'dayjs/locale/zh-cn';
 
-export interface IContextValue {}
+export interface ThemeContextValue {}
 
-const initValue: IContextValue = undefined as any;
+const initValue: ThemeContextValue = undefined as any;
 
 // Context
-export const ThemeContext = createContext<IContextValue>(initValue);
+export const ThemeContext = createContext<ThemeContextValue>(initValue);
 
 // Provider
 const ThemeProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
@@ -19,7 +19,7 @@ const ThemeProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     settings: { primaryColor, theme, compactMode, followSystemTheme }
   } = useContext(SettingContext);
   const [systemThemeMode] = useSystemThemeMode();
-  const contextValue: IContextValue = {};
+  const contextValue: ThemeContextValue = {};
 
   // antd v5主题模式
   const getAlgorithm = () => {

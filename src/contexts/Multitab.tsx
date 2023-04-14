@@ -1,46 +1,44 @@
-import React, { createContext, useCallback, useContext, useMemo, useState } from 'react';
+import React, { createContext, useCallback, useContext, useMemo, useRef, useState } from 'react';
 import { TabsProps } from 'antd';
 import { createNanoEvents, Emitter } from 'nanoevents';
 import { useNavigate } from 'react-router-dom';
-import { MenuContext } from './Menu';
 
 type ItemsType = Pick<Required<TabsProps>, 'items'>['items'][number];
 
-export interface IContextValue {
+// 这样定义是为了一看就明白 tabKey是可以当做 path 使用的
+type TabKey = Menu.SubMenuType['path'];
+export interface MultitabContextValue {
   activeTab: S;
   tabs: ItemsType[];
   setTabs: ISetFunc<ItemsType[]>;
   addTab: (info: ItemsType, open?: boolean) => void;
-  removeTab: (key: S) => void;
-  openTab: (key: S) => void;
-  hasTab: (key: S) => boolean;
+  removeTab: (key: TabKey) => void;
+  openTab: (key: TabKey) => void;
+  hasTab: (key: TabKey) => boolean;
   event: Emitter;
 }
 
-const initValue: IContextValue = undefined as any;
+const initValue: MultitabContextValue = undefined as any;
 
 // Context
-export const MultitabContext = createContext<IContextValue>(initValue);
+export const MultitabContext = createContext<MultitabContextValue>(initValue);
 
 // Provider
 const MultitabProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
-  const [tabs, setTabs] = useState<IContextValue['tabs']>([]);
-  const [activeTab, setActiveTab] = useState<IContextValue['activeTab']>('');
+  const [tabs, setTabs] = useState<MultitabContextValue['tabs']>([]);
+  const [activeTab, setActiveTab] = useState<MultitabContextValue['activeTab']>('');
   const tabEvent = useMemo(() => createNanoEvents(), []);
   const navigate = useNavigate();
-  const { mapKeyToMenu } = useContext(MenuContext);
 
   const getTabActions = useCallback(() => {
-    const openTab: IContextValue['openTab'] = (key) => {
+    const openTab: MultitabContextValue['openTab'] = (key) => {
       if (!key) return;
       setActiveTab(key);
     };
-    const hasTab: IContextValue['hasTab'] = (key) => {
+    const hasTab: MultitabContextValue['hasTab'] = (key) => {
       return tabs.findIndex((item) => item.key === key) > -1;
     };
-    const addTab: IContextValue['addTab'] = (info, open = true) => {
-      console.log('ddddddddd', tabs);
-
+    const addTab: MultitabContextValue['addTab'] = (info, open = true) => {
       if (!hasTab(info.key)) {
         setTabs((tabs) => [...tabs, { ...info }]);
       }
@@ -48,7 +46,7 @@ const MultitabProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
         openTab(info.key);
       }
     };
-    const removeTab: IContextValue['removeTab'] = (tabKey) => {
+    const removeTab: MultitabContextValue['removeTab'] = (tabKey) => {
       const closedTabIndex = tabs.findIndex((item) => item.key === tabKey);
       if (closedTabIndex === -1) {
         return;
@@ -57,10 +55,9 @@ const MultitabProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
 
       setTabs((tabs) => tabs.filter((item) => item.key !== tabKey));
       if (activeTab === tabKey) {
-        nextActiveTab &&
-          mapKeyToMenu.has(nextActiveTab.key) &&
-          navigate(mapKeyToMenu.get(nextActiveTab.key)?.path!);
+        nextActiveTab && navigate(nextActiveTab.key);
       }
+      console.log('tabs', tabs);
     };
 
     return {

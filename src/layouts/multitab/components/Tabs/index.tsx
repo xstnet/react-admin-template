@@ -7,23 +7,20 @@ import './index.less';
 
 const Tabs = () => {
   const navigate = useNavigate();
-  const location = useLocation();
-  const { mapKeyToMenu } = useContext(MenuContext);
-  const { tabs, activeTab, openTab, removeTab } = useContext(MultitabContext);
+  const { pathname } = useLocation();
+  const { tabs, activeTab, removeTab } = useContext(MultitabContext);
 
   const handleChangeTab = (tabKey: S) => {
     console.log('tabclick, tabKey', tabKey, typeof tabKey);
-    const { path } = (mapKeyToMenu.has(tabKey) && mapKeyToMenu.get(tabKey)) || { path: undefined };
-    if (path && path !== location.pathname) {
-      navigate(path);
+
+    if (tabKey && tabKey !== pathname) {
+      navigate(tabKey);
     }
   };
 
   type TargetKey = React.MouseEvent | React.KeyboardEvent | string;
   const onEdit = (targetKey: TargetKey, action: 'add' | 'remove') => {
-    if (action === 'add') {
-      return;
-    } else {
+    if (action === 'remove') {
       removeTab(targetKey as string);
     }
   };
@@ -33,7 +30,7 @@ const Tabs = () => {
       type="editable-card"
       hideAdd
       activeKey={activeTab}
-      items={tabs}
+      items={[...tabs]}
       onChange={handleChangeTab}
       onEdit={onEdit}
     />

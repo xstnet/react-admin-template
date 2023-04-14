@@ -20,7 +20,7 @@ const MenuList: React.FC = () => {
   const { pathname } = useLocation();
   const [activeKey, setActiveKey] = useState<string[]>();
 
-  const { menuList: processedMenuList, mapKeyToMenu, mapPathToMenu } = useContext(MenuContext);
+  const { menuList: processedMenuList, mapPathToMenu } = useContext(MenuContext);
 
   let defaultActiveMenu = mapPathToMenu.get('/dashboard')?.key || '';
   // 入栈-出栈来匹配
@@ -31,18 +31,18 @@ const MenuList: React.FC = () => {
   const [searchParams] = useSearchParams();
 
   useUpdateEffect(() => {
-    const menuInfo = mapPathToMenu.get(pathname) || undefined;
-    console.log('pathffff', pathname, menuInfo, activeKey);
+    // const menuInfo = mapPathToMenu.get(pathname) || undefined;
+    // console.log('pathffff', pathname, menuInfo, activeKey);
+    console.log('ppppppppppppppp');
 
-    if (menuInfo) {
-      setActiveKey([menuInfo.key!]);
+    if (1) {
+      setActiveKey([pathname!]);
     }
   }, [pathname]);
 
   // 菜单点击事件
   const handleClick: MenuProps['onClick'] = (info) => {
-    const menu = mapKeyToMenu.get(info.key);
-    console.log('mapKeyToMenu', mapKeyToMenu);
+    const menu = mapPathToMenu.get(info.key);
 
     console.log('clicked menu', info, menu);
 
