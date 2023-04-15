@@ -1,6 +1,6 @@
 import { MultitabContext } from '@/contexts/Multitab';
 import useThemeToken from '@/hooks/useThemeToken';
-import { ReloadOutlined } from '@ant-design/icons';
+import { FullscreenOutlined, ReloadOutlined } from '@ant-design/icons';
 import { Button, Space, Tabs as AntdTabs, Tooltip } from 'antd';
 import { useContext } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -30,13 +30,21 @@ const Tabs = () => {
   };
   const TabsOperate = () => {
     return (
-      <Space>
+      <Space size={0}>
         <Tooltip title="刷新当前页面">
           <Button
             onClick={handleReload}
             type="link"
             style={{ color: colorPrimary }}
             icon={<ReloadOutlined />}
+          />
+        </Tooltip>
+        <Tooltip title="全屏">
+          <Button
+            onClick={handleReload}
+            type="link"
+            style={{ color: colorPrimary }}
+            icon={<FullscreenOutlined />}
           />
         </Tooltip>
       </Space>

@@ -21,6 +21,9 @@ interface IFormState {
   showFooter: any;
   followSystemTheme?: boolean;
 }
+
+// todo: fix bugs: Warning: Instance created by `useForm` is not connected to any Form element. Forget to pass `form` prop?
+// 可能是 Modal引起的问题
 const SettingDrawer: React.FC<IProps> = (props) => {
   const { open, onClose = noop } = props;
   const { settings, setSetting } = useContext(SettingContext);
