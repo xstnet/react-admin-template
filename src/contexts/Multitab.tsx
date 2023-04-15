@@ -19,7 +19,8 @@ export interface MultitabContextValue {
   removeTab: (key: TabKey) => void;
   openTab: (key: TabKey) => void;
   hasTab: (key: TabKey) => boolean;
-  event: Emitter;
+  // 事件订阅器
+  tabEvent: Emitter;
 }
 
 const initValue: MultitabContextValue = {} as any;
@@ -88,7 +89,7 @@ const MultitabProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
       tabs,
       setTabs,
       activeTab,
-      event: tabEvent,
+      tabEvent,
       ...tabActions
     };
   }, [tabs, activeTab]);

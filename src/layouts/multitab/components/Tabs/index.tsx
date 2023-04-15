@@ -9,7 +9,7 @@ import './index.less';
 const Tabs = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
-  const { tabs, activeTab, removeTab } = useContext(MultitabContext);
+  const { tabs, activeTab, removeTab, tabEvent } = useContext(MultitabContext);
   const { colorPrimary } = useThemeToken();
 
   const handleChangeTab = (tabKey: S) => {
@@ -26,12 +26,7 @@ const Tabs = () => {
   };
 
   const handleReload = () => {
-    // hack 实现
-    removeTab(pathname);
-    setTimeout(() => {
-      console.log('pathname', pathname);
-      navigate(pathname);
-    }, 10);
+    tabEvent.emit('reload', pathname);
   };
   const TabsOperate = () => {
     return (

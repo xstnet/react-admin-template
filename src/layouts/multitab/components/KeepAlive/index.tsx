@@ -1,27 +1,44 @@
 import { ReactNode, useContext } from 'react';
-import { memo, useState, useRef, useEffect } from 'react';
-import { useLocation, useMatches, useOutlet } from 'react-router-dom';
+import { useState, useRef, useEffect } from 'react';
+import { useLocation, useOutlet } from 'react-router-dom';
 import { MultitabContext } from '@/contexts/Multitab';
 import Content from './Content';
 import './index.less';
 
-type CachedNodeType = { id: string; element?: ReactNode };
+// 传给子组件的key, 当他改变时, 会刷新子组件, 达到刷新tab页面的效果
+let reloadKey = 1;
+
+type CachedNodeType = { id: string; element?: ReactNode; key: React.Key };
+
 interface IProps {}
+
 const KeepAlive: React.FC<IProps> = () => {
   const element = useOutlet();
-  console.log('elementelement', element);
-
-  const matches = useMatches();
-  console.log('matches', matches);
 
   const { pathname } = useLocation();
 
   const activeTabKey = pathname;
 
-  const { tabs } = useContext(MultitabContext);
-  // 占位符
+  const { tabs, tabEvent } = useContext(MultitabContext);
+  // dom 占位符
   const placeholderRef = useRef<HTMLDivElement>(null);
   const [cachedNodes, setCachedNodes] = useState<CachedNodeType[]>([]);
+
+  useEffect(() => {
+    const unBindEvent = tabEvent.on('reload', (targetPathname) => {
+      console.log('刷新页面:', targetPathname);
+
+      setCachedNodes(
+        cachedNodes.map((item) =>
+          item.id !== targetPathname ? item : { ...item, key: ++reloadKey }
+        )
+      );
+    });
+
+    return () => {
+      unBindEvent();
+    };
+  });
 
   useEffect(() => {
     console.log('chage', activeTabKey, tabs);
@@ -37,21 +54,21 @@ const KeepAlive: React.FC<IProps> = () => {
       if (!reactNode) {
         reactNodes.push({
           id: activeTabKey,
-          element
+          element,
+          key: ++reloadKey
         });
       }
       // 同步标签页, 比如关闭了标签, 这里要相应的丢弃
       return reactNodes.filter((i) => tabsKeys.includes(i.id));
     });
   }, [tabs]);
-
   return (
     <>
       <div ref={placeholderRef} className="keep-alive" />
 
-      {cachedNodes.map(({ id, element }) => {
+      {cachedNodes.map(({ id, element, key }) => {
         return (
-          <Content active={id === activeTabKey} parentRef={placeholderRef} id={id} key={id}>
+          <Content active={id === activeTabKey} parentRef={placeholderRef} id={id} key={key}>
             {element}
           </Content>
         );
