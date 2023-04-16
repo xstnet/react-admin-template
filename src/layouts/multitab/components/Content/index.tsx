@@ -1,17 +1,24 @@
 // import DefaultRoutes from '@/routes';
 import { MenuContext } from '@/contexts/Menu';
 import { MultitabContext } from '@/contexts/Multitab';
+import useThemeToken from '@/hooks/useThemeToken';
+import Breadcrumb from '@/layouts/components/Breadcrumb';
+import { useFullscreen } from 'ahooks';
 import { Layout } from 'antd';
-import React, { PropsWithChildren, useContext, useEffect } from 'react';
+import React, { PropsWithChildren, useContext, useEffect, useRef } from 'react';
 import { useLocation, useMatches } from 'react-router-dom';
 import KeepAlive from '../KeepAlive';
+import Tabs from '../Tabs';
 import './index.less';
 
 const Content: React.FC<PropsWithChildren> = ({ children }) => {
   console.log('multitab Content render...');
   const { pathname } = useLocation();
-  const { addTab, hasTab, openTab } = useContext(MultitabContext);
+  const { addTab, hasTab, openTab, tabs, tabEvent } = useContext(MultitabContext);
   const { mapPathToMenu } = useContext(MenuContext);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const [_, { toggleFullscreen }] = useFullscreen(contentRef);
+  const { colorBgLayout } = useThemeToken();
 
   const matches = useMatches();
 
@@ -82,13 +89,20 @@ const Content: React.FC<PropsWithChildren> = ({ children }) => {
   }, [pathname]);
 
   useEffect(() => {
+    // 全屏事件监听
+    const unBind = tabEvent.on('fullScreen', (fullScreen: boolean) => {
+      toggleFullscreen();
+    });
     return () => {
-      console.log('content destory');
+      unBind();
     };
   }, []);
 
   return (
-    <Layout.Content className="content">
+    // 开启标签页全屏后, content 背景色会被 :fullscreen 选择器设置为黑色(此乃浏览器行为), 所以需要加行内样式提高优先级
+    <Layout.Content className="content" ref={contentRef} style={{ backgroundColor: colorBgLayout }}>
+      <Tabs />
+      {tabs.length ? <Breadcrumb /> : null}
       <KeepAlive />
     </Layout.Content>
   );

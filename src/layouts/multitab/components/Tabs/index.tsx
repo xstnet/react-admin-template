@@ -1,8 +1,8 @@
 import { MultitabContext } from '@/contexts/Multitab';
 import useThemeToken from '@/hooks/useThemeToken';
-import { FullscreenOutlined, ReloadOutlined } from '@ant-design/icons';
+import { FullscreenExitOutlined, FullscreenOutlined, ReloadOutlined } from '@ant-design/icons';
 import { Button, Space, Tabs as AntdTabs, Tooltip } from 'antd';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import './index.less';
 
@@ -11,6 +11,8 @@ const Tabs = () => {
   const { pathname } = useLocation();
   const { tabs, activeTab, removeTab, tabEvent } = useContext(MultitabContext);
   const { colorPrimary } = useThemeToken();
+  const [fullScreen, setFullScreen] = useState(false);
+  const { colorBgLayout } = useThemeToken();
 
   const handleChangeTab = (tabKey: S) => {
     if (tabKey && tabKey !== pathname) {
@@ -28,7 +30,36 @@ const Tabs = () => {
   const handleReload = () => {
     tabEvent.emit('reload', pathname);
   };
-  const TabsOperate = () => {
+
+  const handleFullScreen = (value: boolean) => {
+    const newFullScreen = value;
+    setFullScreen(newFullScreen);
+    // tab 事件触发, 全屏Content, 所以在 multitab/components/Content 组件监听 fullScreen 事件
+    tabEvent.emit('fullScreen', newFullScreen);
+  };
+
+  const TabsAction = () => {
+    const renderFullScreenIcon = () => {
+      return fullScreen ? (
+        <Tooltip title="退出全屏">
+          <Button
+            onClick={() => handleFullScreen(false)}
+            type="link"
+            style={{ color: colorPrimary }}
+            icon={<FullscreenExitOutlined />}
+          />
+        </Tooltip>
+      ) : (
+        <Tooltip title="全屏">
+          <Button
+            onClick={() => handleFullScreen(true)}
+            type="link"
+            style={{ color: colorPrimary }}
+            icon={<FullscreenOutlined />}
+          />
+        </Tooltip>
+      );
+    };
     return (
       <Space size={0}>
         <Tooltip title="刷新当前页面">
@@ -39,14 +70,7 @@ const Tabs = () => {
             icon={<ReloadOutlined />}
           />
         </Tooltip>
-        <Tooltip title="全屏">
-          <Button
-            onClick={handleReload}
-            type="link"
-            style={{ color: colorPrimary }}
-            icon={<FullscreenOutlined />}
-          />
-        </Tooltip>
+        {renderFullScreenIcon()}
       </Space>
     );
   };
@@ -59,7 +83,9 @@ const Tabs = () => {
       items={[...tabs]}
       onChange={handleChangeTab}
       onEdit={onEdit}
-      tabBarExtraContent={<TabsOperate />}
+      tabBarExtraContent={<TabsAction />}
+      // 全屏后标签页应左侧对齐
+      style={{ backgroundColor: colorBgLayout, left: fullScreen ? 0 : 200 }}
     />
   );
 };
