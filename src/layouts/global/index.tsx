@@ -16,6 +16,7 @@ import useThemeToken from '@/hooks/useThemeToken';
 import React from 'react';
 import './index.less';
 import './fixed-layout.less';
+import { useUpdateEffect } from 'ahooks';
 
 const GlobalLayout: React.FC = () => {
   const [getUserInfoLoading, setGetUserInfoLoading] = useState(true);
@@ -35,11 +36,12 @@ const GlobalLayout: React.FC = () => {
   useEffect(() => {
     if (!validateToken()) {
       // token 无效
-      // navigate('/login');
+      navigate('/login');
       return;
     }
-
+    console.log('effect validateToken');
     // 第一个接口必须要保成功
+    // todo: async await
     getUserInfo()
       .then((data) => {
         setGetUserInfoLoading(false);
@@ -65,12 +67,13 @@ const GlobalLayout: React.FC = () => {
       });
   }, []);
 
-  if (!validateToken()) {
-    // token 无效
-    // 初次可能会无效, react-route推荐在组件渲染之后再进行跳转, 所以初次跳转方法放到了 useEffect中
-    navigate('/login');
-    return null;
-  }
+  // 页面更新检测token, 不需要第二个参数
+  useUpdateEffect(() => {
+    if (!validateToken()) {
+      // token 无效
+      navigate('/login');
+    }
+  });
 
   if (getUserInfoLoading) {
     return <PageLoading title="页面加载中" loading={getUserInfoLoading} />;
