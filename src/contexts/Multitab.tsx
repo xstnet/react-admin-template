@@ -2,8 +2,12 @@ import React, { createContext, useCallback, useContext, useMemo, useRef, useStat
 import { TabsProps } from 'antd';
 import { createNanoEvents, Emitter } from 'nanoevents';
 import { useNavigate } from 'react-router-dom';
+import { noop } from '@/utils/util';
 
-type ItemsType = Pick<Required<TabsProps>, 'items'>['items'][number];
+type ItemsType = Pick<Required<TabsProps>, 'items'>['items'][number] & {
+  // queryString 中包含 ?
+  queryString?: string;
+};
 
 // 这样定义是为了一看就明白 tabKey是可以当做 path 使用的
 type TabKey = Menu.SubMenuType['path'];
@@ -23,7 +27,18 @@ export interface MultitabContextValue {
   tabEvent: Emitter;
 }
 
-const initValue: MultitabContextValue = {} as any;
+// 初始值, 不使用MultitabProvider时获取到的value, 增加容错
+const initValue: MultitabContextValue = {
+  addTab: noop,
+  removeTab: noop,
+  tabs: [],
+  openTab: noop,
+  hasTab: () => false,
+  setTabs: noop,
+  activeTab: '',
+  tabEvent: createNanoEvents(),
+  addTabWithNavigate: noop
+};
 
 // Context
 export const MultitabContext = createContext<MultitabContextValue>(initValue);
@@ -57,7 +72,14 @@ const MultitabProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     const addTabWithNavigate: typeof addTab = (info) => {
       // 你都要跳转了, 肯定是要打开这个标签页的, 不可能后台打开的
       addTab(info, true);
-      navigate(info.key);
+      // 先从缓存中获取 tab信息
+      const tabInfo = tabs.find((item) => item.key === info.key) || info;
+      if (!tabInfo) {
+        console.log('标签页不存在');
+        return;
+      }
+      const to = tabInfo.key + (tabInfo.queryString || '');
+      navigate(to);
     };
     const removeTab: MultitabContextValue['removeTab'] = (tabKey) => {
       const closedTabIndex = tabs.findIndex((item) => item.key === tabKey);

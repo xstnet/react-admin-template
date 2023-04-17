@@ -13,7 +13,7 @@ import './index.less';
 
 const Content: React.FC<PropsWithChildren> = ({ children }) => {
   console.log('multitab Content render...');
-  const { pathname } = useLocation();
+  const { pathname, search: queryString } = useLocation();
   const { addTab, hasTab, openTab, tabs, tabEvent } = useContext(MultitabContext);
   const { mapPathToMenu } = useContext(MenuContext);
   const contentRef = useRef<HTMLDivElement>(null);
@@ -71,6 +71,7 @@ const Content: React.FC<PropsWithChildren> = ({ children }) => {
       addTab({
         label: label,
         key: tabKey!,
+        queryString,
         children: null
       });
       return;
@@ -80,6 +81,7 @@ const Content: React.FC<PropsWithChildren> = ({ children }) => {
     addTab({
       label: menuItem.label,
       key: menuItem.key!,
+      queryString,
       children: null
     });
   };
@@ -101,7 +103,7 @@ const Content: React.FC<PropsWithChildren> = ({ children }) => {
   return (
     // 开启标签页全屏后, content 背景色会被 :fullscreen 选择器设置为黑色(此乃浏览器行为), 所以需要加行内样式提高优先级
     <Layout.Content className="content" ref={contentRef} style={{ backgroundColor: colorBgLayout }}>
-      <Tabs />
+      {tabs.length ? <Tabs /> : null}
       {tabs.length ? <Breadcrumb /> : null}
       <KeepAlive />
     </Layout.Content>

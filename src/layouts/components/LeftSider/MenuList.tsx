@@ -1,5 +1,5 @@
 import { Badge, Menu } from 'antd';
-import React, { useContext, useEffect, useMemo, useState } from 'react';
+import React, { useContext, useMemo, useState } from 'react';
 
 import type { MenuProps } from 'antd';
 import { isDividerMenu, isExtendMenu, isGroupMenu, isLeafMenu, isSubMenu } from '@/utils/is';

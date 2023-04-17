@@ -9,14 +9,16 @@ import './index.less';
 const Tabs = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
-  const { tabs, activeTab, removeTab, tabEvent } = useContext(MultitabContext);
+  const { tabs, activeTab, removeTab, tabEvent, addTabWithNavigate } = useContext(MultitabContext);
   const { colorPrimary } = useThemeToken();
   const [fullScreen, setFullScreen] = useState(false);
   const { colorBgLayout } = useThemeToken();
 
   const handleChangeTab = (tabKey: S) => {
     if (tabKey && tabKey !== pathname) {
-      navigate(tabKey);
+      // 内部会判断, 存在就打开
+      // 同时内部跳转时会携带url参数, 方便一些
+      addTabWithNavigate({ key: tabKey, label: '' });
     }
   };
 
