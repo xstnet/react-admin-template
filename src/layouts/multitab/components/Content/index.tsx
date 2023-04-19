@@ -53,14 +53,21 @@ const Content: React.FC<PropsWithChildren> = ({ children }) => {
       _pathname = searchParams.get('url') || '';
     }
 
-    const tabKey = pathname;
+    const menuItem = mapPathToMenu.get(_pathname);
+    // tab key
+    // 正常页面是pathname
+    // iframe是 pathname+queryString
+    const tabKey = !menuItem
+      ? pathname
+      : pathname === iframeUrlPrefix
+      ? pathname + queryString
+      : menuItem.key!;
     // 标签已存在, 切换
     if (hasTab(tabKey)) {
       openTab(tabKey);
       return;
     }
 
-    const menuItem = mapPathToMenu.get(_pathname);
     // 菜单不存在, 打开一个不知道名字的标签
     // todo: 想办法解决名字的问题
     // 一般发生在 不存在于菜单上的页面, 刷新页面导致的
@@ -94,15 +101,25 @@ const Content: React.FC<PropsWithChildren> = ({ children }) => {
     addTab({
       label: menuItem.label,
       // iframe 页面使用统一的 Iframe前缀
-      key: pathname === iframeUrlPrefix ? iframeUrlPrefix : menuItem.key!,
-      queryString,
+      key: tabKey,
+      queryString: pathname === iframeUrlPrefix ? '' : queryString,
       children: null
     });
   };
 
   useEffect(() => {
+    // 只有iframe的参数变了才处理
+    if (pathname === iframeUrlPrefix) {
+      handleAddTab();
+      return;
+    }
     handleAddTab();
-  }, [pathname]);
+    console.log('addddd', pathname);
+  }, [pathname, queryString]);
+
+  useEffect(() => {
+    console.log('qqqqqqq', queryString);
+  }, [queryString]);
 
   useEffect(() => {
     // 全屏事件监听
