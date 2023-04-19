@@ -1,6 +1,7 @@
 import ContentBox from '@/components/ContextBox';
+import { MenuContext } from '@/contexts/Menu';
 import { Alert, Spin } from 'antd';
-import { useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import './index.less';
 
@@ -25,6 +26,10 @@ const IframePage: React.FC<IProps> = (props) => {
     setLoadingIframe(false);
   };
 
+  const { mapPathToMenu } = useContext(MenuContext);
+
+  const iframePageTitle = mapPathToMenu.get(url || '')?.label || '第三方页面';
+
   if (!url) {
     return (
       <ContentBox>
@@ -39,7 +44,7 @@ const IframePage: React.FC<IProps> = (props) => {
         <Spin
           wrapperClassName="iframeSpin"
           spinning={loadingIframe}
-          tip="正在加载第三方页面, 请稍后..."
+          tip={`正在加载${iframePageTitle}, 请稍后...`}
         >
           <iframe
             ref={iframeRef}
