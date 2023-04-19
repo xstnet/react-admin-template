@@ -142,7 +142,7 @@ const MenuList: Menu.MenuItemType[] = [
     icon: 'icon-href',
     children: [
       {
-        path: 'https://ant-design.antgroup.com/components/overview-cn/',
+        path: 'https://ant-design.antgroup.com/components/overview-cn',
         label: 'antd文档(外链)',
         icon: 'icon-document',
         key: 'webpage-antd-document',
@@ -157,6 +157,12 @@ const MenuList: Menu.MenuItemType[] = [
       {
         path: 'https://www.xstnet.com',
         label: '博客主页(内嵌)',
+        icon: 'icon-document',
+        type: 'iframe'
+      },
+      {
+        path: 'https://baidu.com',
+        label: '百度',
         icon: 'icon-document',
         type: 'iframe'
       }

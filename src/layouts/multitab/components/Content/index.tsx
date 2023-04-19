@@ -3,10 +3,11 @@ import { MenuContext } from '@/contexts/Menu';
 import { MultitabContext } from '@/contexts/Multitab';
 import useThemeToken from '@/hooks/useThemeToken';
 import Breadcrumb from '@/layouts/components/Breadcrumb';
+import { iframeUrlPrefix } from '@/utils/iframe';
 import { useFullscreen } from 'ahooks';
 import { Layout } from 'antd';
 import React, { PropsWithChildren, useContext, useEffect, useRef } from 'react';
-import { useLocation, useMatches } from 'react-router-dom';
+import { useLocation, useMatches, useSearchParams } from 'react-router-dom';
 import KeepAlive from '../KeepAlive';
 import Tabs from '../Tabs';
 import './index.less';
@@ -19,6 +20,7 @@ const Content: React.FC<PropsWithChildren> = ({ children }) => {
   const contentRef = useRef<HTMLDivElement>(null);
   const [_, { toggleFullscreen }] = useFullscreen(contentRef);
   const { colorBgLayout } = useThemeToken();
+  const [searchParams] = useSearchParams();
 
   const matches = useMatches();
 
@@ -29,6 +31,8 @@ const Content: React.FC<PropsWithChildren> = ({ children }) => {
   // 3. /article/update/10 -> 匹配不到, 就取上一次的结果 -> 更新文章
   // 将这个名字用作tab的名字
   const matchMenuNameByPathname = (pathname: string) => {
+    console.log('eeeeeeee', mapPathToMenu);
+
     let menuName = '';
     const pathArr = pathname.split('/').filter((i) => i);
     for (let i = 0; i < pathArr.length; i++) {
@@ -43,6 +47,12 @@ const Content: React.FC<PropsWithChildren> = ({ children }) => {
   const handleAddTab = () => {
     console.log('handleAddTab');
 
+    let _pathname = pathname;
+    // 如果是iframe页面, 使用相应的url作为key
+    if (pathname === iframeUrlPrefix) {
+      _pathname = searchParams.get('url') || '';
+    }
+
     const tabKey = pathname;
     // 标签已存在, 切换
     if (hasTab(tabKey)) {
@@ -50,7 +60,7 @@ const Content: React.FC<PropsWithChildren> = ({ children }) => {
       return;
     }
 
-    const menuItem = mapPathToMenu.get(pathname);
+    const menuItem = mapPathToMenu.get(_pathname);
     // 菜单不存在, 打开一个不知道名字的标签
     // todo: 想办法解决名字的问题
     // 一般发生在 不存在于菜单上的页面, 刷新页面导致的
@@ -58,9 +68,12 @@ const Content: React.FC<PropsWithChildren> = ({ children }) => {
 
     // 想到一个办法, 逐个匹配pathname获取最后一个名字
     if (!menuItem || !menuItem.path) {
-      let label = matchMenuNameByPathname(pathname);
+      let label = matchMenuNameByPathname(_pathname);
       if (!label) {
         label = '404';
+        if (pathname === iframeUrlPrefix) {
+          label = 'Iframe 页面';
+        }
       } else {
         // 检查是否有 ID参数, 有ID也放到 label上,
         const {
@@ -80,7 +93,8 @@ const Content: React.FC<PropsWithChildren> = ({ children }) => {
     // 标签不存在, 使用菜单label添加
     addTab({
       label: menuItem.label,
-      key: menuItem.key!,
+      // iframe 页面使用统一的 Iframe前缀
+      key: pathname === iframeUrlPrefix ? iframeUrlPrefix : menuItem.key!,
       queryString,
       children: null
     });

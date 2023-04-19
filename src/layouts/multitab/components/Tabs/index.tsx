@@ -3,11 +3,10 @@ import useThemeToken from '@/hooks/useThemeToken';
 import { FullscreenExitOutlined, FullscreenOutlined, ReloadOutlined } from '@ant-design/icons';
 import { Button, Space, Tabs as AntdTabs, Tooltip } from 'antd';
 import { useContext, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import './index.less';
 
 const Tabs = () => {
-  const navigate = useNavigate();
   const { pathname } = useLocation();
   const { tabs, activeTab, removeTab, tabEvent, addTabWithNavigate } = useContext(MultitabContext);
   const { colorPrimary } = useThemeToken();
