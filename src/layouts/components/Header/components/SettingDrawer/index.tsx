@@ -104,12 +104,7 @@ const SettingDrawer: React.FC<IProps> = (props) => {
           <ThemeColorPicker defaultSelectedColor={settings.primaryColor} />
         </Form.Item>
         <Divider>布局</Divider>
-        <Form.Item
-          help={'功能正在完善中'}
-          label="多标签页"
-          valuePropName="checked"
-          name="multitabMode"
-        >
+        <Form.Item label="多标签页" valuePropName="checked" name="multitabMode">
           <Switch checkedChildren="启用" unCheckedChildren="关闭" />
         </Form.Item>
         <Form.Item label="固定头部" valuePropName="checked" name="fixedHeader">
