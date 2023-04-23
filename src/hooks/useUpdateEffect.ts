@@ -10,9 +10,9 @@ const useUpdateEffect = (effect: React.EffectCallback, deps?: React.DependencyLi
   useEffect(() => {
     if (firstRun.current === true) {
       firstRun.current = false;
-      return;
+    } else {
+      effect();
     }
-    effect();
   }, deps);
 };
 
