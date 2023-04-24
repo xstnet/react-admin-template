@@ -40,7 +40,7 @@ const KeepAlive: React.FC<IProps> = () => {
     return () => {
       unBindEvent();
     };
-  });
+  }, [cachedNodes]);
 
   useEffect(() => {
     console.log('chage', activeTabKey, tabs);

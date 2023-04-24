@@ -1,27 +1,31 @@
-import { lazy } from 'react';
+import React, { lazy } from 'react';
 
-import DashboardPage from '@/pages/Dashboard';
+import { RouteObject } from 'react-router-dom';
+import GlobalLayout from '@/layouts/global';
+import PageLoading from '@/components/Loading/PageLoading';
+
 import { UserCenterPage, UserCenterUpdatePage } from '@/pages/UserCenter';
 import { BlankPage, ExampleUserListPage } from '@/pages/Example';
-import { ArticleIndexPage } from '@/pages/Article';
 import { NotFoundPage } from '@/pages/Error';
 import { ArticleCreatePage, ArticleUpdatePage } from '@/pages/Article';
-import { RouteObject } from 'react-router-dom';
-import IframePage from '@/pages/Iframe';
-import { iframeUrlPrefix } from '@/utils/iframe';
-import GlobalLayout from '@/layouts/global';
-import LoginPage from '@/pages/Login';
-import TabsPage from '@/pages/Example/tabs';
 
-// todo: Suspense
-// const DashboardPage = lazy(() => import('@page/Dashboard'));
-// const UserPage = lazy(() => import('@page/User'));
+import { iframeUrlPrefix } from '@/utils/iframe';
+
+const TabsPage = lazy(() => import('@/pages/Example/tabs'));
+const ArticleIndexPage = lazy(() => import('@/pages/Article/Index'));
+const LoginPage = lazy(() => import('@/pages/Login'));
+const DashboardPage = lazy(() => import('@/pages/Dashboard'));
+const IframePage = lazy(() => import('@/pages/Iframe'));
+
+const Suspense: React.FC<React.PropsWithChildren> = ({ children }) => (
+  <React.Suspense fallback={<PageLoading />}>{children}</React.Suspense>
+);
 
 export default function DefaultRoutes() {
   const routes: RouteObject[] = [
     {
       path: '/login',
-      element: <LoginPage />
+      element: <Suspense children={<LoginPage />} />
     },
     {
       path: '/',
@@ -29,11 +33,11 @@ export default function DefaultRoutes() {
       children: [
         {
           path: '/',
-          element: <DashboardPage />
+          element: <Suspense children={<DashboardPage />} />
         },
         {
           path: '/dashboard',
-          element: <DashboardPage />
+          element: <Suspense children={<DashboardPage />} />
         },
         {
           path: '/user',
@@ -56,7 +60,10 @@ export default function DefaultRoutes() {
           path: '/example',
           children: [
             { path: '/example/userList', element: <ExampleUserListPage /> },
-            { path: '/example/tabs/manage', element: <TabsPage /> }
+            {
+              path: '/example/tabs/manage',
+              element: <Suspense children={<TabsPage />} />
+            }
           ]
         },
         {
@@ -65,7 +72,7 @@ export default function DefaultRoutes() {
           children: [
             {
               index: true,
-              element: <ArticleIndexPage />
+              element: <Suspense children={<ArticleIndexPage />} />
             },
             {
               path: '/article/list',
@@ -95,7 +102,7 @@ export default function DefaultRoutes() {
         },
         {
           path: iframeUrlPrefix,
-          element: <IframePage />
+          element: <Suspense children={<IframePage />} />
         },
         {
           path: '/multilevel/menu/2/3',

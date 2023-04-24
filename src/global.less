@@ -17,6 +17,14 @@ body {
   min-height: 100vh;
   // background-color: orchid;
 }
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  & > div {
+    flex: 1;
+  }
+}
 
 .pointer {
   cursor: pointer;

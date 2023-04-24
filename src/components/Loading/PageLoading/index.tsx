@@ -4,11 +4,11 @@ import { useContext } from 'react';
 import './index.less';
 
 type IProps = {
-  loading: boolean;
+  loading?: boolean;
   title?: string;
   delay?: number;
 };
-const PageLoading: React.FC<IProps> = ({ loading, title, delay }) => {
+const PageLoading: React.FC<IProps> = ({ loading = true, title = '页面加载中', delay = 50 }) => {
   const {
     settings: { theme: themeMode }
   } = useContext(SettingContext);
@@ -20,7 +20,7 @@ const PageLoading: React.FC<IProps> = ({ loading, title, delay }) => {
       delay={delay}
       wrapperClassName={`page-loading-spin-${themeMode}`}
     >
-      <div style={{ height: '100vh', width: '100vw' }}></div>
+      <div style={{ height: '100%', width: '100%' }}></div>
     </Spin>
   );
 };
