@@ -2,9 +2,9 @@ import { ReactNode, useContext } from 'react';
 import { useState, useRef, useEffect } from 'react';
 import { useLocation, useOutlet } from 'react-router-dom';
 import { MultitabContext } from '@/contexts/Multitab';
-import Content from './Content';
-import './index.less';
+import AliveItem from './AliveItem';
 import { iframeUrlPrefix } from '@/utils/iframe';
+import './index.less';
 
 // 传给子组件的key, 当他改变时, 会刷新子组件, 达到刷新tab页面的效果
 let reloadKey = 1;
@@ -22,8 +22,9 @@ const KeepAlive: React.FC<IProps> = () => {
   const activeTabKey = pathname === iframeUrlPrefix ? pathname + search : pathname;
 
   const { tabs, tabEvent } = useContext(MultitabContext);
-  // dom 占位符
+  // dom wrap 占位符
   const placeholderRef = useRef<HTMLDivElement>(null);
+  // 缓存的组件列表
   const [cachedNodes, setCachedNodes] = useState<CachedNodeType[]>([]);
 
   useEffect(() => {
@@ -43,8 +44,6 @@ const KeepAlive: React.FC<IProps> = () => {
   }, [cachedNodes]);
 
   useEffect(() => {
-    console.log('chage', activeTabKey, tabs);
-
     if (!activeTabKey) {
       return;
     }
@@ -69,11 +68,12 @@ const KeepAlive: React.FC<IProps> = () => {
     <>
       <div ref={placeholderRef} className="keep-alive" />
 
+      {/* 遍历所有缓存的组件, 尝试渲染和当前pathname匹配的页面 */}
       {cachedNodes.map(({ id, element, key }) => {
         return (
-          <Content active={id === activeTabKey} parentRef={placeholderRef} id={id} key={key}>
+          <AliveItem active={id === activeTabKey} parentRef={placeholderRef} id={id} key={key}>
             {element}
-          </Content>
+          </AliveItem>
         );
       })}
     </>
