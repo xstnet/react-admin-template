@@ -145,7 +145,6 @@ const MenuList: Menu.MenuItemType[] = [
         path: 'https://ant-design.antgroup.com/components/overview-cn',
         label: 'antd文档(外链)',
         icon: 'icon-document',
-        key: 'webpage-antd-document',
         type: 'url'
       },
       {
