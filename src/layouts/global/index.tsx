@@ -39,7 +39,6 @@ const GlobalLayout: React.FC = () => {
       navigate('/login');
       return;
     }
-    console.log('effect validateToken');
     // 第一个接口必须要保成功
     // todo: async await
     getUserInfo()
@@ -49,6 +48,7 @@ const GlobalLayout: React.FC = () => {
         setUserInfo!(data);
 
         // 借助 gh-page 404.html的功能跳转回来, 解析路由并加载相应的页面
+        // https://www.xstnet.com/article-162.html
         if (searchParams.has('ghpage')) {
           const ghpage = decodeURIComponent(searchParams.get('ghpage')!);
           navigate(ghpage);

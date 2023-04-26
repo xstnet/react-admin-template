@@ -1,4 +1,3 @@
-// import DefaultRoutes from '@/routes';
 import { MenuContext } from '@/contexts/Menu';
 import { MultitabContext } from '@/contexts/Multitab';
 import useThemeToken from '@/hooks/useThemeToken';
@@ -13,7 +12,6 @@ import Tabs from '../Tabs';
 import './index.less';
 
 const Content: React.FC<PropsWithChildren> = ({ children }) => {
-  console.log('multitab Content render...');
   const { pathname, search: queryString } = useLocation();
   const { addTab, hasTab, openTab, tabs, tabEvent } = useContext(MultitabContext);
   const { mapPathToMenu } = useContext(MenuContext);
@@ -24,8 +22,6 @@ const Content: React.FC<PropsWithChildren> = ({ children }) => {
 
   const matches = useMatches();
 
-  // todo: iframe url 封装成hooks
-
   // 尝试分解 pathname 去获取 菜单名称,
   // 比如 /article/update/10
   // 1. /article -> 文章管理
@@ -33,8 +29,6 @@ const Content: React.FC<PropsWithChildren> = ({ children }) => {
   // 3. /article/update/10 -> 匹配不到, 就取上一次的结果 -> 更新文章
   // 将这个名字用作tab的名字
   const matchMenuNameByPathname = (pathname: string) => {
-    console.log('eeeeeeee', mapPathToMenu);
-
     let menuName = '';
     const pathArr = pathname.split('/').filter((i) => i);
     for (let i = 0; i < pathArr.length; i++) {
@@ -47,8 +41,6 @@ const Content: React.FC<PropsWithChildren> = ({ children }) => {
     return menuName;
   };
   const handleAddTab = () => {
-    console.log('handleAddTab');
-
     let _pathname = pathname;
     // 如果是iframe页面, 使用相应的url作为key
     if (pathname === iframeUrlPrefix) {
@@ -116,12 +108,9 @@ const Content: React.FC<PropsWithChildren> = ({ children }) => {
       return;
     }
     handleAddTab();
-    console.log('addddd', pathname);
   }, [pathname, queryString]);
 
-  useEffect(() => {
-    console.log('qqqqqqq', queryString);
-  }, [queryString]);
+  useEffect(() => {}, [queryString]);
 
   useEffect(() => {
     // 全屏事件监听

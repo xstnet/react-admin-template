@@ -32,7 +32,6 @@ export const SettingContext = createContext<SettingContextValue>(initValue);
 const SettingProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
   const initSettings = useMemo(() => {
     const settingsCache = Cache.getObject('settings') || {};
-    console.log('settingsCache', settingsCache);
 
     return {
       theme: 'light',

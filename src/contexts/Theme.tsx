@@ -33,7 +33,6 @@ const ThemeProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
       // 手动切换
       algorighm.push(theme === 'light' ? AntdTheme.defaultAlgorithm : AntdTheme.darkAlgorithm);
     }
-    console.log('algorighm', theme, algorighm);
     compactMode && algorighm.push(AntdTheme.compactAlgorithm);
     return algorighm;
   };

@@ -62,10 +62,10 @@ const KeepAlive: React.FC<IProps> = () => {
       // 同步标签页, 比如关闭了标签, 这里要相应的丢弃
       return reactNodes.filter((i) => tabsKeys.includes(i.id));
     });
-    console.log('tabs', tabs, cachedNodes);
   }, [tabs]);
   return (
     <>
+      {/* 占位符 */}
       <div ref={placeholderRef} className="keep-alive" />
 
       {/* 遍历所有缓存的组件, 尝试渲染和当前pathname匹配的页面 */}
