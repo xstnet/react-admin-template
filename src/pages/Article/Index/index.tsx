@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef } from 'react';
+import React, { useMemo, useRef } from 'react';
 import { Image, Button, Form, Popconfirm, Space, Table, Tag, Typography } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import { getArticleList, postDeleteArticle } from '@/api';
@@ -7,27 +7,22 @@ import SearchForm from './components/SearchForm';
 import useAntdTableRequest from '@/hooks/useAntdTableRequest';
 import { useRequest } from 'ahooks';
 import './index.less';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import ContentBox from '@/components/ContextBox';
+import ConfigSearchForm, { SearchFormProps } from '@/components/ConfigSearchForm';
 
 const ArticleIndexPage: React.FC = () => {
   console.log('render ArticleIndexPage');
 
-  const [searchForm] = Form.useForm();
   // 每一行的loading, 如: 同时操作多行时, 并且延迟较高, 应该有多个loading效果
-  const loadingRows = useRef<Map<number, boolean>>();
-
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    // 只需赋值一次就行
-    loadingRows.current = new Map();
-  }, []);
+  const loadingRows = useRef<Map<number, boolean>>(new Map());
 
   const { runAsync: deleteArticle } = useRequest(postDeleteArticle, {
     manual: true,
     debounceWait: 100
   });
+
+  const [searchForm] = Form.useForm();
 
   const {
     refresh: handleRefresh,
@@ -106,13 +101,48 @@ const ArticleIndexPage: React.FC = () => {
     []
   );
 
+  const searchFields: SearchFormProps['fields'] = [
+    {
+      type: 'input',
+      label: '标题',
+      name: 'title'
+    },
+    {
+      type: 'input',
+      label: '作者',
+      name: 'author'
+    },
+    {
+      type: 'input',
+      label: '简介',
+      name: 'desc'
+    },
+
+    {
+      type: 'select',
+      label: '状态',
+      name: 'status',
+      fieldProps: {
+        options: [
+          { label: '已发布', value: 'published' },
+          { label: '草稿', value: 'draft' }
+        ]
+      }
+    },
+    {
+      type: 'dateRange',
+      label: '发布时间',
+      name: 'create_time'
+    }
+  ];
+
   return (
     <>
       <ContentBox>
         <div>
           <Typography.Title level={5}>搜索</Typography.Title>
         </div>
-        <SearchForm search={search} form={searchForm} />
+        <ConfigSearchForm search={search} form={searchForm} fields={searchFields} />
       </ContentBox>
 
       <br />
