@@ -4,7 +4,7 @@ import Footer from '../components/Footer';
 import Header from '../components/Header';
 import LeftSider from '../components/LeftSider/Index';
 import MultitabProvider from '@/contexts/Multitab';
-import React, { useEffect } from 'react';
+import React from 'react';
 import './index.less';
 
 const MultitabLayout = () => {

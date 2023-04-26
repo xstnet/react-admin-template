@@ -75,6 +75,13 @@ const Tabs = () => {
       </Space>
     );
   };
+
+  const style: React.CSSProperties = {
+    backgroundColor: colorBgLayout,
+    // 全屏后标签页应左侧对齐
+    left: fullScreen ? 0 : undefined
+  };
+
   return (
     <AntdTabs
       className="tabs-wrapper"
@@ -85,8 +92,7 @@ const Tabs = () => {
       onChange={handleChangeTab}
       onEdit={onEdit}
       tabBarExtraContent={<TabsAction />}
-      // 全屏后标签页应左侧对齐
-      style={{ backgroundColor: colorBgLayout, left: fullScreen ? 0 : 200 }}
+      style={style}
     />
   );
 };
