@@ -4,15 +4,17 @@ import Footer from '../components/Footer';
 import Header from '../components/Header';
 import LeftSider from '../components/LeftSider/Index';
 import MultitabProvider from '@/contexts/Multitab';
-import React from 'react';
+import React, { useContext } from 'react';
 import './index.less';
+import { MenuContext } from '@/contexts/Menu';
 
 const MultitabLayout = () => {
   console.log('MultitabLayout render...');
+  const { menuCollapsed } = useContext(MenuContext);
 
   return (
     <MultitabProvider>
-      <Layout className="multitab-layout">
+      <Layout className="multitab-layout" data-menu-collapsed={menuCollapsed ? 1 : 0}>
         <Header />
         <Layout>
           <LeftSider />

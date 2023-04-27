@@ -30,10 +30,21 @@
     }
   }
 
-  &[data-menu-collapsed='1'] {
-    .multitab-layout {
-      .tabs-wrapper {
-        left: var(--menuCollapsedWidth);
+  .multitab-layout {
+    &[data-menu-collapsed='1'] {
+      .multitab-layout {
+        .tabs-wrapper {
+          left: var(--menuCollapsedWidth);
+        }
+      }
+    }
+  }
+  .single-tab-layout {
+    &[data-menu-collapsed='1'] {
+      .multitab-layout {
+        .tabs-wrapper {
+          left: var(--menuCollapsedWidth);
+        }
       }
     }
   }

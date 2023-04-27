@@ -10,6 +10,8 @@ import { NotFoundPage } from '@/pages/Error';
 import { ArticleCreatePage, ArticleUpdatePage } from '@/pages/Article';
 
 import { iframeUrlPrefix } from '@/utils/iframe';
+import MenuPermissionPage from '@/pages/Example/Permission/Menu';
+import ButtonPermissionPage from '@/pages/Example/Permission/Button';
 
 const TabsPage = lazy(() => import('@/pages/Example/tabs'));
 const ArticleIndexPage = lazy(() => import('@/pages/Article/Index'));
@@ -56,6 +58,7 @@ export default function DefaultRoutes() {
             }
           ]
         },
+
         {
           path: '/example',
           children: [
@@ -63,6 +66,19 @@ export default function DefaultRoutes() {
             {
               path: '/example/tabs/manage',
               element: <Suspense children={<TabsPage />} />
+            },
+            {
+              path: '/example/permission',
+              children: [
+                {
+                  path: '/example/permission/menu',
+                  element: <MenuPermissionPage />
+                },
+                {
+                  path: '/example/permission/button',
+                  element: <ButtonPermissionPage />
+                }
+              ]
             }
           ]
         },

@@ -53,3 +53,28 @@ export function trimRightStr(str: string, substr: string): string {
 export function randomNumber(min: number, max: number) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
+
+export function hasPermission(
+  permission: Menu.Permission,
+  userInfo: Api.GetUserInfo['response']
+): boolean {
+  const { roles = [] } = userInfo || {};
+  // 没有配置权限, 不校验
+  if (!permission) {
+    return true;
+  }
+  if (typeof permission === 'string' || typeof permission === 'number') {
+    return roles.includes(permission);
+  }
+
+  // 多个角色, 有一个符合即可
+  if (Array.isArray(permission)) {
+    return permission.some((p) => roles.includes(p));
+  }
+
+  if (typeof permission === 'function') {
+    return permission(userInfo!);
+  }
+
+  return false;
+}

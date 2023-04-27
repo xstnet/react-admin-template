@@ -8,7 +8,8 @@ const MenuList: Menu.MenuItemType[] = [
       {
         label: '控制台',
         icon: 'icon-dashboard',
-        path: '/dashboard'
+        path: '/dashboard',
+        permission: 'admin'
       }
     ]
   },
@@ -19,7 +20,25 @@ const MenuList: Menu.MenuItemType[] = [
       {
         label: '列表页',
         icon: 'icon-list',
-        path: '/example/userList'
+        path: '/example/userList',
+        permission: ['admin', 'guest']
+      },
+      {
+        label: '权限测试页',
+        icon: 'icon-list',
+        path: '/example/permission',
+        children: [
+          {
+            label: '菜单权限',
+            icon: 'icon-list',
+            path: '/example/permission/menu'
+          },
+          {
+            label: '按钮权限',
+            icon: 'icon-list',
+            path: '/example/permission/button'
+          }
+        ]
       },
       {
         label: '多级菜单',
@@ -88,6 +107,7 @@ const MenuList: Menu.MenuItemType[] = [
     path: '/article',
     label: '文章管理',
     icon: 'icon-article',
+    permission: 'admin',
     children: [
       {
         path: '/article/list',
@@ -140,6 +160,7 @@ const MenuList: Menu.MenuItemType[] = [
     path: '/iframe',
     label: '外部页面',
     icon: 'icon-href',
+    permission: 'admin',
     children: [
       {
         path: 'https://ant-design.antgroup.com/components/overview-cn',
@@ -190,6 +211,7 @@ const MenuList: Menu.MenuItemType[] = [
     path: '/user/center',
     label: '个人中心',
     icon: 'icon-user-permissions',
+    permission: (userInfo) => userInfo.roles.includes('admin'),
     children: [
       {
         path: '/user/center/index',
@@ -204,4 +226,11 @@ const MenuList: Menu.MenuItemType[] = [
     ]
   }
 ];
-export { MenuList };
+
+// 调用这个方法获取菜单, 具体怎么获取全看怎么写
+const generateMenuList = async (
+  userInfo: Api.GetUserInfo['response']
+): Promise<Menu.MenuItemType[]> => {
+  return MenuList;
+};
+export { generateMenuList };

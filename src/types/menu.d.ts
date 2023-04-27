@@ -1,20 +1,18 @@
 // 菜单类型定义
 declare namespace Menu {
+  type Permission =
+    | string
+    | number
+    | (string | number)[]
+    | ((userInfo: Api.GetUserInfo['response']) => boolean);
   // 额外扩展的字段
   type ExtendMenuType = {
     path: string;
     label: string;
     // 默认使用 path 当做key, 能不用key就不用key
     key?: string;
-
-    // 父菜单下的默认子页面
-    // 未实现
-    // index?: boolean;
-
-    // 子路由信息(当子路由前缀和父路由不匹配时才有用), 用来判断直接从url访问时, 应该高亮哪个菜单
-    // 适用于未在菜单上出现的路由,如添加页面/编辑页面等
-    // 未实现
-    // subRouters?: string[];
+    // 权限控制
+    permission?: Permission;
 
     // 父级菜单 path
     parent?: string;

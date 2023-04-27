@@ -1,4 +1,4 @@
-import { notification } from 'antd';
+import { message, notification } from 'antd';
 import { useContext, useEffect, useState } from 'react';
 
 import { getUserInfo } from '@/api';
@@ -11,7 +11,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import SmallScreenNotify from '../components/SmallScreenNotify';
 import MultitabLayout from '../multiTab';
 import SingleLaylut from '../singleTab';
-import { MenuContext } from '@/contexts/Menu';
+import MenuProvider, { MenuContext } from '@/contexts/Menu';
 import useThemeToken from '@/hooks/useThemeToken';
 import React from 'react';
 import './index.less';
@@ -26,7 +26,6 @@ const GlobalLayout: React.FC = () => {
   const {
     settings: { multitabMode, fixedMenu, fixedHeader, theme }
   } = useContext(SettingContext);
-  const { menuCollapsed } = useContext(MenuContext);
 
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -71,7 +70,10 @@ const GlobalLayout: React.FC = () => {
   useUpdateEffect(() => {
     if (!validateToken()) {
       // token 无效
-      navigate('/login');
+      message.error('登录状态已失效, 即将跳转到登录页面...');
+      setTimeout(() => {
+        navigate('/login');
+      }, 500);
     }
   });
 
@@ -79,16 +81,17 @@ const GlobalLayout: React.FC = () => {
     return <PageLoading title="页面加载中" loading={getUserInfoLoading} />;
   }
   return (
-    <div
-      data-fixed-menu={fixedMenu ? 1 : 0}
-      data-menu-collapsed={menuCollapsed ? 1 : 0}
-      data-fixed-header={fixedHeader ? 1 : 0}
-      style={{ background: colorBgContainer }}
-      className={`global-layout theme-${theme}`}
-    >
-      {multitabMode ? <MultitabLayout /> : <SingleLaylut />}
-      <SmallScreenNotify />
-    </div>
+    <MenuProvider>
+      <div
+        data-fixed-menu={fixedMenu ? 1 : 0}
+        data-fixed-header={fixedHeader ? 1 : 0}
+        style={{ background: colorBgContainer }}
+        className={`global-layout theme-${theme}`}
+      >
+        {multitabMode ? <MultitabLayout /> : <SingleLaylut />}
+        <SmallScreenNotify />
+      </div>
+    </MenuProvider>
   );
 };
 

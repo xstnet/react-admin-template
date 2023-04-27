@@ -34,7 +34,9 @@ namespace Api {
 
   interface GetUserInfo extends Example {
     params: any;
-    response: Model.User;
+    response: Model.User & {
+      roles: (string | number)[];
+    };
   }
 
   // 例子-获取用户列表

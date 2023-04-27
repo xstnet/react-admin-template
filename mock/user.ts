@@ -15,7 +15,8 @@ Mock.mock(/api\/user\/info/, 'get', (options) => {
       password: '',
       gender: Random.natural(1, 2),
       email: 'shantongxu@qq.com',
-      mobile: '133xxxx3333'
+      mobile: '133xxxx3333',
+      roles: ['admin']
     }
   };
 

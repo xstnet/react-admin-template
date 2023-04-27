@@ -53,9 +53,7 @@ const GlobalProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
 
   return (
     <GlobalContext.Provider value={contextValue}>
-      <SettingProvider>
-        <MenuProvider>{children}</MenuProvider>
-      </SettingProvider>
+      <SettingProvider>{children}</SettingProvider>
     </GlobalContext.Provider>
   );
 };
