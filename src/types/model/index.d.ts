@@ -32,4 +32,10 @@ namespace Model {
     loginIp: string;
     nickname: User['nickname'];
   }
+
+  interface TodoList extends CommonFields {
+    id: number;
+    name: string;
+    status: TodoItemEnum;
+  }
 }

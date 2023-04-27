@@ -1,26 +1,22 @@
 import { DayjsFormatEnum, TodoItemEnum } from '@/constants/enum';
 import useThemeToken from '@/hooks/useThemeToken';
 import { randomNumber } from '@/utils/util';
-import { DeleteOutlined, PlusOutlined } from '@ant-design/icons';
-import { Card, Space, Input, Button, Checkbox, Typography, Tooltip } from 'antd';
+import { DeleteOutlined, EnterOutlined, PlusOutlined } from '@ant-design/icons';
+import { Card, Space, Input, Button, Checkbox, Typography, Tooltip, InputRef } from 'antd';
 import dayjs from 'dayjs';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 const Text = Typography.Text;
 
-interface ITodoItem {
-  id: number;
-  name: string;
-  status: TodoItemEnum;
-  create_time: string;
-  update_time: string;
-}
+type ITodoItem = Model.TodoList;
 
 const now = () => dayjs().format(DayjsFormatEnum.second);
 
 const TodoList: React.FC = () => {
   // 当前正聚焦的todo item, 用以显示操作项, 如: 编辑/删除等
   const [hoverTodo, sethoverTodo] = useState(0);
+  const [addingTodo, setAddingTodo] = useState(false);
+  const inputRef = useRef<InputRef>(null);
   const { colorError } = useThemeToken();
   const [todoList, setTodoList] = useState<ITodoItem[]>([
     {
@@ -45,6 +41,14 @@ const TodoList: React.FC = () => {
       update_time: now()
     }
   ]);
+
+  useEffect(() => {
+    if (addingTodo) {
+      inputRef.current?.focus();
+    } else {
+      inputRef.current?.blur();
+    }
+  }, [addingTodo, inputRef.current]);
 
   const [newTotoValue, setNewTodoValue] = useState('');
 
@@ -75,7 +79,6 @@ const TodoList: React.FC = () => {
   };
 
   const handleUpdate = (id: ITodoItem['id'], newName: string) => {
-    console.log('iii', id, newName);
     setTodoList(todoList.map((item) => (item.id !== id ? item : { ...item, name: newName })));
   };
 
@@ -88,13 +91,18 @@ const TodoList: React.FC = () => {
       <Space direction="vertical" style={{ width: '100%' }}>
         <Space.Compact style={{ width: '100%', marginBottom: '16px' }}>
           <Input
+            ref={inputRef}
             value={newTotoValue}
+            onFocus={() => setAddingTodo(true)}
+            onBlur={() => setAddingTodo(false)}
             onChange={(e) => setNewTodoValue(e.target.value)}
             placeholder="添加新事项"
+            suffix={addingTodo ? <EnterOutlined style={{ opacity: 0.5 }} color="red" /> : null}
             onPressEnter={handleAddToto}
           />
           <Button onClick={handleAddToto} type="primary" icon={<PlusOutlined />} />
         </Space.Compact>
+
         {todoList.map(({ id, status, name }) => {
           const completed = status === TodoItemEnum.completed;
           const showAction = hoverTodo === id && status === TodoItemEnum.incomplete;
