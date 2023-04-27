@@ -23,6 +23,8 @@ export interface MultitabContextValue {
   removeTab: (key: TabKey) => void;
   openTab: (key: TabKey) => void;
   hasTab: (key: TabKey) => boolean;
+  // 忽略的白名单列表, 不缓存
+  whiteList: string[];
   // 事件订阅器
   tabEvent: Emitter;
 }
@@ -36,6 +38,7 @@ const initValue: MultitabContextValue = {
   hasTab: () => false,
   setTabs: noop,
   activeTab: '',
+  whiteList: [],
   tabEvent: createNanoEvents(),
   addTabWithNavigate: noop
 };
@@ -106,12 +109,15 @@ const MultitabProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
 
   const tabActions = useMemo(() => getTabActions(), [getTabActions]);
 
+  const whiteList = ['/'];
+
   const contextValue = useMemo(() => {
     return {
       tabs,
       setTabs,
       activeTab,
       tabEvent,
+      whiteList,
       ...tabActions
     };
   }, [tabs, activeTab]);

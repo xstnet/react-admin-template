@@ -21,7 +21,7 @@ const KeepAlive: React.FC<IProps> = () => {
   // iframe 页面的key 要加上参数
   const activeTabKey = pathname === iframeUrlPrefix ? pathname + search : pathname;
 
-  const { tabs, tabEvent } = useContext(MultitabContext);
+  const { tabs, tabEvent, whiteList } = useContext(MultitabContext);
   // dom wrap 占位符
   const placeholderRef = useRef<HTMLDivElement>(null);
   // 缓存的组件列表
@@ -47,6 +47,9 @@ const KeepAlive: React.FC<IProps> = () => {
     if (!activeTabKey) {
       return;
     }
+    if (whiteList.includes(activeTabKey)) {
+      return;
+    }
     const tabsKeys = tabs.map((item) => item.key);
 
     setCachedNodes((reactNodes) => {
@@ -63,6 +66,10 @@ const KeepAlive: React.FC<IProps> = () => {
       return reactNodes.filter((i) => tabsKeys.includes(i.id));
     });
   }, [tabs]);
+
+  if (whiteList.includes(activeTabKey)) {
+    return element;
+  }
   return (
     <>
       {/* 占位符 */}

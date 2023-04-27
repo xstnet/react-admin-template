@@ -7,7 +7,7 @@ import PageLoading from '@/components/Loading/PageLoading';
 import { GlobalContext } from '@/contexts/Global';
 import { AxiosError } from 'axios';
 import { SettingContext } from '@/contexts/Setting';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import SmallScreenNotify from '../components/SmallScreenNotify';
 import MultitabLayout from '../multiTab';
 import SingleLaylut from '../singleTab';
@@ -29,10 +29,14 @@ const GlobalLayout: React.FC = () => {
 
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+  const { pathname } = useLocation();
 
   console.log('global layout render...');
 
   useEffect(() => {
+    // if (pathname === '/') {
+    //   navigate('/dashboard');
+    // }
     if (!validateToken()) {
       // token 无效
       navigate('/login');

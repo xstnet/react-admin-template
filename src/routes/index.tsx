@@ -1,6 +1,8 @@
 import React, { lazy } from 'react';
 
 import { RouteObject } from 'react-router-dom';
+import Redirect from '@/components/Redirect';
+
 import GlobalLayout from '@/layouts/global';
 import PageLoading from '@/components/Loading/PageLoading';
 
@@ -23,6 +25,7 @@ const Suspense: React.FC<React.PropsWithChildren> = ({ children }) => (
   <React.Suspense fallback={<PageLoading />}>{children}</React.Suspense>
 );
 
+// todo: 页面错误降级
 export default function DefaultRoutes() {
   const routes: RouteObject[] = [
     {
@@ -35,7 +38,8 @@ export default function DefaultRoutes() {
       children: [
         {
           path: '/',
-          element: <Suspense children={<DashboardPage />} />
+          // 重定向
+          element: <Redirect to="/dashboard" />
         },
         {
           path: '/dashboard',

@@ -13,7 +13,7 @@ import './index.less';
 
 const Content: React.FC<PropsWithChildren> = ({ children }) => {
   const { pathname, search: queryString } = useLocation();
-  const { addTab, hasTab, openTab, tabs, tabEvent } = useContext(MultitabContext);
+  const { addTab, hasTab, openTab, tabs, tabEvent, whiteList } = useContext(MultitabContext);
   const { mapPathToMenu } = useContext(MenuContext);
   const contentRef = useRef<HTMLDivElement>(null);
   const [_, { toggleFullscreen }] = useFullscreen(contentRef);
@@ -41,6 +41,9 @@ const Content: React.FC<PropsWithChildren> = ({ children }) => {
     return menuName;
   };
   const handleAddTab = () => {
+    if (whiteList.includes(pathname)) {
+      return;
+    }
     let _pathname = pathname;
     // 如果是iframe页面, 使用相应的url作为key
     if (pathname === iframeUrlPrefix) {
@@ -102,11 +105,6 @@ const Content: React.FC<PropsWithChildren> = ({ children }) => {
   };
 
   useEffect(() => {
-    // 只有iframe的参数变了才处理
-    if (pathname === iframeUrlPrefix) {
-      handleAddTab();
-      return;
-    }
     handleAddTab();
   }, [pathname, queryString]);
 
