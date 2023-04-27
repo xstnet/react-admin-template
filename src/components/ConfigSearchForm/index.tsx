@@ -1,54 +1,55 @@
-import { useState } from 'react';
 import { SearchType } from '@/hooks/useAntdTableRequest';
 import { DownOutlined, UpOutlined } from '@ant-design/icons';
 import {
   FormProps,
   InputNumberProps,
-  RadioProps,
+  RadioGroupProps,
   DatePicker,
   FormInstance,
   SelectProps,
   FormItemProps,
   InputProps,
   DatePickerProps,
-  CheckboxProps,
   CascaderProps,
   TreeSelectProps,
+  Form,
+  Row,
+  Col,
+  Button,
+  Input,
+  Select,
+  Checkbox,
+  Radio,
+  TreeSelect,
   InputNumber,
-  Cascader
+  Cascader,
+  Typography
 } from 'antd';
-import { Form, Row, Col, Button, Input, Select, Checkbox, Radio, TreeSelect } from 'antd';
-type RangePickerProps = typeof DatePicker.RangePicker;
-
-type FieldType =
-  | 'input'
-  | 'select'
-  | 'number'
-  | 'radio'
-  | 'date'
-  | 'dateRange'
-  | 'checkbox'
-  | 'cascader'
-  | 'treeSelect';
+import type { CheckboxGroupProps } from 'antd/es/checkbox';
+import type { RangePickerProps } from 'antd/es/date-picker';
+import ContentBox from '../ContextBox';
+import { useCallback } from 'react';
 
 type FieldPropsMap = {
   input: InputProps;
   select: SelectProps;
   number: InputNumberProps;
-  radio: RadioProps;
+  radio: RadioGroupProps;
   date: DatePickerProps;
   dateRange: RangePickerProps;
-  checkbox: CheckboxProps;
+  checkbox: CheckboxGroupProps;
   cascader: CascaderProps<any>;
   treeSelect: TreeSelectProps;
 };
+
+type FieldType = keyof FieldPropsMap;
 
 type FieldValue<T extends FieldType> = {
   type: T;
   name: FormItemProps['name'];
   label: FormItemProps['label'];
   itemProps?: FormItemProps;
-  fieldProps?: T extends keyof FieldPropsMap ? FieldPropsMap[T] : any;
+  fieldProps?: FieldPropsMap[T];
 };
 
 type MapTypeToFieldValue = {
@@ -58,6 +59,7 @@ export type Field = MapTypeToFieldValue[keyof MapTypeToFieldValue];
 
 export interface SearchFormProps<Values = KV>
   extends Omit<FormProps<Values>, 'onReset' | 'onFinish' | 'fields'> {
+  title?: string;
   search: SearchType;
   form: FormInstance<Values>;
   fields: Field[];
@@ -67,9 +69,36 @@ export interface SearchFormProps<Values = KV>
 
 // 配置式的搜索表单
 const ConfigSearchForm: React.FC<SearchFormProps> = (props) => {
-  const { search, form, onSearch, onReset, fields, ...formProps } = props;
+  const { search, form, onSearch, onReset, fields, title = '搜索', ...formProps } = props;
 
-  const [expand, setExpand] = useState(false);
+  const getFormItem = useCallback((type: Field['type'], label: any, props: KV) => {
+    if (typeof label === 'string' && ['input', 'number', 'select'].includes(type)) {
+      // 尝试填充placeholder
+      props.placeholder = props?.placeholder || label;
+    }
+    switch (type) {
+      case 'input':
+        return <Input {...props} />;
+      case 'number':
+        return <InputNumber {...props} />;
+      case 'select':
+        return <Select {...props} />;
+      case 'radio':
+        return <Radio.Group {...props} />;
+      case 'date':
+        return <DatePicker {...props} />;
+      case 'dateRange':
+        return <DatePicker.RangePicker {...props} />;
+      case 'checkbox':
+        return <Checkbox.Group {...props} />;
+      case 'cascader':
+        return <Cascader {...props} />;
+      case 'treeSelect':
+        return <TreeSelect {...props} />;
+      default:
+        return <></>;
+    }
+  }, []);
 
   const handleSearch = async () => {
     await form.validateFields().catch((e) => console.warn(e));
@@ -88,34 +117,10 @@ const ConfigSearchForm: React.FC<SearchFormProps> = (props) => {
   };
 
   const renderFormItem = ({ type, name, label, fieldProps = {}, itemProps = {} }: Field) => {
-    const FormItem = (type: Field['type'], props: any) => {
-      switch (type) {
-        case 'input':
-          return <Input {...props} />;
-        case 'number':
-          return <InputNumber width={'100%'} {...props} />;
-        case 'select':
-          return <Select {...props} />;
-        case 'radio':
-          return <Radio {...props} />;
-        case 'date':
-          return <DatePicker {...props} />;
-        case 'dateRange':
-          return <DatePicker.RangePicker {...props} />;
-        case 'checkbox':
-          return <Checkbox {...props} />;
-        case 'cascader':
-          return <Cascader {...props} />;
-        case 'treeSelect':
-          return <TreeSelect {...props} />;
-        default:
-          return <></>;
-      }
-    };
     return (
       <Col key={`${name}-${label}`} span={6}>
         <Form.Item name={name} label={label} {...itemProps}>
-          {FormItem(type, fieldProps)}
+          {getFormItem(type, label, fieldProps)}
         </Form.Item>
       </Col>
     );
@@ -123,7 +128,6 @@ const ConfigSearchForm: React.FC<SearchFormProps> = (props) => {
 
   const renderSearchButton = () => {
     const offset = search.type === 'simple' ? 0 : 18 - (fields.length % 4) * 6;
-    console.log('offffff', offset);
 
     return (
       <Col span={6} offset={offset} style={{ textAlign: 'right' }}>
@@ -140,15 +144,20 @@ const ConfigSearchForm: React.FC<SearchFormProps> = (props) => {
   };
 
   return (
-    <Form form={form} {...{ ...defaultFormProps, ...formProps }}>
-      <Row gutter={24}>
-        {search.type === 'advance'
-          ? fields.map(renderFormItem)
-          : fields.slice(0, 3).map(renderFormItem)}
+    <ContentBox>
+      <div>
+        <Typography.Title level={5}>{title}</Typography.Title>
+      </div>
+      <Form form={form} {...{ ...defaultFormProps, ...formProps }}>
+        <Row gutter={24}>
+          {search.type === 'advance'
+            ? fields.map(renderFormItem)
+            : fields.slice(0, 3).map(renderFormItem)}
 
-        {renderSearchButton()}
-      </Row>
-    </Form>
+          {renderSearchButton()}
+        </Row>
+      </Form>
+    </ContentBox>
   );
 };
 

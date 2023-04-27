@@ -118,6 +118,30 @@ const ArticleIndexPage: React.FC = () => {
     },
 
     {
+      type: 'radio',
+      label: '单选',
+      name: 'radio',
+      fieldProps: {
+        options: [
+          { label: '1111', value: '222' },
+          { label: '2222', value: '333' }
+        ]
+      }
+    },
+    {
+      type: 'checkbox',
+      label: '多选',
+      name: 'checkbox',
+      fieldProps: {
+        options: [
+          { label: '1111', value: '2223452' },
+          { label: '1111', value: '2222' },
+          { label: '1111', value: '222' }
+        ]
+      }
+    },
+
+    {
       type: 'select',
       label: '状态',
       name: 'status',
@@ -137,13 +161,7 @@ const ArticleIndexPage: React.FC = () => {
 
   return (
     <>
-      <ContentBox>
-        <div>
-          <Typography.Title level={5}>搜索</Typography.Title>
-        </div>
-        <ConfigSearchForm search={search} form={searchForm} fields={searchFields} />
-      </ContentBox>
-
+      <ConfigSearchForm search={search} form={searchForm} fields={searchFields} title="查询" />
       <br />
       <ContentBox>
         <div className="table-header">
