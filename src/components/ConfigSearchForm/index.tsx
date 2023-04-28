@@ -135,13 +135,19 @@ const ConfigSearchForm: React.FC<SearchFormProps> = (props) => {
         <Button style={{ margin: '0 8px' }} type="primary" onClick={handleSearch}>
           查询
         </Button>
-        <a style={{ fontSize: 12 }} onClick={search.changeType}>
-          {search.type === 'advance' ? <UpOutlined /> : <DownOutlined />}
-          {search.type === 'advance' ? '收起' : '展开'}
-        </a>
+        {fields.length > 3 && (
+          <a style={{ fontSize: 12 }} onClick={search.changeType}>
+            {search.type === 'advance' ? <UpOutlined /> : <DownOutlined />}
+            {search.type === 'advance' ? '收起' : '展开'}
+          </a>
+        )}
       </Col>
     );
   };
+
+  if (fields.length === 0) {
+    return null;
+  }
 
   return (
     <ContentBox>

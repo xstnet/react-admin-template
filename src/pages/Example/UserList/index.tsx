@@ -3,14 +3,14 @@ import { Avatar, Button, Form, Popconfirm, Space, Table, Tag, Typography } from 
 import type { ColumnsType } from 'antd/es/table';
 import { getUserList, postDeleteUser } from '@/api';
 import { GenderEnum } from '@/constants/enum';
-import { DeleteOutlined, EditOutlined, UndoOutlined } from '@ant-design/icons';
+import { DeleteOutlined, UndoOutlined } from '@ant-design/icons';
 import './index.less';
 import AddButton from './components/AddButton';
-import SearchForm from './components/SearchForm';
 import useAntdTableRequest from '@/hooks/useAntdTableRequest';
 import { useRequest } from 'ahooks';
 import UpdateButton from './components/UpdateButton';
 import ContentBox from '@/components/ContextBox';
+import ConfigSearchForm, { SearchFormProps } from '@/components/ConfigSearchForm';
 
 const ExampleUserListPage: React.FC = () => {
   console.log('render ExampleUserListPage');
@@ -142,15 +142,38 @@ const ExampleUserListPage: React.FC = () => {
   };
   const hasSelected = selectedRowKeys.length > 0;
 
+  const searchFields: SearchFormProps['fields'] = [
+    {
+      type: 'input',
+      label: '账号',
+      name: 'username'
+    },
+    {
+      type: 'input',
+      label: '手机号',
+      name: 'mobile'
+    },
+    {
+      type: 'input',
+      label: '邮箱',
+      name: 'email'
+    },
+    {
+      type: 'select',
+      label: '性别',
+      name: 'gender',
+      fieldProps: {
+        options: [
+          { label: '男', value: '1' },
+          { label: '女', value: '2' }
+        ]
+      }
+    }
+  ];
+
   return (
     <>
-      <ContentBox>
-        <div>
-          <Typography.Title level={5}>搜索</Typography.Title>
-        </div>
-        <SearchForm search={search} form={searchForm} />
-      </ContentBox>
-
+      <ConfigSearchForm form={searchForm} search={search} fields={searchFields} />
       <br />
       <ContentBox>
         <div className="table-header">
