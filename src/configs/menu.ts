@@ -3,19 +3,14 @@ import Iconfont from '@/components/Iconfont';
 const MenuList: Menu.MenuItemType[] = [
   {
     label: '控制台',
-    type: 'group',
-    children: [
-      {
-        label: '控制台',
-        icon: 'icon-dashboard',
-        path: '/dashboard',
-        permission: 'admin'
-      }
-    ]
+    icon: 'icon-dashboard',
+    path: '/dashboard',
+    permission: 'admin'
   },
   {
     label: '示例页面',
-    type: 'group',
+    path: '/example',
+    icon: 'icon-example',
     children: [
       {
         label: '列表页',
@@ -85,7 +80,8 @@ const MenuList: Menu.MenuItemType[] = [
   },
   {
     label: '徽标示例',
-    type: 'group',
+    path: '/badge',
+    icon: 'icon-example',
     children: [
       {
         label: '红点徽标',
@@ -101,7 +97,7 @@ const MenuList: Menu.MenuItemType[] = [
       }
     ]
   },
-  { type: 'divider' },
+  // { type: 'divider' },
 
   {
     path: '/article',
@@ -206,7 +202,7 @@ const MenuList: Menu.MenuItemType[] = [
       }
     ]
   },
-  { type: 'divider' },
+  // { type: 'divider' },
   {
     path: '/user/center',
     label: '个人中心',
