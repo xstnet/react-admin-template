@@ -8,7 +8,8 @@ import { useLocation } from 'react-router-dom';
 const TabsPage: React.FC<{}> = () => {
   const { removeTab, tabs, setTabs, addTabWithNavigate, addTab } = useContext(MultitabContext);
   const {
-    settings: { multitabMode }
+    settings: { multitabMode },
+    setSetting
   } = useContext(SettingContext);
   const { pathname } = useLocation();
   // 关闭标签页
@@ -39,9 +40,19 @@ const TabsPage: React.FC<{}> = () => {
   return (
     <ContentBox>
       {!multitabMode && <Alert type="error" message="请开启多标签模式" />}
-      <br />
+      <Divider />
 
       <Space>
+        {!multitabMode && (
+          <Button
+            type="primary"
+            onClick={() => {
+              setSetting({ multitabMode: true });
+            }}
+          >
+            打开多标签布局
+          </Button>
+        )}
         <Button
           disabled={!multitabMode}
           onClick={() => {

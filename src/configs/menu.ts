@@ -188,6 +188,8 @@ const MenuList: Menu.MenuItemType[] = [
   {
     path: '/document',
     label: '文档',
+    // 没写文档, 隐藏
+    hideInMenu: true,
     icon: 'icon-document',
     children: [
       {
