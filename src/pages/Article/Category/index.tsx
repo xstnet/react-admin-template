@@ -1,5 +1,5 @@
-const ArticleCreaetPage: React.FC = () => {
-  return <span>ArticleCreaetPage</span>;
+const ArticleCategoryPage: React.FC = () => {
+  return <span>分类管理页面</span>;
 };
 
-export default ArticleCreaetPage;
+export default ArticleCategoryPage;

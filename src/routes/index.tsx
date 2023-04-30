@@ -9,7 +9,7 @@ import PageLoading from '@/components/Loading/PageLoading';
 import { UserCenterPage, UserCenterUpdatePage } from '@/pages/UserCenter';
 import { BlankPage, ExampleUserListPage } from '@/pages/Example';
 import { NotFoundPage } from '@/pages/Error';
-import { ArticleCreatePage, ArticleUpdatePage } from '@/pages/Article';
+import { ArticleCreatePage, ArticleUpdatePage, ArticleCategoryPage } from '@/pages/Article';
 
 import { iframeUrlPrefix } from '@/utils/iframe';
 import MenuPermissionPage from '@/pages/Example/Permission/Menu';
@@ -97,6 +97,10 @@ export default function DefaultRoutes() {
             {
               path: '/article/list',
               element: <ArticleIndexPage />
+            },
+            {
+              path: '/article/category',
+              element: <ArticleCategoryPage />
             },
             {
               path: '/article/create',
