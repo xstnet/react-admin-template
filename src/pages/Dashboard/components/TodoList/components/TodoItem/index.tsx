@@ -1,10 +1,14 @@
 import { TodoItemEnum } from '@/constants/enum';
 import useThemeToken from '@/hooks/useThemeToken';
-import { DeleteOutlined } from '@ant-design/icons';
+import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { Checkbox, CheckboxProps, Space, Tooltip, Typography } from 'antd';
 import React from 'react';
 import { useState } from 'react';
 import './index.less';
+import { postChangeTodoStatus, postDeleteTodo, postUpdateTodo } from '@/api';
+import { noop } from '@/utils/util';
+import NanoLoading from '@/components/Loading/NanoLoading';
+import useManualRequest from '@/hooks/useManualRequest';
 
 const Text = Typography.Text;
 
@@ -16,28 +20,72 @@ type IProps = {
 };
 const TodoItem: React.FC<IProps> = (props) => {
   const [isHover, setIsHover] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
 
-  const { colorError } = useThemeToken();
+  const { colorError, colorPrimary } = useThemeToken();
 
   const [todo, setTodo] = useState(props.todo);
 
+  const { loading: changeStatusLoading, runAsync: chageStatus } =
+    useManualRequest(postChangeTodoStatus);
+  const { loading: updateLoading, runAsync: updateTodo } = useManualRequest(postUpdateTodo);
+  const { loading: deleteLoading, runAsync: deleteTodo } = useManualRequest(postDeleteTodo);
+
   const { id, status, name } = todo;
   const completed = status === TodoItemEnum.completed;
-  const showAction = isHover && status === TodoItemEnum.incomplete;
 
+  const isLoading = changeStatusLoading || updateLoading || deleteLoading;
+  const showAction = isHover && !isLoading && status === TodoItemEnum.incomplete;
+
+  // 更新状态
   const handleChangeStatus: CheckboxProps['onChange'] = (event) => {
+    if (changeStatusLoading) return;
     const checked = event.target.checked;
     const status = checked ? TodoItemEnum.completed : TodoItemEnum.incomplete;
-    setTodo({ ...todo, status });
+    const newTodo = { ...todo, status };
+    chageStatus(todo)
+      .then(() => setTodo(newTodo))
+      .catch(noop);
   };
 
-  const handleUpdate = (newName: string) => {
-    setTodo({ ...todo, name: newName });
+  // 更新内容
+  const handleUpdate = async (newName: string) => {
+    if (updateLoading) return;
+    setIsEditing(false);
+    updateTodo(todo)
+      .then(() => setTodo({ ...todo, name: newName }))
+      .catch(noop);
   };
 
-  const handleDelete = (id: TodoItem['id']) => props.deleteTodo(todo);
+  // 删除
+  const handleDelete = (event: any) => {
+    event.stopPropagation();
+    event.preventDefault();
+    if (deleteLoading) return;
+    deleteTodo({ id })
+      .then(() => props.deleteTodo(todo))
+      .catch(noop);
+  };
 
-  console.log('render todo item');
+  const renderTodoAction = () => {
+    return (
+      <>
+        <Tooltip title="编辑">
+          <EditOutlined
+            style={{ color: colorPrimary }}
+            onClick={(e) => {
+              e.stopPropagation();
+              e.preventDefault();
+              setIsEditing(true);
+            }}
+          />
+        </Tooltip>
+        <Tooltip title="删除">
+          {<DeleteOutlined onClick={handleDelete} style={{ color: colorError }} />}
+        </Tooltip>
+      </>
+    );
+  };
 
   return (
     <Checkbox className="todo-item" onChange={handleChangeStatus} key={id} checked={completed}>
@@ -46,15 +94,12 @@ const TodoItem: React.FC<IProps> = (props) => {
         delete={true}
         onMouseEnter={() => setIsHover(true)}
         onMouseLeave={() => setIsHover(false)}
-        editable={showAction ? { text: name, onChange: handleUpdate } : false}
+        editable={isEditing ? { editing: isEditing, text: name, onChange: handleUpdate } : false}
       >
         <Space>
           {name}
-          {showAction && (
-            <Tooltip title="删除">
-              <DeleteOutlined onClick={() => handleDelete(id)} style={{ color: colorError }} />
-            </Tooltip>
-          )}
+          {isLoading && <NanoLoading loading={isLoading} />}
+          {showAction && renderTodoAction()}
         </Space>
       </Text>
     </Checkbox>

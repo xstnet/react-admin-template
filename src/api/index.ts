@@ -3,22 +3,22 @@ import { Http, IResponse as HttpResponse } from '@/utils/http';
 // 类型定义👇🏻👇🏻👇🏻 ------------------------------------------------------------------------------------
 
 // 原始的返回值, 未处理, axios->data->Api.ResponseData
-type ApiRawResponse<T extends Api.Example> = HttpResponse<Api.ResponseData<T>>;
+type ApiRawResponse<T extends Api.Base> = HttpResponse<Api.ResponseData<T>>;
 // 直接拿到 data 返回值, 屏蔽axios, header, code, message 等信息
-type ApiDataResponse<T extends Api.Example> = Promise<T['response']>;
+type ApiDataResponse<T extends Api.Base> = Promise<T['response']>;
 
-// export type PaginateData<T extends Api.Example> = Api.ResponseData<Api.PaginateResponse<T>>;
+// export type PaginateData<T extends Api.Base> = Api.ResponseData<Api.PaginateResponse<T>>;
 
 // 使用不同的handle 返回不同的数据类型
-interface ApiHandle<T extends Api.Example> {
+interface ApiHandle<T extends Api.Base> {
   raw: (params?: T['params']) => ApiRawResponse<T>;
   data: (params?: T['params']) => ApiDataResponse<T>;
 }
 
 // 写这个只是为了getResponseData这个方法不换行, 仅此而已
-type PromiseData<T extends Api.Example> = Promise<T['response']>;
+type PromiseData<T extends Api.Base> = Promise<T['response']>;
 // 提取返回结果data
-export const getResponseData = <T extends Api.Example>(e: ApiRawResponse<T>): PromiseData<T> => {
+export const getResponseData = <T extends Api.Base>(e: ApiRawResponse<T>): PromiseData<T> => {
   return e.then((r) => Promise.resolve(r.data.data)).catch((err) => Promise.reject(err));
 };
 
@@ -85,4 +85,20 @@ export const postUpdateArticle = (params?: Api.postUpdateArticle['params']) => {
 
 export const postDeleteArticle = (params?: Api.postDeleteArticle['params']) => {
   return getResponseData(Http.post<Api.ResponseData>('/article/delete', params));
+};
+
+export const getTodoList = (params?: Api.getTodoList['params']) => {
+  return getResponseData(Http.get<Api.ResponseData<Api.getTodoList>>('/todo/list', params));
+};
+
+export const postChangeTodoStatus = (params?: Api.postChangeTodoStatus['params']) => {
+  return getResponseData(
+    Http.post<Api.ResponseData<Api.postChangeTodoStatus>>('/todo/changeStatus', params)
+  );
+};
+export const postDeleteTodo = (params?: Api.postDeleteTodo['params']) => {
+  return getResponseData(Http.post<Api.ResponseData<Api.postDeleteTodo>>('/todo/delete', params));
+};
+export const postUpdateTodo = (params?: Api.postUpdateTodo['params']) => {
+  return getResponseData(Http.post<Api.ResponseData<Api.postUpdateTodo>>('/todo/update', params));
 };

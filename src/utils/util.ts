@@ -17,6 +17,7 @@ export function toDashboardPage(delay = 500) {
   }, delay);
 }
 
+// no operation
 export function noop() {}
 
 export function trimStr(str: string, substr: string, mode: 1 | 2 | 3 = 3): string {
