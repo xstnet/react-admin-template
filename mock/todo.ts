@@ -3,7 +3,7 @@ import { randomNumber } from '@/utils/util';
 import Mock, { Random } from 'mockjs';
 
 Mock.setup({
-  timeout: 2100
+  timeout: 100
 });
 
 Mock.mock(/api\/todo\/list/, 'get', (options) => {
