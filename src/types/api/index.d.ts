@@ -95,4 +95,8 @@ namespace Api {
   interface postUpdateTodo extends Base {
     params: Pick<Model.TodoList, 'id' | 'status' | 'name'>;
   }
+  interface postAddTodo extends Base {
+    params: Pick<Model.TodoList, 'name'>;
+    response: Model.TodoList;
+  }
 }

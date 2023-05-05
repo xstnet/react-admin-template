@@ -73,17 +73,17 @@ export const getArticleDetail = (params: Api.getArticleDetail['params']) => {
   );
 };
 
-export const postCreateArticle = (params?: Api.postCreateArticle['params']) => {
+export const postCreateArticle = (params: Api.postCreateArticle['params']) => {
   return getResponseData(
     Http.post<Api.ResponseData<Api.postCreateArticle>>('/article/create', params)
   );
 };
 
-export const postUpdateArticle = (params?: Api.postUpdateArticle['params']) => {
+export const postUpdateArticle = (params: Api.postUpdateArticle['params']) => {
   return getResponseData(Http.post<Api.ResponseData>('/article/update', params));
 };
 
-export const postDeleteArticle = (params?: Api.postDeleteArticle['params']) => {
+export const postDeleteArticle = (params: Api.postDeleteArticle['params']) => {
   return getResponseData(Http.post<Api.ResponseData>('/article/delete', params));
 };
 
@@ -91,7 +91,7 @@ export const getTodoList = (params?: Api.getTodoList['params']) => {
   return getResponseData(Http.get<Api.ResponseData<Api.getTodoList>>('/todo/list', params));
 };
 
-export const postChangeTodoStatus = (params?: Api.postChangeTodoStatus['params']) => {
+export const postChangeTodoStatus = (params: Api.postChangeTodoStatus['params']) => {
   return getResponseData(
     Http.post<Api.ResponseData<Api.postChangeTodoStatus>>('/todo/changeStatus', params)
   );
@@ -99,6 +99,9 @@ export const postChangeTodoStatus = (params?: Api.postChangeTodoStatus['params']
 export const postDeleteTodo = (params?: Api.postDeleteTodo['params']) => {
   return getResponseData(Http.post<Api.ResponseData<Api.postDeleteTodo>>('/todo/delete', params));
 };
-export const postUpdateTodo = (params?: Api.postUpdateTodo['params']) => {
+export const postUpdateTodo = (params: Api.postUpdateTodo['params']) => {
   return getResponseData(Http.post<Api.ResponseData<Api.postUpdateTodo>>('/todo/update', params));
+};
+export const postAddTodo = (params: Api.postAddTodo['params']) => {
+  return getResponseData(Http.post<Api.ResponseData<Api.postAddTodo>>('/todo/create', params));
 };

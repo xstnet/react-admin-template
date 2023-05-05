@@ -16,6 +16,7 @@ function requestLog(response: AxiosResponse<any, any>) {
   console.log('Path:', config.url);
   console.log('Method:', config.method);
   console.log('Params:', config.params);
+  console.log('Body:', config.data);
   console.log('StatusCode:', response.status);
   console.log(
     'Response:',
@@ -68,7 +69,10 @@ axios.interceptors.response.use(
     // 请求成功
     if (data.code === 0) {
       if (response.config.method === 'post') {
-        message.success(response.data.message);
+        // 有message时再弹出提示
+        if (typeof response.data.message === 'string' && response.data.message.length > 0) {
+          message.success(response.data.message);
+        }
       }
       return response;
     }
@@ -111,7 +115,6 @@ axios.interceptors.response.use(
     }
     console.log('Request error', error);
 
-    console.groupEnd();
     return Promise.reject(error);
   }
 );

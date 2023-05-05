@@ -1,6 +1,8 @@
+import { postAddTodo } from '@/api';
 import { TodoItemEnum } from '@/constants/enum';
+import useManualRequest from '@/hooks/useManualRequest';
 import { randomNumber } from '@/utils/util';
-import { EnterOutlined, PlusOutlined } from '@ant-design/icons';
+import { EnterOutlined, LoadingOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Input, InputRef, Space } from 'antd';
 import dayjs from 'dayjs';
 import { useEffect, useRef, useState } from 'react';
@@ -12,21 +14,19 @@ const AddTodo: React.FC<IProps> = ({ onAdd }) => {
   const inputRef = useRef<InputRef>(null);
   // 是否正在添加todo
   const [isAdding, setIsAdding] = useState(false);
-  const [totoValue, setTodoValue] = useState('');
+  const [todoValue, setTodoValue] = useState('');
+
+  const { loading: addTodoLoading, run: addTodo } = useManualRequest(postAddTodo, {
+    loadingDelay: 200,
+    onSuccess: (todo) => {
+      onAdd(todo);
+      setTodoValue('');
+    }
+  });
 
   const handleAddToto = () => {
-    if (!totoValue) return;
-    const now = dayjs().format('YYYY-MM-DD HH:MM:SS');
-
-    const todo = {
-      name: totoValue,
-      status: TodoItemEnum.incomplete,
-      id: randomNumber(100, 1000000000),
-      create_time: now,
-      update_time: now
-    };
-    onAdd(todo);
-    setTodoValue('');
+    if (!todoValue || addTodoLoading) return;
+    addTodo({ name: todoValue });
   };
 
   useEffect(() => {
@@ -42,16 +42,28 @@ const AddTodo: React.FC<IProps> = ({ onAdd }) => {
     <Space.Compact style={{ width: '100%', marginBottom: '16px' }}>
       <Input
         ref={inputRef}
+        readOnly={addTodoLoading}
         autoComplete="off"
-        value={totoValue}
+        value={todoValue}
         onFocus={() => setIsAdding(true)}
         onBlur={() => setIsAdding(false)}
         onChange={(e) => setTodoValue(e.target.value)}
         placeholder="Add Todo"
-        suffix={isAdding ? <EnterOutlined style={{ opacity: 0.5 }} color="red" /> : <span />}
+        suffix={
+          isAdding && !addTodoLoading ? (
+            <EnterOutlined style={{ opacity: 0.5 }} color="red" />
+          ) : (
+            <span />
+          )
+        }
         onPressEnter={handleAddToto}
       />
-      <Button onClick={handleAddToto} type="primary" icon={<PlusOutlined />} />
+      <Button
+        onClick={handleAddToto}
+        loading={addTodoLoading}
+        type="primary"
+        icon={<PlusOutlined />}
+      />
     </Space.Compact>
   );
 };
