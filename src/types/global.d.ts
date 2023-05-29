@@ -4,7 +4,6 @@ declare global {
   //设置全局属性
   interface Window {
     //window对象属性
-    abc: any; //加入对象
   }
 
   type S = string;
@@ -12,6 +11,9 @@ declare global {
   type B = boolean;
   type KV = Record<S, any>;
   type IdType = S | N;
+
+  type AnyString = S & {};
+  type AnyNumber = N & {};
 
   type ISetFunc<S = boolean> = (prevState: S | ((prev: S) => S)) => void;
 

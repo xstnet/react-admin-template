@@ -29,7 +29,6 @@ const GlobalLayout: React.FC = () => {
 
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const { pathname } = useLocation();
 
   console.log('global layout render...');
 
