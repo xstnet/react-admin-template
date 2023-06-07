@@ -1,7 +1,6 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 import Config from '@/configs';
 import Cache from './cache';
-import { URLSearchParams } from 'url';
 import { ResponseCodeEnum } from '@/constants/enum';
 import { message } from 'antd';
 import { toLoginPage } from './util';
@@ -119,34 +118,32 @@ axios.interceptors.response.use(
   }
 );
 
-export type IRequestParams = KV | URLSearchParams;
-export type IResponse<R = any> = Promise<AxiosResponse<R>>;
-interface IHttpFunc {
-  get: <R = IResponse>(
-    url: string,
-    params?: IRequestParams,
-    config?: AxiosRequestConfig
-  ) => IResponse<R>;
-  post: <R = IResponse>(url: string, data?: KV, config?: AxiosRequestConfig) => IResponse<R>;
-  request: <R = IResponse>(config: AxiosRequestConfig) => IResponse<R>;
+namespace Http {
+  export type Response<D> = Promise<Api.ResponseData<D>['data']>;
+
+  export type Get = <D = any>(url: string, params?: KV, config?: AxiosRequestConfig) => Response<D>;
+  export type Post = <D = any>(url: string, data?: KV, config?: AxiosRequestConfig) => Response<D>;
+  export type Request = <D = any>(config: AxiosRequestConfig) => Promise<AxiosResponse<D>>;
 }
 
-const get: IHttpFunc['get'] = <R>(
-  url: string,
-  params?: IRequestParams,
-  config?: AxiosRequestConfig
-) => {
+const get: Http.Get = <TData = any>(url: string, params?: KV, config?: AxiosRequestConfig) => {
   const options = config || {};
   options.params = params;
-  return axios.get<R>(url, options);
+  return axios
+    .get<Api.ResponseData<TData>>(url, options)
+    .then((response) => response.data.data)
+    .catch((err) => Promise.reject(err));
 };
 
-const post: IHttpFunc['post'] = <R>(url: string, data?: KV, config?: AxiosRequestConfig) => {
-  return axios.post<R>(url, data, config);
+const post: Http.Post = <TData = any>(url: string, data?: KV, config?: AxiosRequestConfig) => {
+  return axios
+    .post<Api.ResponseData<TData>>(url, data, config)
+    .then((response) => response.data.data)
+    .catch((err) => Promise.reject(err));
 };
 
-const request: IHttpFunc['request'] = <R>(config: AxiosRequestConfig) => {
-  return axios.request<R>(config);
+const request: Http.Request = <TData>(config: AxiosRequestConfig) => {
+  return axios.request<TData>(config);
 };
 
 export const Http = {

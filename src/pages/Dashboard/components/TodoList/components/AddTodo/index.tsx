@@ -1,10 +1,8 @@
 import { postAddTodo } from '@/api';
-import { TodoItemEnum } from '@/constants/enum';
 import useManualRequest from '@/hooks/useManualRequest';
-import { randomNumber } from '@/utils/util';
-import { EnterOutlined, LoadingOutlined, PlusOutlined } from '@ant-design/icons';
+import { EnterOutlined, PlusOutlined } from '@ant-design/icons';
+import { useRequest } from 'ahooks';
 import { Button, Input, InputRef, Space } from 'antd';
-import dayjs from 'dayjs';
 import { useEffect, useRef, useState } from 'react';
 
 type IProps = {
