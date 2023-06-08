@@ -1,6 +1,6 @@
 import React, { lazy } from 'react';
 
-import { RouteObject } from 'react-router-dom';
+import { RouteObject, createBrowserRouter } from 'react-router-dom';
 import Redirect from '@/components/Redirect';
 
 import GlobalLayout from '@/layouts/global';
@@ -26,7 +26,7 @@ const Suspense: React.FC<React.PropsWithChildren> = ({ children }) => (
 );
 
 // todo: 页面错误降级
-export default function DefaultRoutes() {
+export function routeRules() {
   const routes: RouteObject[] = [
     {
       path: '/login',
@@ -142,3 +142,5 @@ export default function DefaultRoutes() {
   ];
   return routes;
 }
+
+export const routes = createBrowserRouter(routeRules(), { basename: import.meta.env.BASE_URL });
