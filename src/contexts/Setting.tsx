@@ -36,7 +36,7 @@ const SettingProvider: React.FC<React.PropsWithChildren> = ({ children }) => {
     return {
       theme: 'light',
       compactMode: false,
-      followSystemTheme: false,
+      followSystemTheme: true,
       fixedHeader: true,
       fixedMenu: true,
       showFooter: true,

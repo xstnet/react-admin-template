@@ -16,7 +16,7 @@ import MenuPermissionPage from '@/pages/Example/Permission/Menu';
 import ButtonPermissionPage from '@/pages/Example/Permission/Button';
 
 const TabsPage = lazy(() => import('@/pages/Example/tabs'));
-const ArticleIndexPage = lazy(() => import('@/pages/Article/Index'));
+const ArticleIndexPage = lazy(() => import('@/pages/Article/Index/index'));
 const LoginPage = lazy(() => import('@/pages/Login'));
 const DashboardPage = lazy(() => import('@/pages/Dashboard'));
 const IframePage = lazy(() => import('@/pages/Iframe'));
