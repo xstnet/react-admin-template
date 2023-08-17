@@ -96,7 +96,7 @@ export function routeRules() {
             },
             {
               path: '/article/list',
-              element: <ArticleIndexPage />
+              element: <Suspense children={<ArticleIndexPage />} />
             },
             {
               path: '/article/category',
