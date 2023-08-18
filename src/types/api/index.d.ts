@@ -75,7 +75,12 @@ namespace Api {
   }
 
   interface postCreateArticle extends Base {
-    params: Omit<Model.Article, 'id'>;
+    params: Omit<Model.Article, keyof Model.CommonFields | 'id'> & {
+      comment_control: N[];
+      content: S;
+      markdown_content: S;
+      is_draft: N;
+    };
   }
 
   interface postUpdateArticle extends Base {
@@ -98,5 +103,14 @@ namespace Api {
   interface postAddTodo extends Base {
     params: Pick<Model.TodoList, 'name'>;
     response: Model.TodoList;
+  }
+
+  type CategoryTreeItem = {
+    id: N;
+    name: S;
+    childref: CategoryTreeItem;
+  };
+  interface getCategoryTreeList extends Base {
+    response: CategoryTreeItem[];
   }
 }

@@ -1,41 +1,45 @@
 namespace Model {
   interface CommonFields {
-    create_time: string;
-    update_time?: string;
-    delete_time?: string;
+    create_time: S;
+    update_time?: S;
+    delete_time?: S;
   }
   interface User extends CommonFields {
-    id: number;
-    username: string;
-    nickname: string;
-    avatar: string;
-    create_time?: string;
-    password?: string;
-    email?: string;
-    gender: number;
-    mobile?: string;
+    id: N;
+    username: S;
+    nickname: S;
+    avatar: S;
+    create_time?: S;
+    password?: S;
+    email?: S;
+    gender: N;
+    mobile?: S;
   }
 
   interface Article extends CommonFields {
-    id: number;
-    title: string;
-    description: string;
-    author: string;
-    cover: string;
-    content: string;
-    tags: string[];
+    id: N;
+    title: S;
+    description: S;
+    author: S;
+    cover: S;
+    category_id: N;
+    content: S;
+    sort_value: N;
+    status: N;
+    source: S;
+    tags: S[];
   }
 
   interface LoginHistory extends CommonFields {
-    id: number;
+    id: N;
     userId: User['id'];
-    loginIp: string;
+    loginIp: S;
     nickname: User['nickname'];
   }
 
   interface TodoList extends CommonFields {
-    id: number;
-    name: string;
+    id: N;
+    name: S;
     status: TodoItemEnum;
   }
 }
