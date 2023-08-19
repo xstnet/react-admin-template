@@ -42,4 +42,12 @@ namespace Model {
     name: S;
     status: TodoItemEnum;
   }
+
+  interface ArticleCategory extends CommonFields {
+    id: N;
+    name: S;
+    status: N;
+    sort_value: N;
+    parent_id: N;
+  }
 }

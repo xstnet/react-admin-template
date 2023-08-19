@@ -71,3 +71,11 @@ export const postAddTodo = (data: Api.postAddTodo['params']) => {
 export const getCategoryTreeList = () => {
   return Http.get<Api.getCategoryTreeList>('/category/treeList');
 };
+
+export const postCreateCategory = (data: Api.postCreateCategory['params']) => {
+  return Http.post<Api.postCreateCategory>('/category/create', data);
+};
+
+export const postUpdateCategory = (data: Api.postUpdateCategory['params']) => {
+  return Http.post<Api.postCreateCategory>('/category/update', data);
+};

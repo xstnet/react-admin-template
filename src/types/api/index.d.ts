@@ -105,12 +105,18 @@ namespace Api {
     response: Model.TodoList;
   }
 
-  type CategoryTreeItem = {
-    id: N;
-    name: S;
+  type CategoryTreeItem = Model.ArticleCategory & {
     childref: CategoryTreeItem;
   };
   interface getCategoryTreeList extends Base {
     response: CategoryTreeItem[];
+  }
+
+  interface postUpdateCategory extends Base {
+    params: Omit<Model.ArticleCategory, keyof Model.TimeFields>;
+  }
+
+  interface postCreateCategory extends Base {
+    params: Omit<Model.ArticleCategory, keyof Model.CommonFields>;
   }
 }
