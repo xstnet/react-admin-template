@@ -66,7 +66,9 @@ namespace Api {
 
   interface getArticleDetail extends Base {
     params: Pick<Model.Article, 'id'>;
-    response: Model.Article;
+    response: Model.Article & {
+      content: Model.ArticleContent;
+    };
   }
 
   interface postDeleteArticle extends Base {
@@ -84,7 +86,9 @@ namespace Api {
   }
 
   interface postUpdateArticle extends Base {
-    params: Model.Article;
+    params: Model.Article & {
+      comment_control: N[];
+    };
   }
 
   interface getTodoList extends Base {

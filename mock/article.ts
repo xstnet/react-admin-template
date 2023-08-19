@@ -14,8 +14,12 @@ Mock.mock(/api\/article\/detail/, 'get', (options) => {
       description: '醉丶春风',
       author: '醉丶春风',
       tags: [1, 2],
+      content: {
+        markdown_content: '# 内容标题\r\n 正文'
+      },
+      sort_value: 100,
+      comment_control: 3,
       // cover: 'https://www.xstnet.com/static/images/head.gif',
-      content: 'content',
       create_time: Random.datetime()
     }
   };

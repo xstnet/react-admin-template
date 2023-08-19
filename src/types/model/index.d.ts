@@ -28,6 +28,7 @@ namespace Model {
     status: N;
     source: S;
     tags: S[];
+    comment_control: N;
   }
 
   interface LoginHistory extends CommonFields {
