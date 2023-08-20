@@ -53,6 +53,7 @@ const ArticleUpdatePage: React.FC = () => {
         // @ts-ignore
         detail.markdown_content = content.markdown_content;
         form.setFieldsValue({ ...detail, comment_control: commentControlRule });
+        editorRef.current?.setMarkdown(content.markdown_content);
       }
     }
   );

@@ -1,4 +1,4 @@
-import { useEffect, useRef, forwardRef, useImperativeHandle, useContext } from 'react';
+import { useEffect, useRef, forwardRef, useImperativeHandle, useContext, useState } from 'react';
 import Editor from '@toast-ui/editor';
 import '@toast-ui/editor/dist/toastui-editor.css';
 import '@toast-ui/editor/dist/theme/toastui-editor-dark.css';
@@ -42,7 +42,6 @@ const MdEditor = forwardRef<IEditorRef, IProps>((props, ref) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const editorRef = useRef<Editor>();
   const { height = 600, value = '', onChange = noop, contentType = 'markdown' } = props;
-
   const {
     settings: { theme }
   } = useContext(SettingContext);
@@ -163,7 +162,7 @@ const MdEditor = forwardRef<IEditorRef, IProps>((props, ref) => {
   return <div style={{ backgroundColor: '#fff' }} ref={containerRef}></div>;
 });
 
-export default React.memo<IProps>(MdEditor, (prev, next) => {
+export default React.memo(MdEditor, (prev, next) => {
   // value 改变不刷新, 这会导致 编辑器的Selection变成最后一个
   // value 一般很长, 先比较长度是否一致, 在进行全量比较
   if (prev.value?.length !== next.value?.length) {

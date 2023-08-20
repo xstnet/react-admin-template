@@ -47,6 +47,7 @@ const ArticleCreaetPage: React.FC = () => {
     const cacheData = Cache.getObject(draftKey) || {};
     const initValue: Partial<IFormState> = {
       status: 200,
+      // @ts-ignore
       comment_control: [1, 2],
       description: '',
       source: '',

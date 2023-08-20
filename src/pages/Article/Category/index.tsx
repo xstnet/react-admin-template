@@ -54,7 +54,7 @@ const ArticleCategoryPage: React.FC = () => {
 
   const handleCreate = async () => {
     const formData = await form.validateFields();
-    createCategory(formData);
+    createCategory(formData as any);
   };
 
   const handleUpdate = async () => {
