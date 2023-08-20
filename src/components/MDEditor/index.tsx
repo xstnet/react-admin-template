@@ -1,14 +1,16 @@
 import { useEffect, useRef, forwardRef, useImperativeHandle, useContext } from 'react';
 import Editor from '@toast-ui/editor';
-import '@toast-ui/editor-plugin-code-syntax-highlight/dist/toastui-editor-plugin-code-syntax-highlight.css';
 import '@toast-ui/editor/dist/toastui-editor.css';
 import '@toast-ui/editor/dist/theme/toastui-editor-dark.css';
-import codeHighLight from '@toast-ui/editor-plugin-code-syntax-highlight';
+import '@toast-ui/editor-plugin-code-syntax-highlight/dist/toastui-editor-plugin-code-syntax-highlight.css';
+import 'prismjs/themes/prism.css';
 import '@toast-ui/editor/dist/i18n/zh-cn';
-import { noop } from '@/utils/util';
+// @ts-ignore
+import codeSyntaxHighlight from '@toast-ui/editor-plugin-code-syntax-highlight/dist/toastui-editor-plugin-code-syntax-highlight-all';
+import { debounce, noop } from '@/utils/util';
 import { useUpdateEffect } from 'ahooks';
 import { SettingContext } from '@/contexts/Setting';
-
+import React from 'react';
 type IProps = {
   height?: N;
   // 通过 onChange 获取到的内容类型
@@ -20,6 +22,8 @@ type IProps = {
 };
 
 export type IEditor = Editor;
+
+// todo: 全屏
 
 export interface IEditorRef {
   // 编辑器实例
@@ -61,15 +65,21 @@ const MdEditor = forwardRef<IEditorRef, IProps>((props, ref) => {
     [editorRef.current, containerRef.current]
   );
 
+  useUpdateEffect(() => {
+    console.log('is forucs', editorRef.current!.getSelection());
+  }, [value]);
+
   const createEditor = () => {
     return new Editor({
       initialValue: value,
       height: `${height}px`,
       initialEditType: 'markdown',
       previewStyle: 'vertical',
-      plugins: [codeHighLight],
+      plugins: [codeSyntaxHighlight],
       language: 'zh-CN',
-      useCommandShortcut: true,
+      previewHighlight: true,
+      frontMatter: true,
+      // useCommandShortcut: true,
       // 粘贴url时自动转化为链接
       extendedAutolinks: true,
       el: containerRef.current!,
@@ -77,6 +87,15 @@ const MdEditor = forwardRef<IEditorRef, IProps>((props, ref) => {
       theme: theme === 'dark' ? 'dark' : undefined
     });
   };
+
+  // 增加 防抖
+  const handleChange = debounce((editType: string) => {
+    const isMarkdown = contentType === 'markdown';
+    const content = isMarkdown
+      ? editorRef.current?.getMarkdown() || ''
+      : editorRef.current?.getHTML() || '';
+    onChange(content, editType);
+  }, 500);
 
   // 初始化编辑器
   // 添加image事件
@@ -104,13 +123,7 @@ const MdEditor = forwardRef<IEditorRef, IProps>((props, ref) => {
         reader.readAsDataURL(blob);
       }
     );
-    editorRef.current.eventEmitter.listen('change', (editType) => {
-      if (contentType === 'markdown') {
-        onChange(editorRef.current?.getMarkdown() || '', editType);
-      } else {
-        onChange(editorRef.current?.getHTML() || '', editType);
-      }
-    });
+    editorRef.current.eventEmitter.listen('change', handleChange);
 
     // 缓存本地
     let saveDraftHandle = setInterval(() => {
@@ -150,4 +163,17 @@ const MdEditor = forwardRef<IEditorRef, IProps>((props, ref) => {
   return <div style={{ backgroundColor: '#fff' }} ref={containerRef}></div>;
 });
 
-export default MdEditor;
+export default React.memo<IProps>(MdEditor, (prev, next) => {
+  // value 改变不刷新, 这会导致 编辑器的Selection变成最后一个
+  // value 一般很长, 先比较长度是否一致, 在进行全量比较
+  if (prev.value?.length !== next.value?.length) {
+    return true;
+  }
+  if (prev.value !== next.value) {
+    return true;
+  }
+
+  // 其他属性改变重新render
+  // 这里还有一个问题, 当value和其他属性同时改变时, 就被上面拦截了, 现在没这个场景, 遇到了再改
+  return false;
+});
